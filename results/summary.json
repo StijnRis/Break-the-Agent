@@ -21,10 +21,10 @@
   "reference (CV solver, no ground truth)": {
    "n_episodes": 15,
    "n_tasks": 15,
-   "reward_mean": 0.627,
+   "reward_mean": 0.586,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.627
+    0.586
    ],
    "components": {
     "walls": 0.886,
@@ -57,10 +57,10 @@
   "do nothing": {
    "n_episodes": 15,
    "n_tasks": 15,
-   "reward_mean": 0.1,
+   "reward_mean": 0.0,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.1
+    0.0
    ],
    "components": {
     "walls": 0.0,
@@ -75,10 +75,10 @@
   "stop early (25 %)": {
    "n_episodes": 15,
    "n_tasks": 15,
-   "reward_mean": 0.355,
+   "reward_mean": 0.283,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.355
+    0.283
    ],
    "components": {
     "walls": 0.601,
@@ -93,10 +93,10 @@
   "stop early (50 %)": {
    "n_episodes": 15,
    "n_tasks": 15,
-   "reward_mean": 0.494,
+   "reward_mean": 0.438,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.494
+    0.438
    ],
    "components": {
     "walls": 0.806,
@@ -111,12 +111,12 @@
   "agent: gemini-3.1-pro-preview": {
    "n_episodes": 45,
    "n_tasks": 15,
-   "reward_mean": 0.382,
-   "reward_sd_over_runs": 0.011,
+   "reward_mean": 0.342,
+   "reward_sd_over_runs": 0.01,
    "per_run_means": [
-    0.392,
-    0.367,
-    0.386
+    0.35,
+    0.327,
+    0.348
    ],
    "components": {
     "walls": 0.243,
@@ -131,10 +131,10 @@
   "agent: stop-early-gemini-3-flash-4calls": {
    "n_episodes": 15,
    "n_tasks": 15,
-   "reward_mean": 0.227,
+   "reward_mean": 0.141,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.227
+    0.141
    ],
    "components": {
     "walls": 0.231,
@@ -148,16 +148,16 @@
   }
  },
  "exploits": {
-  "scale only": 0.1,
-  "wall = whole building box": 0.185,
-  "one giant room": 0.1,
-  "door/window/fixture spam (961 each)": 0.11,
-  "grid of rooms over the building (as many cells as rooms)": 0.102,
-  "thick ring wall around the building": 0.166,
-  "every fixture type stacked on every true fixture": 0.13,
-  "true room outlines, every name set to the most common label": 0.923,
-  "rooms duplicated x3": 0.887,
-  "right geometry, scale x1.3": 0.91,
-  "malformed junk": 0.1
+  "scale only": 0.0,
+  "wall = whole building box": 0.094,
+  "one giant room": 0.0,
+  "door/window/fixture spam (961 each)": 0.011,
+  "grid of rooms over the building (as many cells as rooms)": 0.002,
+  "thick ring wall around the building": 0.073,
+  "every fixture type stacked on every true fixture": 0.033,
+  "true room outlines, every name set to the most common label": 0.914,
+  "rooms duplicated x3": 0.875,
+  "right geometry, scale x1.3": 0.9,
+  "malformed junk": 0.0
  }
 }

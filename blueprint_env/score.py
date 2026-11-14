@@ -11,7 +11,8 @@ class gets an F1 score, so both missing objects and spammed objects cost reward.
     fixtures  0.10  same type, centre within 0.5 m
     areas     0.10  fraction of GT rooms whose matched polygon area, computed with the AGENT's own
                     scale (m_per_px), is within 5 %  -> rewards calibration only together with rooms
-    speed     0.10  linear time credit: 1.0 through 5 minutes, falling to 0.0 at the 8-minute deadline
+    speed           multiplier on earned geometry credit: 1.00 through 5 minutes, declining to 0.90
+                    at the 8-minute deadline
 """
 from __future__ import annotations
 
@@ -23,9 +24,9 @@ from scipy.ndimage import binary_dilation
 from scipy.optimize import linear_sum_assignment
 from shapely.geometry import Polygon
 
-# Keep geometry as 90% of reward while making prompt completion time material.
-WEIGHTS = {"walls": 0.225, "rooms": 0.225, "doors": 0.135, "windows": 0.135,
-           "fixtures": 0.09, "areas": 0.09, "speed": 0.10}
+# Geometry remains the task reward.  Speed scales that earned reward by 0.90--1.00,
+# so a fast empty or junk submission never earns credit on its own.
+WEIGHTS = {"walls": 0.25, "rooms": 0.25, "doors": 0.15, "windows": 0.15, "fixtures": 0.10, "areas": 0.10}
 MAX_ITEMS = 2000
 SPEED_FULL_CREDIT_SECONDS = 5 * 60
 SPEED_ZERO_CREDIT_SECONDS = 8 * 60
@@ -223,5 +224,6 @@ def score(gt: dict, pred: dict | None, size, elapsed_seconds: float | None = Non
         sc = 0.0
     det["scale_ratio"] = round(sc, 4)
     det["elapsed_seconds"] = None if elapsed_seconds is None else round(float(elapsed_seconds), 3)
-    total = sum(WEIGHTS[k] * comp[k] for k in WEIGHTS)
+    quality = sum(WEIGHTS[k] * comp[k] for k in WEIGHTS)
+    total = quality * (0.90 + 0.10 * comp["speed"])
     return {"reward": round(total, 4), "components": {k: round(v, 4) for k, v in comp.items()}, "details": det}

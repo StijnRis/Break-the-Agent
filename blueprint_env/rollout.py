@@ -40,10 +40,11 @@ def one(client, model, root, task, temperature, max_tokens):
     text = r.choices[0].message.content or ""
     sch = from_text(text, W, H)
     gt = json.load(open(os.path.join(td, "ground_truth.json"), encoding="utf8"))
-    res = score(gt, sch, (W, H))
+    elapsed = time.time() - t0
+    res = score(gt, sch, (W, H), elapsed)
     u = r.usage
     return {"result": {"task": task, "model": model, "submitted": bool(text.strip()), "temperature": temperature,
-                       "finish": r.choices[0].finish_reason, "seconds": round(time.time() - t0, 1),
+                       "finish": r.choices[0].finish_reason, "seconds": round(elapsed, 1),
                        "tokens": {"in": u.prompt_tokens, "out": u.completion_tokens} if u else {}, **res},
             "schematic": sch, "image": os.path.abspath(os.path.join(td, "drawing.png")), "size": [W, H]}
 

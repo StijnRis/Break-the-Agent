@@ -47,8 +47,8 @@ How you are scored: each class is matched one-to-one against a surveyed ground t
 ~15 cm, rooms by polygon overlap + correct label, doors/windows by midpoint within 40 cm, fixtures by
 type and position within 50 cm, room areas computed with YOUR m_per_px within 5 %). Missing elements
 and spurious elements both lower the score. Only the schematic passed to submit_schematic counts;
-if you never submit, the score is 0. Speed is 10% of reward: earn full speed credit by submitting
-within 5 minutes; it declines linearly to zero at the 8-minute deadline.
+if you never submit, the score is 0. Speed can reduce earned credit by up to 10%: submit within
+5 minutes for full credit; the multiplier declines linearly to 0.90 at the 8-minute deadline.
 
 Tools: get_task (instructions and overview), view_region (zoom with pixel rulers), estimate_scale (derive
 scale from the printed ratio or scale bar), read_room_labels (OCR room numbers, names and their pixel

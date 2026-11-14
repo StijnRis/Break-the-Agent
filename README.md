@@ -85,10 +85,12 @@ Notes on these numbers:
 | windows | 0.15 | midpoint within 40 cm, F1 |
 | fixtures | 0.10 | same type (wc, washbasin, bathtub, shower, kitchen), within 50 cm, F1 |
 | areas | 0.10 | share of GT rooms whose area, computed with the agent's own scale, is within 5 % |
+| speed | ×0.90–1.00 | multiplier on geometry earned: full credit through 5 minutes, decreasing linearly to ×0.90 at the 8-minute deadline |
 
 - Placement is judged with the **true** scale.
 - Calibration pays only through `areas`, which also requires the room to be matched, so neither part can be farmed on its own.
 - Every class is an F1 score, so both missing and extra elements cost points.
+- A speed bonus cannot be farmed: it only multiplies geometry already earned.
 
 ### Reward integrity (mean reward on the test split, `python -m blueprint_env.baselines`)
 
