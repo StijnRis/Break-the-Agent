@@ -1,0 +1,31 @@
+1
+00:00:00,320 --> 00:00:06,740
+Blueprint Lab turns messy architectural floor plans into structured, machine-readable schematics.
+
+2
+00:00:07,220 --> 00:00:12,031
+That sounds simple—until you ask an AI agent to do it precisely.
+
+3
+00:00:12,511 --> 00:00:20,631
+The agent can zoom into the drawing, read room labels, estimate scale, segment rooms, measure areas, preview its work, and submit a final schematic.
+
+4
+00:00:21,111 --> 00:00:32,531
+But having the tools is not the same as using them well.
+
+5
+00:00:33,011 --> 00:00:42,581
+Across our benchmark, Gemini reaches roughly 0.26, while our deterministic computer-vision reference reaches 0.57. The agent often guesses the scale, traces rooms too roughly, and misses precise doors and windows.
+
+6
+00:00:43,061 --> 00:00:46,581
+That makes this a useful reinforcement-learning environment: every decision is inspectable, every action has a cost, and the reward checks actual geometric accuracy against surveyed ground truth.
+
+7
+00:00:47,061 --> 00:01:03,381
+No hidden answers. No shortcut for doing nothing. Just a hard, measurable real-world skill: reading construction drawings.
+
+8
+00:01:03,861 --> 00:01:09,481
+This is Blueprint Lab—where we break the agent, so it can learn to build better.

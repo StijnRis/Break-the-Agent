@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visual walkthrough of Gemini navigating the Blueprint Lab construction-drawing benchmark.">
+  <title>Blueprint Lab — Gemini walkthrough</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=swap');
+    :root{--ink:#152a2b;--green:#176b55;--mint:#dceee4;--paper:#f3f5f0;--line:#d7e1db;--muted:#61736e;--card:#fff}
+    *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Manrope,Arial,sans-serif}
+    .top{background:var(--ink);color:#f4f6f1;padding:16px clamp(22px,5vw,72px);display:flex;justify-content:space-between;align-items:center;font:700 13px Manrope,sans-serif}.tag{font:500 10px 'DM Mono',monospace;letter-spacing:1px;color:#adc6b9}
+    main{max-width:1220px;margin:auto;padding:clamp(42px,8vw,96px) clamp(20px,5vw,72px) 72px}.eyebrow{font:500 11px 'DM Mono',monospace;letter-spacing:1.3px;text-transform:uppercase;color:var(--green);margin-bottom:12px}h1{font-size:clamp(35px,6vw,70px);line-height:1.04;letter-spacing:-.055em;max-width:900px;margin:0}.intro{max-width:720px;font-size:clamp(16px,2vw,20px);color:var(--muted);margin:20px 0 38px}
+    .video-card,.panel,.benchmark{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 30px #193a2a0b}.video-card{padding:12px}.video-card video{display:block;width:100%;border-radius:10px;background:#101d1d;max-height:680px}.caption{display:flex;justify-content:space-between;gap:16px;padding:13px 7px 4px;font-size:12px;color:var(--muted)}
+    h2{font-size:clamp(24px,3vw,36px);letter-spacing:-.04em;margin:72px 0 18px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.panel{padding:20px}.number{font:500 11px 'DM Mono',monospace;color:var(--green)}h3{font-size:16px;margin:9px 0}.panel p{color:var(--muted);font-size:13px;margin:0}.benchmark{padding:24px;overflow-x:auto}.benchmark table{width:100%;border-collapse:collapse;min-width:600px}.benchmark th,.benchmark td{padding:12px 8px;text-align:left;border-bottom:1px solid var(--line);font-size:13px}.benchmark th{font:500 10px 'DM Mono',monospace;letter-spacing:.7px;color:var(--muted);text-transform:uppercase}.benchmark tr:last-child td{border:0}.benchmark .highlight td{background:#eaf4ed;font-weight:800;color:#125340}.benchmark-note{margin:14px 0 0;color:var(--muted);font-size:12px}.evidence{display:grid;grid-template-columns:1fr 1fr;gap:18px}.evidence figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}.evidence img{display:block;width:100%;background:#fff}.evidence figcaption{padding:12px 14px;color:var(--muted);font-size:12px}.cta{margin-top:52px;padding:25px 28px;border-radius:15px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px}.cta p{margin:4px 0 0;color:#c7d6ce;font-size:13px}.cta a{display:inline-block;background:#e4f1e8;color:#134f3f;padding:10px 14px;border-radius:7px;text-decoration:none;font-weight:800;font-size:12px;white-space:nowrap}@media(max-width:720px){.grid,.evidence{grid-template-columns:1fr}.caption,.cta{display:block}.cta a{margin-top:16px}.top span:last-child{display:none}}
+  </style>
+</head>
+<body>
+  <header class="top"><span>Blueprint Lab</span><span class="tag">JUNCTION 2026 · AFTERQUERY</span></header>
+  <main>
+    <div class="eyebrow">Construction-drawing benchmark</div>
+    <h1>Watch Gemini work through a floor plan.</h1>
+    <p class="intro">This recorded evaluation makes the agent’s process visible: it examines the drawing, requests focused crops, measures geometry, drafts a schematic, and submits an answer for automatic scoring.</p>
+    <section class="video-card" aria-labelledby="walkthrough-title">
+      <video controls preload="metadata" poster="assets/gemini-best-output.png">
+        <source src="assets/gemini-walkthrough.mp4" type="video/mp4">
+        <track kind="subtitles" src="assets/gemini-walkthrough.srt" srclang="en" label="English" default>
+        Your browser does not support embedded video. <a href="assets/gemini-walkthrough.mp4">Download the walkthrough</a>.
+      </video>
+      <div class="caption"><span id="walkthrough-title">Recorded Gemini evaluation walkthrough</span><span>Includes tool calls, visual checks, and submitted output</span></div>
+    </section>
+    <h2>What the walkthrough shows</h2>
+    <section class="grid">
+      <article class="panel"><div class="number">01 · INSPECT</div><h3>Targeted visual evidence</h3><p>Gemini zooms into exact regions of the original architectural drawing instead of relying on a single downscaled image.</p></article>
+      <article class="panel"><div class="number">02 · MEASURE</div><h3>Geometry, not guesswork</h3><p>It asks the environment for room segmentation and area measurements, then checks its draft through an overlay preview.</p></article>
+      <article class="panel"><div class="number">03 · SUBMIT</div><h3>Scored formal schematic</h3><p>The final submission is compared with the surveyed answer across walls, rooms, openings, fixtures, and area calibration.</p></article>
+    </section>
+    <h2>Benchmark improvement</h2>
+    <section class="benchmark" aria-label="Benchmark results">
+      <table>
+        <thead><tr><th>System / condition</th><th>Episodes</th><th>Mean reward</th><th>Change vs. early Gemini</th></tr></thead>
+        <tbody>
+          <tr><td>Early Gemini stop (4 calls)</td><td>15</td><td>0.141</td><td>—</td></tr>
+          <tr class="highlight"><td>Gemini 3.1 Pro, full benchmark</td><td>45</td><td>0.342</td><td>+0.201 · 2.43×</td></tr>
+          <tr><td>Drawing-only CV reference</td><td>15</td><td>0.586</td><td>+0.445 · 4.16×</td></tr>
+          <tr><td>Ground-truth ceiling</td><td>15</td><td>1.000</td><td>+0.859 · 7.09×</td></tr>
+        </tbody>
+      </table>
+      <p class="benchmark-note">Reward is a weighted 0–1 score on the fixed 15-plan holdout: walls 25%, rooms 25%, doors 15%, windows 15%, fixtures 10%, and calibrated areas 10%. The full Gemini result uses repeated runs across the held-out split; the early-stop row isolates what happens when the agent submits after only four calls.</p>
+    </section>
+    <h2>What we built, in brief</h2>
+    <section class="grid">
+      <article class="panel"><div class="number">01 · ENVIRONMENT</div><h3>A verifiable spatial task</h3><p>We converted Swiss apartment drawings into a formal schematic task with hidden CAD-derived answers and a deterministic scorer.</p></article>
+      <article class="panel"><div class="number">02 · AGENT LOOP</div><h3>Tools for doing the work</h3><p>Gemini receives the drawing plus zoom, scale estimation, label reading, room segmentation, area measurement, preview, and submission tools—up to 30 calls.</p></article>
+      <article class="panel"><div class="number">03 · EVALUATION</div><h3>Comparable outcomes</h3><p>Every submission is scored against the same held-out geometry. We compare complete Gemini runs, early exits, a drawing-only CV baseline, and the perfect-answer ceiling.</p></article>
+    </section>
+    <h2>Representative evaluation evidence</h2>
+    <section class="evidence">
+      <figure><img src="assets/surveyed-answer.jpg" alt="Surveyed answer geometry over a floor plan"><figcaption>Surveyed benchmark answer: the geometry used by the evaluator.</figcaption></figure>
+      <figure><img src="assets/gemini-submission.jpg" alt="Gemini submission over a floor plan"><figcaption>Gemini’s submitted schematic from the recorded evaluation.</figcaption></figure>
+    </section>
+    <h2>Team</h2>
+    <section class="grid" aria-label="Team members">
+      <article class="panel"><div class="number">TEAM LEAD</div><h3>Stijn Risseeuw</h3></article>
+      <article class="panel"><div class="number">TEAM MEMBER</div><h3>Roman Novosel</h3></article>
+      <article class="panel"><div class="number">TEAM MEMBER</div><h3>Paulius Sargunas</h3></article>
+      <article class="panel"><div class="number">TEAM MEMBER</div><h3>Aistis Verkauskas</h3></article>
+    </section>
+    <section class="cta"><div><strong>Explore the full project</strong><p>The repository contains the interactive local evaluator, benchmark design, source data, and reproducible results.</p></div><a href="https://github.com/StijnRis/Break-the-Agent">View on GitHub ↗</a></section>
+  </main>
+</body>
+</html>
