@@ -12,6 +12,14 @@ The agent submitted 88 walls, 20 rooms, 23 doors, 12 fixtures, and no windows. I
 
 The verifier automatically writes a comparison image after every run. It shows the public source drawing beside the submitted geometry overlay; it never contains surveyed ground truth.
 
+## Trace visualization
+
+[`harness_trace.html`](harness_trace.html) replays a later Harbor trial on Modal (`jobs/blueprint-harbor-modal`, reward 0.8004) as a single offline page. It shows a timeline of tool calls with prompt growth, the agent's zoom crops drawn on the plan, every step with its reasoning and tool I/O, and the verifier's per-component scores. Regenerate it for any trial with:
+
+```bash
+python -m blueprint_env.make_trace jobs/blueprint-harbor-modal/harbor_task__5z7nxmC
+```
+
 ## Run artifacts
 
 - Harbor summary: [`result.json`](../jobs/blueprint-harbor-cached/harbor_task__iW5q6LC/result.json)
