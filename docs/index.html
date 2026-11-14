@@ -110,6 +110,15 @@ section.block { padding: 96px 0 0; }
 .benchmark-table th { color:var(--muted); font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
 .benchmark-table tr:last-child td { border-bottom:0; }
 .benchmark-table .highlight td { color:var(--green-hi); font-weight:700; }
+main.wrap { display:flex; flex-direction:column; }
+main.wrap > #steps-sec { order:1; padding-top:46px; }
+main.wrap > .stats { order:2; }
+main.wrap > #timeline-sec { order:3; }
+main.wrap > #map-sec { order:4; }
+main.wrap > #verdict-sec { order:5; }
+main.wrap > #walkthrough { order:6; }
+main.wrap > #benchmark { order:7; }
+main.wrap > #team { order:8; }
 
 /* legend + chips ------------------------------------------------- */
 .legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
@@ -220,7 +229,7 @@ code { font-family: var(--f-mono); font-size: .92em; background: var(--card-2); 
 <nav class="top" id="nav">
   <div class="wrap">
     <a class="mark" href="#top">Break <b>the</b> Agent</a>
-    <div class="links"><a href="#timeline-sec">Timeline</a><a href="#map-sec">Attention</a><a href="#steps-sec">Steps</a><a href="#verdict-sec">Verdict</a></div>
+    <div class="links"><a href="#steps-sec">Steps</a><a href="#timeline-sec">Timeline</a><a href="#map-sec">Attention</a><a href="#verdict-sec">Verdict</a></div>
     <span class="pill solid" id="nav-reward">Reward —</span>
   </div>
 </nav>
