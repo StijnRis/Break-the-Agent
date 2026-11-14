@@ -1,0 +1,61 @@
+== site980_bldg2055_floor9178 run 0 (gemini-3.1-pro-preview)
+   [1] view_region {'y0': 1500, 'x0': 600, 'x1': 1000, 'y1': 1650} -> crop (600,1500)-(1000,1650)
+   [2] segment_rooms {'seeds': [[1311, 511], [1511, 620], [1087, 678], [1257, 800], [885, 820], [1469, 825], [1173, 959], [1406, 972], [863, 554], [1046, 511]], 'm_per_px': 0.016181} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [[1303.0, 608.0], [1303.0, 658.0], [1
+   [3] view_region {'x0': 1300, 'y1': 550, 'x1': 1600, 'y0': 250} -> crop (1300,250)-(1600,550)
+   [4] view_region {'y0': 400, 'y1': 700, 'x0': 1100, 'x1': 1500} -> crop (1100,400)-(1500,700)
+   [5] view_region {'y1': 700, 'x0': 1400, 'y0': 400, 'x1': 1700} -> crop (1400,400)-(1700,700)
+   [6] view_region {'y0': 400, 'y1': 700, 'x0': 800, 'x1': 1100} -> crop (800,400)-(1100,700)
+   [7] view_region {'y1': 700, 'x1': 1450, 'x0': 1150, 'y0': 450} -> crop (1150,450)-(1450,700)
+   [8] view_region {'x0': 1400, 'y0': 700, 'y1': 1000, 'x1': 1700} -> crop (1400,700)-(1700,1000)
+   [9] view_region {'y1': 1000, 'y0': 700, 'x0': 1100, 'x1': 1400} -> crop (1100,700)-(1400,1000)
+   [10] view_region {'x1': 1600, 'y1': 900, 'x0': 1300, 'y0': 600} -> crop (1300,600)-(1600,900)
+   [11] view_region {'y1': 1000, 'x0': 800, 'x1': 1100, 'y0': 700} -> crop (800,700)-(1100,1000)
+   [12] view_region {'y1': 750, 'y0': 550, 'x0': 1350, 'x1': 1550} -> crop (1350,550)-(1550,750)
+   [13] preview_schematic {'schematic_json': '<560 chars>'} -> preview counts {'walls': 0, 'rooms': 3, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.016181
+   [14] preview_schematic {'schematic_json': '<232 chars>'} -> preview counts {'walls': 0, 'rooms': 1, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.016181
+   [15] preview_schematic {'schematic_json': '<519 chars>'} -> preview counts {'walls': 0, 'rooms': 3, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.016181
+   [16] preview_schematic {'schematic_json': '<541 chars>'} -> preview counts {'walls': 0, 'rooms': 3, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.016181
+   [17] view_region {'x0': 800, 'y1': 650, 'y0': 450, 'x1': 1000} -> crop (800,450)-(1000,650)
+   [18] view_region {'x1': 1300, 'x0': 1100, 'y1': 750, 'y0': 550} -> crop (1100,550)-(1300,750)
+   [19] view_region {'y1': 650, 'y0': 450, 'x0': 1350, 'x1': 1550} -> crop (1350,450)-(1550,650)
+   [20] view_region {'y0': 450, 'y1': 650, 'x0': 1150, 'x1': 1350} -> crop (1150,450)-(1350,650)
+   [21] view_region {'y1': 750, 'y0': 550, 'x1': 1550, 'x0': 1350} -> crop (1350,550)-(1550,750)
+   [22] submit_schematic {'schematic_json': '<2676 chars>'} -> submitted: {'walls': 0, 'rooms': 10, 'doors': 12, 'windows': 6, 'fixtures': 7}. The episode is over.
+{"task": "site980_bldg2055_floor9178", "reward": 0.4204, "components": {"walls": 0.0, "rooms": 0.8428, "areas": 0.4, "doors": 0.56, "windows": 0.0, "fixtures": 0.8571}, "tool_calls": 22, "seconds": 388, "tokens": {"in": 716449, "out": 41790}}
+== site980_bldg2055_floor9178 run 1 (gemini-3.1-pro-preview)
+   [1] view_region {'x1': 1000, 'x0': 500, 'y0': 1500, 'y1': 1753} -> crop (500,1500)-(1000,1753)
+   [2] view_region {'y0': 400, 'y1': 900, 'x0': 800, 'x1': 1300} -> crop (800,400)-(1300,900)
+   [3] view_region {'y0': 400, 'x0': 1300, 'x1': 1700, 'y1': 900} -> crop (1300,400)-(1700,900)
+   [4] view_region {'x1': 1300, 'x0': 800, 'y1': 1200, 'y0': 900} -> crop (800,900)-(1300,1200)
+   [5] view_region {'y1': 1200, 'x1': 1700, 'x0': 1300, 'y0': 900} -> crop (1300,900)-(1700,1200)
+   [6] segment_rooms {'m_per_px': 0.0238095, 'seeds': [[925, 575], [1075, 500], [1300, 475], [1075, 625], [1550, 600], [1200, 750], [880, 750], [1450, 775], [1150, 925], [1400, 950]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [[829.0, 459.0], [829.0, 615.0], [938
+   [7] view_region {'y1': 700, 'x0': 800, 'y0': 400, 'x1': 1100} -> crop (800,400)-(1100,700)
+   api retry 0: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=600)
+   [8] view_region {'x0': 1000, 'y1': 700, 'y0': 400, 'x1': 1350} -> crop (1000,400)-(1350,700)
+   [9] view_region {'x1': 1300, 'y1': 850, 'y0': 550, 'x0': 900} -> crop (900,550)-(1300,850)
+   [10] view_region {'x0': 800, 'x1': 1300, 'y1': 1100, 'y0': 750} -> crop (800,750)-(1300,1100)
+   [11] view_region {'x1': 1350, 'y1': 650, 'y0': 450, 'x0': 1150} -> crop (1150,450)-(1350,650)
+   [12] view_region {'x0': 1150, 'x1': 1350, 'y0': 650, 'y1': 850} -> crop (1150,650)-(1350,850)
+   [13] view_region {'y0': 400, 'y1': 600, 'x1': 1550, 'x0': 1350} -> crop (1350,400)-(1550,600)
+   [14] view_region {'x1': 1450, 'y1': 700, 'y0': 500, 'x0': 1250} -> crop (1250,500)-(1450,700)
+   [15] view_region {'x1': 1450, 'y1': 1000, 'x0': 1150, 'y0': 800} -> crop (1150,800)-(1450,1000)
+   [16] view_region {'y0': 700, 'x0': 1350, 'y1': 900, 'x1': 1650} -> crop (1350,700)-(1650,900)
+   [17] view_region {'y0': 750, 'y1': 950, 'x1': 1500, 'x0': 1300} -> crop (1300,750)-(1500,950)
+   [18] view_region {'x1': 1500, 'y0': 600, 'x0': 1300, 'y1': 800} -> crop (1300,600)-(1500,800)
+   [19] view_region {'x1': 1750, 'y0': 450, 'x0': 1500, 'y1': 750} -> crop (1500,450)-(1750,750)
+   [20] submit_schematic {'schematic_json': '<2563 chars>'} -> submitted: {'walls': 0, 'rooms': 10, 'doors': 9, 'windows': 7, 'fixtures': 5}. The episode is over.
+{"task": "site980_bldg2055_floor9178", "reward": 0.5221, "components": {"walls": 0.0, "rooms": 0.8981, "areas": 0.0, "doors": 0.7273, "windows": 0.9231, "fixtures": 0.5}, "tool_calls": 20, "seconds": 923, "tokens": {"in": 444066, "out": 33964}}
+== site980_bldg2055_floor9178 run 2 (gemini-3.1-pro-preview)
+   [1] view_region {'y1': 1753, 'x1': 1000, 'y0': 1500, 'x0': 0} -> crop (0,1500)-(1000,1753)
+   [3] view_region {'x0': 600, 'x1': 1700, 'y0': 300, 'y1': 1100} -> crop (600,300)-(1700,1100)
+   [4] segment_rooms {'seeds': [[883, 560], [1050, 520], [1256, 497], [1483, 597], [1060, 680], [884, 762], [1217, 747], [1420, 770], [1160, 936], [1387, 935]], 'm_per_px': 0.0175438} -> [{"seed": 0, "polygon": [[829.0, 459.0], [829.0, 615.0], [938.0, 615.0], [938.0, 595.0], [940.0, 593.0], [959.0, 593.0],
+   [6] preview_schematic {'y1': 1100, 'x0': 600, 'x1': 1700, 'schematic_json': '<381 chars>', 'y0': 300} -> preview counts {'walls': 0, 'rooms': 3, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.01754
+   [7] preview_schematic {'x1': 1700, 'schematic_json': '<729 chars>', 'y0': 400, 'y1': 1100, 'x0': 1100} -> preview counts {'walls': 0, 'rooms': 6, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.01754
+   [8] preview_schematic {'y1': 1100, 'schematic_json': '<289 chars>', 'y0': 700, 'x0': 800, 'x1': 1700} -> preview counts {'walls': 0, 'rooms': 2, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.01754
+   [9] preview_schematic {'schematic_json': '<185 chars>', 'x0': 700, 'x1': 1100, 'y0': 600, 'y1': 1000} -> preview counts {'walls': 0, 'rooms': 1, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.01754
+   [10] preview_schematic {'y1': 1000, 'y0': 500, 'schematic_json': '<243 chars>', 'x0': 1100, 'x1': 1500} -> preview counts {'walls': 0, 'rooms': 1, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.01754
+   [11] preview_schematic {'x0': 1100, 'x1': 1500, 'schematic_json': '<295 chars>', 'y1': 1000, 'y0': 500} -> preview counts {'walls': 0, 'rooms': 1, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.01754
+   [12] preview_schematic {'schematic_json': '<334 chars>', 'x1': 1500, 'y1': 1000, 'x0': 1100, 'y0': 500} -> preview counts {'walls': 0, 'rooms': 1, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.01754
+   [13] view_region {'y0': 400, 'x1': 1000, 'y1': 600, 'x0': 800} -> crop (800,400)-(1000,600)
+   [14] submit_schematic {'schematic_json': '<5954 chars>'} -> submitted: {'walls': 55, 'rooms': 10, 'doors': 11, 'windows': 7, 'fixtures': 7}. The episode is over.
+{"task": "site980_bldg2055_floor9178", "reward": 0.5734, "components": {"walls": 0.7158, "rooms": 0.8994, "areas": 0.5, "doors": 0.4167, "windows": 0.0, "fixtures": 0.5714}, "tool_calls": 12, "seconds": 255, "tokens": {"in": 256219, "out": 33333}}

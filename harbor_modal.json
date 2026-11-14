@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "job_name": "blueprint-harbor-modal",
+  "jobs_dir": "jobs",
+  "n_attempts": 1,
+  "n_concurrent_trials": 1,
+  "environment": {
+    "type": "modal",
+    "delete": true,
+    "stream": false,
+    "kwargs": {
+      "app_name": "blueprint-harbor"
+    }
+  },
+  "agents": [
+    {
+      "name": "opencode",
+      "model_name": "google/gemini-3.1-pro-preview"
+    }
+  ],
+  "tasks": [
+    {
+      "path": "harbor_task"
+    }
+  ]
+}

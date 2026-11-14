@@ -1,0 +1,512 @@
+{
+ "result": {
+  "model": "gemini-3-flash-preview",
+  "seconds": 40,
+  "tokens": {
+   "in": 15045,
+   "out": 7677
+  },
+  "task": "site1015_bldg2113_floor9557",
+  "submitted": true,
+  "tool_calls": 5,
+  "reward": 0.0025,
+  "components": {
+   "walls": 0.0101,
+   "rooms": 0.0,
+   "areas": 0.0,
+   "doors": 0.0,
+   "windows": 0.0,
+   "fixtures": 0.0
+  },
+  "details": {
+   "walls": {
+    "precision": 0.082,
+    "recall": 0.005
+   },
+   "rooms": {
+    "matched": 0,
+    "n_pred": 13,
+    "n_gt": 116,
+    "matches": []
+   },
+   "doors": {
+    "tp": 0,
+    "n_pred": 0,
+    "n_gt": 114
+   },
+   "windows": {
+    "tp": 0,
+    "n_pred": 0,
+    "n_gt": 42
+   },
+   "fixtures": {
+    "tp": 0,
+    "n_pred": 6,
+    "n_gt": 84,
+    "per_type": {
+     "bathtub": {
+      "tp": 0,
+      "n_pred": 1,
+      "n_gt": 15
+     },
+     "kitchen": {
+      "tp": 0,
+      "n_pred": 2,
+      "n_gt": 21
+     },
+     "washbasin": {
+      "tp": 0,
+      "n_pred": 1,
+      "n_gt": 33
+     },
+     "wc": {
+      "tp": 0,
+      "n_pred": 2,
+      "n_gt": 15
+     }
+    }
+   },
+   "scale_ratio": 1.6831
+  }
+ },
+ "schematic": {
+  "m_per_px": 0.057,
+  "walls": [
+   {
+    "p1": [
+     96,
+     191
+    ],
+    "p2": [
+     645,
+     191
+    ],
+    "thickness_px": 8
+   },
+   {
+    "p1": [
+     96,
+     191
+    ],
+    "p2": [
+     96,
+     420
+    ],
+    "thickness_px": 8
+   },
+   {
+    "p1": [
+     96,
+     420
+    ],
+    "p2": [
+     270,
+     420
+    ],
+    "thickness_px": 8
+   },
+   {
+    "p1": [
+     173,
+     191
+    ],
+    "p2": [
+     173,
+     410
+    ],
+    "thickness_px": 5
+   },
+   {
+    "p1": [
+     219,
+     191
+    ],
+    "p2": [
+     219,
+     410
+    ],
+    "thickness_px": 5
+   }
+  ],
+  "rooms": [
+   {
+    "id": "1.05",
+    "name": "Séjour/repas",
+    "polygon": [
+     [
+      101,
+      196
+     ],
+     [
+      168,
+      196
+     ],
+     [
+      168,
+      260
+     ],
+     [
+      101,
+      260
+     ]
+    ]
+   },
+   {
+    "id": "1.02",
+    "name": "Pièce",
+    "polygon": [
+     [
+      178,
+      196
+     ],
+     [
+      214,
+      196
+     ],
+     [
+      214,
+      238
+     ],
+     [
+      178,
+      238
+     ]
+    ]
+   },
+   {
+    "id": "1.03",
+    "name": "Pièce",
+    "polygon": [
+     [
+      224,
+      196
+     ],
+     [
+      268,
+      196
+     ],
+     [
+      268,
+      238
+     ],
+     [
+      224,
+      238
+     ]
+    ]
+   },
+   {
+    "id": "1.04",
+    "name": "Pièce",
+    "polygon": [
+     [
+      278,
+      196
+     ],
+     [
+      329,
+      196
+     ],
+     [
+      329,
+      238
+     ],
+     [
+      278,
+      238
+     ]
+    ]
+   },
+   {
+    "id": "1.06",
+    "name": "Couloir",
+    "polygon": [
+     [
+      178,
+      243
+     ],
+     [
+      329,
+      243
+     ],
+     [
+      329,
+      260
+     ],
+     [
+      178,
+      260
+     ]
+    ]
+   },
+   {
+    "id": "1.07",
+    "name": "Cuisine",
+    "polygon": [
+     [
+      101,
+      265
+     ],
+     [
+      168,
+      265
+     ],
+     [
+      168,
+      298
+     ],
+     [
+      101,
+      298
+     ]
+    ]
+   },
+   {
+    "id": "1.08",
+    "name": "Bain",
+    "polygon": [
+     [
+      178,
+      265
+     ],
+     [
+      214,
+      265
+     ],
+     [
+      214,
+      298
+     ],
+     [
+      178,
+      298
+     ]
+    ]
+   },
+   {
+    "id": "1.09",
+    "name": "Bain",
+    "polygon": [
+     [
+      224,
+      265
+     ],
+     [
+      258,
+      265
+     ],
+     [
+      258,
+      298
+     ],
+     [
+      224,
+      298
+     ]
+    ]
+   },
+   {
+    "id": "1.10",
+    "name": "Réduit",
+    "polygon": [
+     [
+      263,
+      265
+     ],
+     [
+      285,
+      265
+     ],
+     [
+      285,
+      298
+     ],
+     [
+      263,
+      298
+     ]
+    ]
+   },
+   {
+    "id": "1.50",
+    "name": "Séjour/repas",
+    "polygon": [
+     [
+      101,
+      328
+     ],
+     [
+      168,
+      328
+     ],
+     [
+      168,
+      415
+     ],
+     [
+      101,
+      415
+     ]
+    ]
+   },
+   {
+    "id": "1.45",
+    "name": "Cuisine",
+    "polygon": [
+     [
+      101,
+      303
+     ],
+     [
+      168,
+      303
+     ],
+     [
+      168,
+      323
+     ],
+     [
+      101,
+      323
+     ]
+    ]
+   },
+   {
+    "id": "1.46",
+    "name": "Bain",
+    "polygon": [
+     [
+      178,
+      303
+     ],
+     [
+      214,
+      303
+     ],
+     [
+      214,
+      323
+     ],
+     [
+      178,
+      323
+     ]
+    ]
+   },
+   {
+    "id": "1.47",
+    "name": "Bain",
+    "polygon": [
+     [
+      224,
+      303
+     ],
+     [
+      258,
+      303
+     ],
+     [
+      258,
+      323
+     ],
+     [
+      224,
+      323
+     ]
+    ]
+   }
+  ],
+  "fixtures": [
+   {
+    "type": "kitchen",
+    "x": 135,
+    "y": 275
+   },
+   {
+    "type": "wc",
+    "x": 200,
+    "y": 275
+   },
+   {
+    "type": "washbasin",
+    "x": 190,
+    "y": 275
+   },
+   {
+    "type": "bathtub",
+    "x": 240,
+    "y": 280
+   },
+   {
+    "type": "kitchen",
+    "x": 135,
+    "y": 315
+   },
+   {
+    "type": "wc",
+    "x": 200,
+    "y": 315
+   }
+  ]
+ },
+ "last_preview": null,
+ "trace": [
+  {
+   "turn": 0,
+   "text": "",
+   "tool": "view_region",
+   "args": {
+    "x1": 540,
+    "y0": 930,
+    "x0": 340,
+    "y1": 960
+   },
+   "result": "crop (340,930)-(540,960)\n[3 tool calls left - submit your schematic with submit_schematic soon]"
+  },
+  {
+   "turn": 1,
+   "text": "",
+   "tool": "view_region",
+   "args": {
+    "y0": 180,
+    "x1": 650,
+    "x0": 80,
+    "y1": 380
+   },
+   "result": "crop (80,180)-(650,380)\n[2 tool calls left - submit your schematic with submit_schematic soon]"
+  },
+  {
+   "turn": 2,
+   "text": "20\n",
+   "tool": "view_region",
+   "args": {
+    "y1": 960,
+    "y0": 930,
+    "x1": 540,
+    "x0": 340
+   },
+   "result": "crop (340,930)-(540,960)\n[1 tool calls left - submit your schematic with submit_schematic soon]"
+  },
+  {
+   "turn": 3,
+   "text": "20\n",
+   "tool": "view_region",
+   "args": {
+    "x0": 340,
+    "x1": 540,
+    "y0": 2330,
+    "y1": 2460
+   },
+   "result": "crop (340,2330)-(540,2460)\n[0 tool calls left - submit your schematic with submit_schematic soon]"
+  },
+  {
+   "turn": 4,
+   "text": "9",
+   "tool": "submit_schematic",
+   "args": {
+    "schematic_json": "<1843 chars>"
+   },
+   "result": "submitted: {'walls': 5, 'rooms': 13, 'doors': 0, 'windows': 0, 'fixtures': 6}. The episode is over."
+  }
+ ]
+}

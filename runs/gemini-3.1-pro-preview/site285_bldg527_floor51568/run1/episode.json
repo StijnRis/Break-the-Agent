@@ -1,0 +1,2533 @@
+{
+ "result": {
+  "model": "gemini-3.1-pro-preview",
+  "seconds": 259,
+  "tokens": {
+   "in": 145825,
+   "out": 33994
+  },
+  "task": "site285_bldg527_floor51568",
+  "submitted": true,
+  "tool_calls": 18,
+  "reward": 0.5492,
+  "components": {
+   "walls": 0.7099,
+   "rooms": 0.7095,
+   "areas": 0.4667,
+   "doors": 0.2692,
+   "windows": 0.4651,
+   "fixtures": 0.375
+  },
+  "details": {
+   "walls": {
+    "precision": 0.717,
+    "recall": 0.703
+   },
+   "rooms": {
+    "matched": 25,
+    "n_pred": 28,
+    "n_gt": 30,
+    "matches": [
+     {
+      "gt": "2.02",
+      "iou": 0.563,
+      "name_ok": false,
+      "gt_area": 6.78,
+      "agent_area": 11.94,
+      "area_ok": false
+     },
+     {
+      "gt": "2.03",
+      "iou": 0.939,
+      "name_ok": true,
+      "gt_area": 10.28,
+      "agent_area": 10.36,
+      "area_ok": true
+     },
+     {
+      "gt": "2.04",
+      "iou": 0.739,
+      "name_ok": true,
+      "gt_area": 6.86,
+      "agent_area": 7.83,
+      "area_ok": false
+     },
+     {
+      "gt": "2.05",
+      "iou": 0.963,
+      "name_ok": true,
+      "gt_area": 13.78,
+      "agent_area": 14.25,
+      "area_ok": true
+     },
+     {
+      "gt": "2.06",
+      "iou": 0.953,
+      "name_ok": true,
+      "gt_area": 15.82,
+      "agent_area": 16.81,
+      "area_ok": false
+     },
+     {
+      "gt": "2.07",
+      "iou": 0.95,
+      "name_ok": true,
+      "gt_area": 6.63,
+      "agent_area": 6.76,
+      "area_ok": true
+     },
+     {
+      "gt": "2.10",
+      "iou": 0.57,
+      "name_ok": true,
+      "gt_area": 6.78,
+      "agent_area": 11.91,
+      "area_ok": false
+     },
+     {
+      "gt": "2.11",
+      "iou": 0.955,
+      "name_ok": true,
+      "gt_area": 12.35,
+      "agent_area": 12.65,
+      "area_ok": true
+     },
+     {
+      "gt": "2.12",
+      "iou": 0.961,
+      "name_ok": true,
+      "gt_area": 15.83,
+      "agent_area": 16.33,
+      "area_ok": true
+     },
+     {
+      "gt": "2.13",
+      "iou": 0.776,
+      "name_ok": true,
+      "gt_area": 13.01,
+      "agent_area": 17.31,
+      "area_ok": false
+     },
+     {
+      "gt": "2.14",
+      "iou": 0.942,
+      "name_ok": true,
+      "gt_area": 6.41,
+      "agent_area": 6.48,
+      "area_ok": true
+     },
+     {
+      "gt": "2.15",
+      "iou": 0.903,
+      "name_ok": true,
+      "gt_area": 4.66,
+      "agent_area": 4.89,
+      "area_ok": true
+     },
+     {
+      "gt": "2.16",
+      "iou": 0.942,
+      "name_ok": true,
+      "gt_area": 10.57,
+      "agent_area": 10.68,
+      "area_ok": true
+     },
+     {
+      "gt": "2.17",
+      "iou": 0.955,
+      "name_ok": true,
+      "gt_area": 8.79,
+      "agent_area": 9.0,
+      "area_ok": true
+     },
+     {
+      "gt": "2.18",
+      "iou": 0.972,
+      "name_ok": true,
+      "gt_area": 16.15,
+      "agent_area": 16.84,
+      "area_ok": true
+     },
+     {
+      "gt": "2.19",
+      "iou": 0.966,
+      "name_ok": true,
+      "gt_area": 17.84,
+      "agent_area": 18.5,
+      "area_ok": true
+     },
+     {
+      "gt": "2.20",
+      "iou": 0.891,
+      "name_ok": true,
+      "gt_area": 4.44,
+      "agent_area": 4.69,
+      "area_ok": false
+     },
+     {
+      "gt": "2.21",
+      "iou": 0.945,
+      "name_ok": true,
+      "gt_area": 6.2,
+      "agent_area": 6.29,
+      "area_ok": true
+     },
+     {
+      "gt": "2.22",
+      "iou": 0.881,
+      "name_ok": true,
+      "gt_area": 16.21,
+      "agent_area": 18.4,
+      "area_ok": false
+     },
+     {
+      "gt": "2.23",
+      "iou": 0.877,
+      "name_ok": true,
+      "gt_area": 6.42,
+      "agent_area": 7.38,
+      "area_ok": false
+     },
+     {
+      "gt": "2.24",
+      "iou": 0.941,
+      "name_ok": true,
+      "gt_area": 12.78,
+      "agent_area": 13.89,
+      "area_ok": false
+     },
+     {
+      "gt": "2.25",
+      "iou": 0.964,
+      "name_ok": true,
+      "gt_area": 16.64,
+      "agent_area": 17.22,
+      "area_ok": true
+     },
+     {
+      "gt": "2.26",
+      "iou": 0.97,
+      "name_ok": true,
+      "gt_area": 13.03,
+      "agent_area": 13.57,
+      "area_ok": true
+     },
+     {
+      "gt": "2.27",
+      "iou": 0.624,
+      "name_ok": false,
+      "gt_area": 10.95,
+      "agent_area": 7.33,
+      "area_ok": false
+     },
+     {
+      "gt": "2.28",
+      "iou": 0.503,
+      "name_ok": true,
+      "gt_area": 11.8,
+      "agent_area": 23.2,
+      "area_ok": false
+     }
+    ]
+   },
+   "doors": {
+    "tp": 7,
+    "n_pred": 26,
+    "n_gt": 26
+   },
+   "windows": {
+    "tp": 10,
+    "n_pred": 21,
+    "n_gt": 22
+   },
+   "fixtures": {
+    "tp": 6,
+    "n_pred": 16,
+    "n_gt": 16,
+    "per_type": {
+     "bathtub": {
+      "tp": 2,
+      "n_pred": 4,
+      "n_gt": 4
+     },
+     "kitchen": {
+      "tp": 0,
+      "n_pred": 4,
+      "n_gt": 4
+     },
+     "washbasin": {
+      "tp": 2,
+      "n_pred": 4,
+      "n_gt": 4
+     },
+     "wc": {
+      "tp": 2,
+      "n_pred": 4,
+      "n_gt": 4
+     }
+    }
+   },
+   "scale_ratio": 1.0358
+  }
+ },
+ "schematic": {
+  "m_per_px": 0.01754,
+  "walls": [
+   {
+    "p1": [
+     200,
+     438
+    ],
+    "p2": [
+     370,
+     438
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     381,
+     438
+    ],
+    "p2": [
+     593,
+     438
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     609,
+     478
+    ],
+    "p2": [
+     750,
+     478
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     762,
+     438
+    ],
+    "p2": [
+     882,
+     438
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     971,
+     443
+    ],
+    "p2": [
+     1070,
+     443
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1085,
+     438
+    ],
+    "p2": [
+     1182,
+     438
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1204,
+     495
+    ],
+    "p2": [
+     1402,
+     495
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1413,
+     495
+    ],
+    "p2": [
+     1495,
+     495
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1504,
+     495
+    ],
+    "p2": [
+     1614,
+     495
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1631,
+     495
+    ],
+    "p2": [
+     1773,
+     495
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1786,
+     495
+    ],
+    "p2": [
+     1898,
+     495
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1906,
+     496
+    ],
+    "p2": [
+     1991,
+     496
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     2066,
+     574
+    ],
+    "p2": [
+     2279,
+     574
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     166,
+     691
+    ],
+    "p2": [
+     370,
+     691
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     376,
+     630
+    ],
+    "p2": [
+     593,
+     630
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     381,
+     621
+    ],
+    "p2": [
+     593,
+     621
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     609,
+     647
+    ],
+    "p2": [
+     750,
+     647
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     762,
+     630
+    ],
+    "p2": [
+     1070,
+     630
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     762,
+     736
+    ],
+    "p2": [
+     1070,
+     736
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1085,
+     738
+    ],
+    "p2": [
+     1182,
+     738
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1204,
+     797
+    ],
+    "p2": [
+     1402,
+     797
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1413,
+     689
+    ],
+    "p2": [
+     1631,
+     689
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1413,
+     799
+    ],
+    "p2": [
+     1631,
+     799
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1785,
+     691
+    ],
+    "p2": [
+     2056,
+     691
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1785,
+     799
+    ],
+    "p2": [
+     2056,
+     799
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     2066,
+     737
+    ],
+    "p2": [
+     2279,
+     737
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     2066,
+     749
+    ],
+    "p2": [
+     2279,
+     749
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     166,
+     918
+    ],
+    "p2": [
+     370,
+     918
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     382,
+     1005
+    ],
+    "p2": [
+     593,
+     1005
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     597,
+     1005
+    ],
+    "p2": [
+     757,
+     1005
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     766,
+     1005
+    ],
+    "p2": [
+     971,
+     1005
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     981,
+     1026
+    ],
+    "p2": [
+     1182,
+     1026
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1204,
+     1029
+    ],
+    "p2": [
+     1402,
+     1029
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1414,
+     1066
+    ],
+    "p2": [
+     1631,
+     1066
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1639,
+     1066
+    ],
+    "p2": [
+     1812,
+     1066
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1823,
+     1066
+    ],
+    "p2": [
+     2057,
+     1066
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     2066,
+     1006
+    ],
+    "p2": [
+     2279,
+     1006
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     166,
+     515
+    ],
+    "p2": [
+     166,
+     918
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     370,
+     515
+    ],
+    "p2": [
+     370,
+     918
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     381,
+     438
+    ],
+    "p2": [
+     381,
+     1005
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     593,
+     438
+    ],
+    "p2": [
+     593,
+     1005
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     609,
+     478
+    ],
+    "p2": [
+     609,
+     647
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     750,
+     478
+    ],
+    "p2": [
+     750,
+     647
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     762,
+     438
+    ],
+    "p2": [
+     762,
+     1005
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     882,
+     438
+    ],
+    "p2": [
+     882,
+     630
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     971,
+     443
+    ],
+    "p2": [
+     971,
+     1005
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1070,
+     443
+    ],
+    "p2": [
+     1070,
+     736
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1085,
+     438
+    ],
+    "p2": [
+     1085,
+     738
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1182,
+     438
+    ],
+    "p2": [
+     1182,
+     1026
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1204,
+     495
+    ],
+    "p2": [
+     1204,
+     1029
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1402,
+     495
+    ],
+    "p2": [
+     1402,
+     1029
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1413,
+     495
+    ],
+    "p2": [
+     1413,
+     1066
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1495,
+     495
+    ],
+    "p2": [
+     1495,
+     681
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1504,
+     495
+    ],
+    "p2": [
+     1504,
+     681
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1614,
+     495
+    ],
+    "p2": [
+     1614,
+     681
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1631,
+     495
+    ],
+    "p2": [
+     1631,
+     1066
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1773,
+     495
+    ],
+    "p2": [
+     1773,
+     1026
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1786,
+     495
+    ],
+    "p2": [
+     1786,
+     799
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1898,
+     495
+    ],
+    "p2": [
+     1898,
+     683
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1906,
+     496
+    ],
+    "p2": [
+     1906,
+     683
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     1991,
+     496
+    ],
+    "p2": [
+     1991,
+     683
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     2056,
+     691
+    ],
+    "p2": [
+     2056,
+     1066
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     2066,
+     574
+    ],
+    "p2": [
+     2066,
+     1006
+    ],
+    "thickness_px": 15
+   },
+   {
+    "p1": [
+     2279,
+     574
+    ],
+    "p2": [
+     2279,
+     1006
+    ],
+    "thickness_px": 15
+   }
+  ],
+  "rooms": [
+   {
+    "id": "2.01",
+    "name": "Bain",
+    "polygon": [
+     [
+      381,
+      438
+     ],
+     [
+      593,
+      438
+     ],
+     [
+      593,
+      621
+     ],
+     [
+      381,
+      621
+     ]
+    ]
+   },
+   {
+    "id": "2.02",
+    "name": "Cuisine",
+    "polygon": [
+     [
+      609,
+      478
+     ],
+     [
+      750,
+      478
+     ],
+     [
+      750,
+      647
+     ],
+     [
+      609,
+      647
+     ]
+    ]
+   },
+   {
+    "id": "2.03",
+    "name": "Chambre à coucher",
+    "polygon": [
+     [
+      166,
+      515
+     ],
+     [
+      370,
+      515
+     ],
+     [
+      370,
+      680
+     ],
+     [
+      166,
+      680
+     ]
+    ]
+   },
+   {
+    "id": "2.04",
+    "name": "Couloir",
+    "polygon": [
+     [
+      376,
+      630
+     ],
+     [
+      593,
+      630
+     ],
+     [
+      593,
+      647
+     ],
+     [
+      630,
+      647
+     ],
+     [
+      630,
+      736
+     ],
+     [
+      593,
+      736
+     ],
+     [
+      593,
+      746
+     ],
+     [
+      431,
+      746
+     ],
+     [
+      431,
+      691
+     ],
+     [
+      376,
+      691
+     ]
+    ]
+   },
+   {
+    "id": "2.05",
+    "name": "Chambre à coucher",
+    "polygon": [
+     [
+      166,
+      691
+     ],
+     [
+      370,
+      691
+     ],
+     [
+      370,
+      918
+     ],
+     [
+      166,
+      918
+     ]
+    ]
+   },
+   {
+    "id": "2.06",
+    "name": "Séjour",
+    "polygon": [
+     [
+      382,
+      746
+     ],
+     [
+      593,
+      746
+     ],
+     [
+      593,
+      1005
+     ],
+     [
+      382,
+      1005
+     ]
+    ]
+   },
+   {
+    "id": "2.07",
+    "name": "Cuisine",
+    "polygon": [
+     [
+      762,
+      438
+     ],
+     [
+      882,
+      438
+     ],
+     [
+      882,
+      621
+     ],
+     [
+      762,
+      621
+     ]
+    ]
+   },
+   {
+    "id": "2.08",
+    "name": "Bain",
+    "polygon": [
+     [
+      971,
+      443
+     ],
+     [
+      1070,
+      443
+     ],
+     [
+      1070,
+      621
+     ],
+     [
+      971,
+      621
+     ]
+    ]
+   },
+   {
+    "id": "2.09",
+    "name": "Chambre à coucher",
+    "polygon": [
+     [
+      1085,
+      438
+     ],
+     [
+      1182,
+      438
+     ],
+     [
+      1182,
+      738
+     ],
+     [
+      1085,
+      738
+     ]
+    ]
+   },
+   {
+    "id": "2.10",
+    "name": "Couloir",
+    "polygon": [
+     [
+      762,
+      630
+     ],
+     [
+      882,
+      630
+     ],
+     [
+      882,
+      562
+     ],
+     [
+      971,
+      562
+     ],
+     [
+      971,
+      630
+     ],
+     [
+      1070,
+      630
+     ],
+     [
+      1070,
+      736
+     ],
+     [
+      762,
+      736
+     ]
+    ]
+   },
+   {
+    "id": "2.11",
+    "name": "Chambre à coucher",
+    "polygon": [
+     [
+      597,
+      748
+     ],
+     [
+      757,
+      748
+     ],
+     [
+      757,
+      1005
+     ],
+     [
+      597,
+      1005
+     ]
+    ]
+   },
+   {
+    "id": "2.12",
+    "name": "Séjour",
+    "polygon": [
+     [
+      766,
+      746
+     ],
+     [
+      971,
+      746
+     ],
+     [
+      971,
+      1005
+     ],
+     [
+      766,
+      1005
+     ]
+    ]
+   },
+   {
+    "id": "2.13",
+    "name": "Loggia",
+    "polygon": [
+     [
+      981,
+      746
+     ],
+     [
+      1182,
+      746
+     ],
+     [
+      1182,
+      1026
+     ],
+     [
+      981,
+      1026
+     ]
+    ]
+   },
+   {
+    "id": "2.14",
+    "name": "Cuisine",
+    "polygon": [
+     [
+      1786,
+      495
+     ],
+     [
+      1898,
+      495
+     ],
+     [
+      1898,
+      683
+     ],
+     [
+      1786,
+      683
+     ]
+    ]
+   },
+   {
+    "id": "2.15",
+    "name": "Bain",
+    "polygon": [
+     [
+      1906,
+      496
+     ],
+     [
+      1991,
+      496
+     ],
+     [
+      1991,
+      683
+     ],
+     [
+      1906,
+      683
+     ]
+    ]
+   },
+   {
+    "id": "2.16",
+    "name": "Chambre à coucher",
+    "polygon": [
+     [
+      2066,
+      574
+     ],
+     [
+      2279,
+      574
+     ],
+     [
+      2279,
+      737
+     ],
+     [
+      2066,
+      737
+     ]
+    ]
+   },
+   {
+    "id": "2.17",
+    "name": "Couloir",
+    "polygon": [
+     [
+      1785,
+      691
+     ],
+     [
+      2056,
+      691
+     ],
+     [
+      2056,
+      799
+     ],
+     [
+      1785,
+      799
+     ]
+    ]
+   },
+   {
+    "id": "2.18",
+    "name": "Chambre à coucher",
+    "polygon": [
+     [
+      2066,
+      749
+     ],
+     [
+      2279,
+      749
+     ],
+     [
+      2279,
+      1006
+     ],
+     [
+      2066,
+      1006
+     ]
+    ]
+   },
+   {
+    "id": "2.19",
+    "name": "Séjour",
+    "polygon": [
+     [
+      1823,
+      809
+     ],
+     [
+      2057,
+      809
+     ],
+     [
+      2057,
+      1066
+     ],
+     [
+      1823,
+      1066
+     ]
+    ]
+   },
+   {
+    "id": "2.20",
+    "name": "Bain",
+    "polygon": [
+     [
+      1413,
+      495
+     ],
+     [
+      1495,
+      495
+     ],
+     [
+      1495,
+      681
+     ],
+     [
+      1413,
+      681
+     ]
+    ]
+   },
+   {
+    "id": "2.21",
+    "name": "Cuisine",
+    "polygon": [
+     [
+      1504,
+      495
+     ],
+     [
+      1614,
+      495
+     ],
+     [
+      1614,
+      681
+     ],
+     [
+      1504,
+      681
+     ]
+    ]
+   },
+   {
+    "id": "2.22",
+    "name": "Pièce",
+    "polygon": [
+     [
+      1204,
+      495
+     ],
+     [
+      1402,
+      495
+     ],
+     [
+      1402,
+      797
+     ],
+     [
+      1204,
+      797
+     ]
+    ]
+   },
+   {
+    "id": "2.23",
+    "name": "Couloir",
+    "polygon": [
+     [
+      1413,
+      689
+     ],
+     [
+      1631,
+      689
+     ],
+     [
+      1631,
+      799
+     ],
+     [
+      1413,
+      799
+     ]
+    ]
+   },
+   {
+    "id": "2.24",
+    "name": "Loggia",
+    "polygon": [
+     [
+      1204,
+      801
+     ],
+     [
+      1402,
+      801
+     ],
+     [
+      1402,
+      1029
+     ],
+     [
+      1204,
+      1029
+     ]
+    ]
+   },
+   {
+    "id": "2.25",
+    "name": "Séjour",
+    "polygon": [
+     [
+      1414,
+      808
+     ],
+     [
+      1631,
+      808
+     ],
+     [
+      1631,
+      1066
+     ],
+     [
+      1414,
+      1066
+     ]
+    ]
+   },
+   {
+    "id": "2.26",
+    "name": "Chambre à coucher",
+    "polygon": [
+     [
+      1639,
+      811
+     ],
+     [
+      1812,
+      811
+     ],
+     [
+      1812,
+      1066
+     ],
+     [
+      1639,
+      1066
+     ]
+    ]
+   },
+   {
+    "id": "2.27",
+    "name": "Cage d'escalier",
+    "polygon": [
+     [
+      630,
+      647
+     ],
+     [
+      762,
+      647
+     ],
+     [
+      762,
+      1026
+     ],
+     [
+      630,
+      1026
+     ]
+    ]
+   },
+   {
+    "id": "2.28",
+    "name": "Cage d'escalier",
+    "polygon": [
+     [
+      1631,
+      495
+     ],
+     [
+      1773,
+      495
+     ],
+     [
+      1773,
+      1026
+     ],
+     [
+      1631,
+      1026
+     ]
+    ]
+   }
+  ],
+  "doors": [
+   {
+    "p1": [
+     376,
+     630
+    ],
+    "p2": [
+     376,
+     680
+    ]
+   },
+   {
+    "p1": [
+     430,
+     621
+    ],
+    "p2": [
+     480,
+     621
+    ]
+   },
+   {
+    "p1": [
+     593,
+     647
+    ],
+    "p2": [
+     593,
+     700
+    ]
+   },
+   {
+    "p1": [
+     380,
+     691
+    ],
+    "p2": [
+     430,
+     691
+    ]
+   },
+   {
+    "p1": [
+     430,
+     746
+    ],
+    "p2": [
+     480,
+     746
+    ]
+   },
+   {
+    "p1": [
+     630,
+     647
+    ],
+    "p2": [
+     630,
+     700
+    ]
+   },
+   {
+    "p1": [
+     762,
+     680
+    ],
+    "p2": [
+     762,
+     736
+    ]
+   },
+   {
+    "p1": [
+     820,
+     621
+    ],
+    "p2": [
+     882,
+     621
+    ]
+   },
+   {
+    "p1": [
+     971,
+     621
+    ],
+    "p2": [
+     1020,
+     621
+    ]
+   },
+   {
+    "p1": [
+     1070,
+     680
+    ],
+    "p2": [
+     1070,
+     736
+    ]
+   },
+   {
+    "p1": [
+     762,
+     746
+    ],
+    "p2": [
+     810,
+     746
+    ]
+   },
+   {
+    "p1": [
+     882,
+     746
+    ],
+    "p2": [
+     930,
+     746
+    ]
+   },
+   {
+    "p1": [
+     971,
+     850
+    ],
+    "p2": [
+     971,
+     950
+    ]
+   },
+   {
+    "p1": [
+     1631,
+     740
+    ],
+    "p2": [
+     1631,
+     790
+    ]
+   },
+   {
+    "p1": [
+     1413,
+     681
+    ],
+    "p2": [
+     1460,
+     681
+    ]
+   },
+   {
+    "p1": [
+     1504,
+     681
+    ],
+    "p2": [
+     1550,
+     681
+    ]
+   },
+   {
+    "p1": [
+     1402,
+     740
+    ],
+    "p2": [
+     1402,
+     790
+    ]
+   },
+   {
+    "p1": [
+     1413,
+     799
+    ],
+    "p2": [
+     1460,
+     799
+    ]
+   },
+   {
+    "p1": [
+     1631,
+     799
+    ],
+    "p2": [
+     1631,
+     850
+    ]
+   },
+   {
+    "p1": [
+     1414,
+     850
+    ],
+    "p2": [
+     1414,
+     950
+    ]
+   },
+   {
+    "p1": [
+     1773,
+     740
+    ],
+    "p2": [
+     1773,
+     790
+    ]
+   },
+   {
+    "p1": [
+     1786,
+     683
+    ],
+    "p2": [
+     1836,
+     683
+    ]
+   },
+   {
+    "p1": [
+     1906,
+     683
+    ],
+    "p2": [
+     1956,
+     683
+    ]
+   },
+   {
+    "p1": [
+     2066,
+     680
+    ],
+    "p2": [
+     2066,
+     730
+    ]
+   },
+   {
+    "p1": [
+     2066,
+     749
+    ],
+    "p2": [
+     2066,
+     799
+    ]
+   },
+   {
+    "p1": [
+     1900,
+     799
+    ],
+    "p2": [
+     1950,
+     799
+    ]
+   }
+  ],
+  "windows": [
+   {
+    "p1": [
+     200,
+     438
+    ],
+    "p2": [
+     300,
+     438
+    ]
+   },
+   {
+    "p1": [
+     400,
+     438
+    ],
+    "p2": [
+     450,
+     438
+    ]
+   },
+   {
+    "p1": [
+     650,
+     478
+    ],
+    "p2": [
+     700,
+     478
+    ]
+   },
+   {
+    "p1": [
+     800,
+     438
+    ],
+    "p2": [
+     850,
+     438
+    ]
+   },
+   {
+    "p1": [
+     1000,
+     443
+    ],
+    "p2": [
+     1050,
+     443
+    ]
+   },
+   {
+    "p1": [
+     1100,
+     438
+    ],
+    "p2": [
+     1150,
+     438
+    ]
+   },
+   {
+    "p1": [
+     1250,
+     495
+    ],
+    "p2": [
+     1350,
+     495
+    ]
+   },
+   {
+    "p1": [
+     1430,
+     495
+    ],
+    "p2": [
+     1480,
+     495
+    ]
+   },
+   {
+    "p1": [
+     1550,
+     495
+    ],
+    "p2": [
+     1600,
+     495
+    ]
+   },
+   {
+    "p1": [
+     1680,
+     495
+    ],
+    "p2": [
+     1730,
+     495
+    ]
+   },
+   {
+    "p1": [
+     1820,
+     495
+    ],
+    "p2": [
+     1870,
+     495
+    ]
+   },
+   {
+    "p1": [
+     1930,
+     496
+    ],
+    "p2": [
+     1980,
+     496
+    ]
+   },
+   {
+    "p1": [
+     2150,
+     574
+    ],
+    "p2": [
+     2250,
+     574
+    ]
+   },
+   {
+    "p1": [
+     200,
+     918
+    ],
+    "p2": [
+     300,
+     918
+    ]
+   },
+   {
+    "p1": [
+     450,
+     1005
+    ],
+    "p2": [
+     550,
+     1005
+    ]
+   },
+   {
+    "p1": [
+     650,
+     1005
+    ],
+    "p2": [
+     750,
+     1005
+    ]
+   },
+   {
+    "p1": [
+     800,
+     1005
+    ],
+    "p2": [
+     900,
+     1005
+    ]
+   },
+   {
+    "p1": [
+     1500,
+     1066
+    ],
+    "p2": [
+     1600,
+     1066
+    ]
+   },
+   {
+    "p1": [
+     1700,
+     1066
+    ],
+    "p2": [
+     1800,
+     1066
+    ]
+   },
+   {
+    "p1": [
+     1900,
+     1066
+    ],
+    "p2": [
+     2000,
+     1066
+    ]
+   },
+   {
+    "p1": [
+     2150,
+     1006
+    ],
+    "p2": [
+     2250,
+     1006
+    ]
+   }
+  ],
+  "fixtures": [
+   {
+    "type": "bathtub",
+    "x": 480,
+    "y": 460
+   },
+   {
+    "type": "wc",
+    "x": 530,
+    "y": 520
+   },
+   {
+    "type": "washbasin",
+    "x": 530,
+    "y": 580
+   },
+   {
+    "type": "kitchen",
+    "x": 630,
+    "y": 570
+   },
+   {
+    "type": "kitchen",
+    "x": 860,
+    "y": 590
+   },
+   {
+    "type": "bathtub",
+    "x": 1020,
+    "y": 470
+   },
+   {
+    "type": "wc",
+    "x": 1010,
+    "y": 520
+   },
+   {
+    "type": "washbasin",
+    "x": 1010,
+    "y": 580
+   },
+   {
+    "type": "bathtub",
+    "x": 1450,
+    "y": 510
+   },
+   {
+    "type": "wc",
+    "x": 1470,
+    "y": 550
+   },
+   {
+    "type": "washbasin",
+    "x": 1470,
+    "y": 600
+   },
+   {
+    "type": "kitchen",
+    "x": 1590,
+    "y": 570
+   },
+   {
+    "type": "kitchen",
+    "x": 1810,
+    "y": 570
+   },
+   {
+    "type": "bathtub",
+    "x": 1950,
+    "y": 520
+   },
+   {
+    "type": "wc",
+    "x": 1940,
+    "y": 540
+   },
+   {
+    "type": "washbasin",
+    "x": 1940,
+    "y": 600
+   }
+  ]
+ },
+ "last_preview": null,
+ "trace": [
+  {
+   "turn": 0,
+   "text": "",
+   "tool": "view_region",
+   "args": {
+    "x0": 0,
+    "y0": 1400,
+    "y1": 1753,
+    "x1": 1000
+   },
+   "result": "crop (0,1400)-(1000,1753)"
+  },
+  {
+   "turn": 1,
+   "text": "1601002003004005006007008009001400150016001700LégendeWCLavaboBaignoireDoucheBloc cuisineLave-lingePorteFenêtre0125mÉchelle 1:100Limite de logementN_x0002__x0002__x0002__x0002__x0002_",
+   "finish": "STOP"
+  },
+  {
+   "turn": 2,
+   "text": "",
+   "tool": "view_region",
+   "args": {
+    "y1": 1753,
+    "y0": 0,
+    "x1": 2480,
+    "x0": 0
+   },
+   "result": "crop (0,0)-(2480,1753)"
+  },
+  {
+   "turn": 3,
+   "text": "forcingcolored",
+   "tool": "view_region",
+   "args": {
+    "y1": 700,
+    "y0": 200,
+    "x0": 200,
+    "x1": 700
+   },
+   "result": "crop (200,200)-(700,700)"
+  },
+  {
+   "turn": 4,
+   "text": "forcingcolored",
+   "tool": "view_region",
+   "args": {
+    "y0": 200,
+    "y1": 700,
+    "x1": 1100,
+    "x0": 600
+   },
+   "result": "crop (600,200)-(1100,700)"
+  },
+  {
+   "turn": 5,
+   "text": "forcingcolored",
+   "tool": "view_region",
+   "args": {
+    "x0": 1000,
+    "x1": 1500,
+    "y1": 700,
+    "y0": 200
+   },
+   "result": "crop (1000,200)-(1500,700)"
+  },
+  {
+   "turn": 6,
+   "text": "forcingcolored",
+   "tool": "view_region",
+   "args": {
+    "x1": 1900,
+    "x0": 1400,
+    "y0": 200,
+    "y1": 700
+   },
+   "result": "crop (1400,200)-(1900,700)"
+  },
+  {
+   "turn": 7,
+   "text": "forcingcolored",
+   "tool": "view_region",
+   "args": {
+    "x0": 1800,
+    "x1": 2300,
+    "y1": 700,
+    "y0": 200
+   },
+   "result": "crop (1800,200)-(2300,700)"
+  },
+  {
+   "turn": 8,
+   "text": "tr>",
+   "tool": "view_region",
+   "args": {
+    "y0": 700,
+    "y1": 1200,
+    "x1": 700,
+    "x0": 200
+   },
+   "result": "crop (200,700)-(700,1200)"
+  },
+  {
+   "turn": 9,
+   "text": "tr>",
+   "tool": "view_region",
+   "args": {
+    "y1": 700,
+    "x1": 1200,
+    "x0": 700,
+    "y0": 200
+   },
+   "result": "crop (700,200)-(1200,700)"
+  },
+  {
+   "turn": 10,
+   "text": "tr>",
+   "tool": "view_region",
+   "args": {
+    "y1": 1200,
+    "x1": 1200,
+    "x0": 700,
+    "y0": 700
+   },
+   "result": "crop (700,700)-(1200,1200)"
+  },
+  {
+   "turn": 11,
+   "text": "tr>",
+   "tool": "view_region",
+   "args": {
+    "y0": 200,
+    "x0": 1200,
+    "x1": 1700,
+    "y1": 700
+   },
+   "result": "crop (1200,200)-(1700,700)"
+  },
+  {
+   "turn": 12,
+   "text": "tr>",
+   "tool": "view_region",
+   "args": {
+    "x1": 1700,
+    "x0": 1200,
+    "y1": 1200,
+    "y0": 700
+   },
+   "result": "crop (1200,700)-(1700,1200)"
+  },
+  {
+   "turn": 13,
+   "text": "-I need to carefully look at crop 2 (700-1200, 200-700)\nAh, I see \"Bain 2.08\" at x=1000, y=560. Wait. The text \"Bain 2.08\". 1000 line passes through it. y is between 550 and 600. So [1000, 560]\n\"Cuisine 2.07\": x=780, y=560.\n\"Chambre à coucher 2.09\": x=1080, y=620 (wait, x=1080, y=620 is 2.09?) No, \"App B\" is at x=1080, y=620. So 2.09 is at x=1080, y=650? But my crop ends at 700. Wait, crop 2 (700-1200, 200-700). y axis: 450, 500, 550, 600, 650.\nLet's see: \"Cuisine 2.07\" is in crop 2. x=780, y=470.\n\"Bain 2.08\" is in crop 2. x=1000, y=510.\nWait, what? Look at crop 2 image. The left crop edge is 700.\nThe text \"Cuisine\" is between 750 and 800. x=770. y is between 450 and 500, y=470.\n\"2.07\" is at x=780, y=500.\n\"Couloir 2.10\" is at x=880, y=650.\n\"App B\" is at x=1080, y=600.\n\"Chambre à coucher 2.09\" is at x=1080, y=630. \"2.09\" is at y=660.\nOkay.\n\nLet's do this systematically: I will pick one seed point inside each room's inner boundary.\nTo be safe, I just pick a point on the room label number itself.\n\nCrop 1 (200-700, 200-700)\n2.01: [440, 590] (Bain 2.01)\n2.02: [690, 550] (Cuisine 2.02)\n2.03: [280, 600] (Chambre à coucher 2.03)\n2.04: [580, 670] (Couloir 2.04)\n\nCrop 2 (700-1200, 200-700)\n2.07: [780, 500] (Cuisine 2.07)\n2.08: [1000, 520] (Bain 2.08)\n2.10: [880, 660] (Couloir 2.10)\n2.09: [1080, 660] (Chambre à coucher 2.09)\n\nCrop 3 (1200-1700, 200-700)\n2.20: [1480, 530] (Bain 2.20)\n2.21: [1580, 570] (Cuisine 2.21)\n2.22: [1310, 660] (Pièce 2.22)\n\nCrop 4 (200-700, 700-1200)\n2.05: [320, 810] (Chambre à coucher 2.05)\n2.06: [580, 860] (App A, Séjour 2.06)\n2.11: [940, 880] (wait, 2.11 is to the right. Look at crop 4. The right edge is 700? No, crop 4 is x:200-700. In crop 4, I see \"Chambre à c\", \"2.11\" cut off. x=680, y=880. Let me check the full view or adjacent crop).\nWait, \"Chambre à coucher 2.11\" is visible in crop 5 (700-1200, 700-1200).\n\nCrop 5 (700-1200, 700-1200)\n2.11: [750, 880]? No, in crop 5 (x:700-1200), \"Séjour 2.12\" is at x=900, y=800.\nWait, \"2.11\" is at x=780, y=900?",
+   "tool": "view_region",
+   "args": {
+    "y1": 700,
+    "x1": 2200,
+    "y0": 200,
+    "x0": 1700
+   },
+   "result": "crop (1700,200)-(2200,700)"
+  },
+  {
+   "turn": 14,
+   "text": "-I need to carefully look at crop 2 (700-1200, 200-700)\nAh, I see \"Bain 2.08\" at x=1000, y=560. Wait. The text \"Bain 2.08\". 1000 line passes through it. y is between 550 and 600. So [1000, 560]\n\"Cuisine 2.07\": x=780, y=560.\n\"Chambre à coucher 2.09\": x=1080, y=620 (wait, x=1080, y=620 is 2.09?) No, \"App B\" is at x=1080, y=620. So 2.09 is at x=1080, y=650? But my crop ends at 700. Wait, crop 2 (700-1200, 200-700). y axis: 450, 500, 550, 600, 650.\nLet's see: \"Cuisine 2.07\" is in crop 2. x=780, y=470.\n\"Bain 2.08\" is in crop 2. x=1000, y=510.\nWait, what? Look at crop 2 image. The left crop edge is 700.\nThe text \"Cuisine\" is between 750 and 800. x=770. y is between 450 and 500, y=470.\n\"2.07\" is at x=780, y=500.\n\"Couloir 2.10\" is at x=880, y=650.\n\"App B\" is at x=1080, y=600.\n\"Chambre à coucher 2.09\" is at x=1080, y=630. \"2.09\" is at y=660.\nOkay.\n\nLet's do this systematically: I will pick one seed point inside each room's inner boundary.\nTo be safe, I just pick a point on the room label number itself.\n\nCrop 1 (200-700, 200-700)\n2.01: [440, 590] (Bain 2.01)\n2.02: [690, 550] (Cuisine 2.02)\n2.03: [280, 600] (Chambre à coucher 2.03)\n2.04: [580, 670] (Couloir 2.04)\n\nCrop 2 (700-1200, 200-700)\n2.07: [780, 500] (Cuisine 2.07)\n2.08: [1000, 520] (Bain 2.08)\n2.10: [880, 660] (Couloir 2.10)\n2.09: [1080, 660] (Chambre à coucher 2.09)\n\nCrop 3 (1200-1700, 200-700)\n2.20: [1480, 530] (Bain 2.20)\n2.21: [1580, 570] (Cuisine 2.21)\n2.22: [1310, 660] (Pièce 2.22)\n\nCrop 4 (200-700, 700-1200)\n2.05: [320, 810] (Chambre à coucher 2.05)\n2.06: [580, 860] (App A, Séjour 2.06)\n2.11: [940, 880] (wait, 2.11 is to the right. Look at crop 4. The right edge is 700? No, crop 4 is x:200-700. In crop 4, I see \"Chambre à c\", \"2.11\" cut off. x=680, y=880. Let me check the full view or adjacent crop).\nWait, \"Chambre à coucher 2.11\" is visible in crop 5 (700-1200, 700-1200).\n\nCrop 5 (700-1200, 700-1200)\n2.11: [750, 880]? No, in crop 5 (x:700-1200), \"Séjour 2.12\" is at x=900, y=800.\nWait, \"2.11\" is at x=780, y=900?",
+   "tool": "view_region",
+   "args": {
+    "x0": 1700,
+    "x1": 2200,
+    "y0": 700,
+    "y1": 1200
+   },
+   "result": "crop (1700,700)-(2200,1200)"
+  },
+  {
+   "turn": 15,
+   "text": "-I need to carefully look at crop 2 (700-1200, 200-700)\nAh, I see \"Bain 2.08\" at x=1000, y=560. Wait. The text \"Bain 2.08\". 1000 line passes through it. y is between 550 and 600. So [1000, 560]\n\"Cuisine 2.07\": x=780, y=560.\n\"Chambre à coucher 2.09\": x=1080, y=620 (wait, x=1080, y=620 is 2.09?) No, \"App B\" is at x=1080, y=620. So 2.09 is at x=1080, y=650? But my crop ends at 700. Wait, crop 2 (700-1200, 200-700). y axis: 450, 500, 550, 600, 650.\nLet's see: \"Cuisine 2.07\" is in crop 2. x=780, y=470.\n\"Bain 2.08\" is in crop 2. x=1000, y=510.\nWait, what? Look at crop 2 image. The left crop edge is 700.\nThe text \"Cuisine\" is between 750 and 800. x=770. y is between 450 and 500, y=470.\n\"2.07\" is at x=780, y=500.\n\"Couloir 2.10\" is at x=880, y=650.\n\"App B\" is at x=1080, y=600.\n\"Chambre à coucher 2.09\" is at x=1080, y=630. \"2.09\" is at y=660.\nOkay.\n\nLet's do this systematically: I will pick one seed point inside each room's inner boundary.\nTo be safe, I just pick a point on the room label number itself.\n\nCrop 1 (200-700, 200-700)\n2.01: [440, 590] (Bain 2.01)\n2.02: [690, 550] (Cuisine 2.02)\n2.03: [280, 600] (Chambre à coucher 2.03)\n2.04: [580, 670] (Couloir 2.04)\n\nCrop 2 (700-1200, 200-700)\n2.07: [780, 500] (Cuisine 2.07)\n2.08: [1000, 520] (Bain 2.08)\n2.10: [880, 660] (Couloir 2.10)\n2.09: [1080, 660] (Chambre à coucher 2.09)\n\nCrop 3 (1200-1700, 200-700)\n2.20: [1480, 530] (Bain 2.20)\n2.21: [1580, 570] (Cuisine 2.21)\n2.22: [1310, 660] (Pièce 2.22)\n\nCrop 4 (200-700, 700-1200)\n2.05: [320, 810] (Chambre à coucher 2.05)\n2.06: [580, 860] (App A, Séjour 2.06)\n2.11: [940, 880] (wait, 2.11 is to the right. Look at crop 4. The right edge is 700? No, crop 4 is x:200-700. In crop 4, I see \"Chambre à c\", \"2.11\" cut off. x=680, y=880. Let me check the full view or adjacent crop).\nWait, \"Chambre à coucher 2.11\" is visible in crop 5 (700-1200, 700-1200).\n\nCrop 5 (700-1200, 700-1200)\n2.11: [750, 880]? No, in crop 5 (x:700-1200), \"Séjour 2.12\" is at x=900, y=800.\nWait, \"2.11\" is at x=780, y=900?",
+   "tool": "view_region",
+   "args": {
+    "y0": 200,
+    "x1": 2480,
+    "x0": 2000,
+    "y1": 700
+   },
+   "result": "crop (2000,200)-(2480,700)"
+  },
+  {
+   "turn": 16,
+   "text": "-I need to carefully look at crop 2 (700-1200, 200-700)\nAh, I see \"Bain 2.08\" at x=1000, y=560. Wait. The text \"Bain 2.08\". 1000 line passes through it. y is between 550 and 600. So [1000, 560]\n\"Cuisine 2.07\": x=780, y=560.\n\"Chambre à coucher 2.09\": x=1080, y=620 (wait, x=1080, y=620 is 2.09?) No, \"App B\" is at x=1080, y=620. So 2.09 is at x=1080, y=650? But my crop ends at 700. Wait, crop 2 (700-1200, 200-700). y axis: 450, 500, 550, 600, 650.\nLet's see: \"Cuisine 2.07\" is in crop 2. x=780, y=470.\n\"Bain 2.08\" is in crop 2. x=1000, y=510.\nWait, what? Look at crop 2 image. The left crop edge is 700.\nThe text \"Cuisine\" is between 750 and 800. x=770. y is between 450 and 500, y=470.\n\"2.07\" is at x=780, y=500.\n\"Couloir 2.10\" is at x=880, y=650.\n\"App B\" is at x=1080, y=600.\n\"Chambre à coucher 2.09\" is at x=1080, y=630. \"2.09\" is at y=660.\nOkay.\n\nLet's do this systematically: I will pick one seed point inside each room's inner boundary.\nTo be safe, I just pick a point on the room label number itself.\n\nCrop 1 (200-700, 200-700)\n2.01: [440, 590] (Bain 2.01)\n2.02: [690, 550] (Cuisine 2.02)\n2.03: [280, 600] (Chambre à coucher 2.03)\n2.04: [580, 670] (Couloir 2.04)\n\nCrop 2 (700-1200, 200-700)\n2.07: [780, 500] (Cuisine 2.07)\n2.08: [1000, 520] (Bain 2.08)\n2.10: [880, 660] (Couloir 2.10)\n2.09: [1080, 660] (Chambre à coucher 2.09)\n\nCrop 3 (1200-1700, 200-700)\n2.20: [1480, 530] (Bain 2.20)\n2.21: [1580, 570] (Cuisine 2.21)\n2.22: [1310, 660] (Pièce 2.22)\n\nCrop 4 (200-700, 700-1200)\n2.05: [320, 810] (Chambre à coucher 2.05)\n2.06: [580, 860] (App A, Séjour 2.06)\n2.11: [940, 880] (wait, 2.11 is to the right. Look at crop 4. The right edge is 700? No, crop 4 is x:200-700. In crop 4, I see \"Chambre à c\", \"2.11\" cut off. x=680, y=880. Let me check the full view or adjacent crop).\nWait, \"Chambre à coucher 2.11\" is visible in crop 5 (700-1200, 700-1200).\n\nCrop 5 (700-1200, 700-1200)\n2.11: [750, 880]? No, in crop 5 (x:700-1200), \"Séjour 2.12\" is at x=900, y=800.\nWait, \"2.11\" is at x=780, y=900?",
+   "tool": "view_region",
+   "args": {
+    "x1": 2480,
+    "y0": 700,
+    "x0": 2000,
+    "y1": 1200
+   },
+   "result": "crop (2000,700)-(2480,1200)"
+  },
+  {
+   "turn": 17,
+   "text": ".\n2.28 (Cage d'escalier): Wait, looking at crop 7 (1700-2200, 200-700). Top left. \"escalier .28\". \"2.28\" is at x=1710, y=740. So [1710, 740].\n2.14: \"Cuisine 2.14\" is at x=1840, y=520.\n2.15: \"Bain 2.15\" is at x=2010, y=580.\n2.17: \"Couloir 2.17\" is at x=1940, y=730.\n2.16: \"Chambre à coucher 2.16\" is at x=2170, y=650 (wait, is it 2.16?). Crop 9 (2000-2480, 200-700). Right side. \"Chambre à coucher 2.16\", x=2130, y=650.\n2.18: \"Chambre à coucher 2.18\" is at x=2130, y=870.\n2.19: \"App C, Séjour 2.19\" is at x=1940, y=940.\n2.26: \"Chambre à coucher 2.26\" is at x=1750, y=950.\n\nLet me double check the scale and m_per_px.\nEarlier I computed m_per_px = 0.0175438. Let me check the tool `measure_area`.\nActually, I can just use segment_rooms and get the geometries.\n\nLet's compile the seeds:\nSeeds list:\n[440, 590]  # 2.01\n[690, 550]  # 2.02\n[280, 600]  # 2.03\n[580, 670]  # 2.04\n[320, 810]  # 2.05\n[580, 860]  # 2.06\n[780, 500]  # 2.07\n[1000, 520] # 2.08\n[880, 660]  # 2.10\n[1080, 660] # 2.09\n[700, 800]  # 2.11\n[750, 680]  # 2.27 (Cage d'escalier)\n[900, 800]  # 2.12\n[1050, 840] # 2.13 (Loggia)\n[1310, 660] # 2.22\n[1300, 900] # 2.24 (Loggia)\n[1480, 530] # 2.20\n[1580, 570] # 2.21\n[1540, 740] # 2.23\n[1540, 940] # 2.25\n[1710, 740] # 2.28 (Cage d'escalier)\n[1750, 950] # 2.26\n[1840, 520] # 2.14\n[2010, 580] # 2.15\n[1940, 730] # 2.17\n[2130, 650] # 2.16\n[2130, 870] # 2.18\n[1940, 940] # 2.19\n\nTotal rooms: 28.\nAre there any other rooms? Let's check full view.\nRooms marked are:\n2.01 to 2.13 (13 rooms)\n2.14 to 2.19 (6 rooms)\n2.20 to 2.28 (9 rooms)\nTotal = 28 rooms.\nLet me check all seed points are correct!\n2.01: [440, 590] -> inside Bain 2.01\n2.02: [690, 550] -> Cuisine 2.02. wait. x=690, y=550 is in crop 1. It says \"Cuisine 2.02\". Yes.\n2.03: [280, 600] -> Chambre a coucher 2.03.\n2.04: [580, 670] -> Couloir 2.04.\n2.05: [320, 810] -> Chambre 2.05.\n2.06: [580, 860] -> Sejour 2.06.\n2.07: [780, 500] -> Cuisine 2.07.\n2.08: [1000, 520] -> Bain 2.08.\n2.09: [1080, 660] -> Chambre 2.09.\n2.10: [880, 660] -> Cou",
+   "tool": "segment_rooms",
+   "args": {
+    "seeds": [
+     [
+      440,
+      590
+     ],
+     [
+      690,
+      550
+     ],
+     [
+      280,
+      600
+     ],
+     [
+      580,
+      670
+     ],
+     [
+      320,
+      810
+     ],
+     [
+      580,
+      860
+     ],
+     [
+      780,
+      500
+     ],
+     [
+      1000,
+      520
+     ],
+     [
+      1080,
+      660
+     ],
+     [
+      880,
+      660
+     ],
+     [
+      650,
+      880
+     ],
+     [
+      900,
+      800
+     ],
+     [
+      1050,
+      840
+     ],
+     [
+      1310,
+      660
+     ],
+     [
+      1300,
+      900
+     ],
+     [
+      1480,
+      530
+     ],
+     [
+      1580,
+      570
+     ],
+     [
+      1540,
+      740
+     ],
+     [
+      1540,
+      940
+     ],
+     [
+      1750,
+      950
+     ],
+     [
+      750,
+      680
+     ],
+     [
+      1710,
+      740
+     ],
+     [
+      1840,
+      520
+     ],
+     [
+      2010,
+      580
+     ],
+     [
+      1940,
+      730
+     ],
+     [
+      2130,
+      650
+     ],
+     [
+      2130,
+      870
+     ],
+     [
+      1940,
+      940
+     ]
+    ],
+    "m_per_px": 0.01754
+   },
+   "result": "[{\"seed\": 0, \"polygon\": [], \"area_px\": 0, \"closed\": false}, {\"seed\": 1, \"polygon\": [[609.0, 478.0], [609.0, 644.0], [593.0, 647.0], [592.0, 700.0], [594.0, 698.0], [604.0, 698.0], [606.0, 700.0], [606.0, 736.0], [750.0, 736.0], [750.0, 702.0], [747.0, 699.0], [747.0, 680.0], [750.0, 677.0], [753.0, 680.0], [753.0, 701.0], [756.0, 701.0], [756.0, 648.0], [750.0, 647.0], [750.0, 478.0]], \"area_px\": 38109, \"closed\": true}, {\"seed\": 2, \"polygon\": [[144.0, 539.0], [144.0, 601.0], [166.0, 601.0], [166.0, 683.0], [352.0, 683.0], [353.0, 680.0], [326.0, 680.0], [325.0, 677.0], [372.0, 676.0], [370.0, 521.0], [375.0, 520.0], [375.0, 518.0], [371.0, 518.0], [370.0, 515.0], [166.0, 515.0], [166.0, 537.0], [164.0, 539.0]], \"area_px\": 35907, \"closed\": true}, {\"seed\": 3, \"polygon\": [[414.0, 416.0], [414.0, 436.0], [412.0, 438.0], [382.0, 438.0], [382.0, 514.0], [380.0, 518.0], [376.0, 518.0], [376.0, 520.0], [381.0, 521.0], [381.0, 621.0], [393.0, 621.0], [394.0, 629.0], [381.0, 630.0], [379.0, 634.0], [373.0, 634.0], [373.0, 676.0], [380.0, 676.0], [382.0, 679.0], [354.0, 680.0], [353.0, 682.0], [382.0, 684.0], [382.0, 690.0], [376.0, 691.0], [376.0, 736.0], [381.0, 737.0], [382.0, 1005.0], [446.0, 1005.0], [447.0, 1025.0], [538.0, 1026.0], [538.0, 1007.0], [540.0, 1005.0], [586.0, 1005.0], [586.0, 863.0], [580.0, 863.0], [577.0, 860.0], [580.0, 857.0], [586.0, 857.0], [585.0, 743.0], [582.0, 746.0], [432.0, 746.0], [431.0, 737.0], [593.0, 736.0], [593.0, 701.0], [591.0, 700.0], [593.0, 630.0], [592.0, 625.0], [587.0, 624.0], [588.0, 621.0], [593.0, 621.0], [593.0, 438.0], [560.0, 438.0], [560.0, 416.0], [497.0, 416.0], [497.0, 436.0], [495.0, 438.0], [471.0, 438.0], [470.0, 440.0], [443.0, 438.0], [443.0, 416.0]], \"area_px\": 118838, \"closed\": true}, {\"seed\": 4, \"polygon\": [[166.0, 691.0], [166.0, 838.0], [164.0, 840.0], [144.0, 840.0], [144.0, 903.0], [165.0, 902.0], [166.0, 918.0], [375.0, 917.0], [375.0, 915.0], [370.0, 914.0], [370.0, 737.0], [375.0, 736.0], [375.0, 691.0]], \"area_px\": 48373, \"closed\": true}, {\"seed\": 5, \"polygon\": [], \"area_px\": 0, \"closed\": false}, {\"seed\": 6, \"polygon\": [[862.0, 416.0], [800.0, 416.0], [800.0, 436.0], [798.0, 438.0], [763.0, 438.0], [762.0, 621.0], [773.0, 621.0], [773.0, 580.0], [798.0, 556.0], [882.0, 556.0], [882.0, 438.0], [861.0, 437.0]], \"area_px\": 16820, \"closed\": true}, {\"seed\": 7, \"polygon\": [], \"area_px\": 0, \"closed\": false}, {\"seed\": 8, \"polygon\": [[993.0, 417.0], [993.0, 436.0], [976.0, 440.0], [976.0, 442.0], [981.0, 443.0], [981.0, 517.0], [1000.0, 517.0], [1003.0, 520.0], [1000.0, 523.0], [981.0, 523.0], [982.0, 628.0], [981.0, 635.0], [976.0, 636.0], [976.0, 680.0], [981.0, 681.0], [982.0, 738.0], [986.0, 738.0], [987.0, 742.0], [1032.0, 743.0], [1034.0, 738.0], [1182.0, 738.0], [1182.0, 519.0], [1109.0, 519.0], [1109.0, 438.0], [1085.0, 438.0], [1084.0, 417.0]], \"area_px\": 57149, \"closed\": true}, {\"seed\": 9, \"polygon\": [[942.0, 416.0], [912.0, 416.0], [912.0, 436.0], [910.0, 438.0], [891.0, 438.0], [886.0, 440.0], [886.0, 442.0], [891.0, 443.0], [890.0, 562.0], [921.0, 563.0], [921.0, 590.0], [919.0, 592.0], [890.0, 592.0], [890.0, 621.0], [923.0, 621.0], [924.0, 628.0], [889.0, 630.0], [819.0, 629.0], [819.0, 621.0], [882.0, 621.0], [882.0, 557.0], [798.0, 557.0], [777.0, 579.0], [777.0, 629.0], [774.0, 630.0], [773.0, 626.0], [762.0, 626.0], [762.0, 647.0], [757.0, 648.0], [757.0, 701.0], [762.0, 702.0], [762.0, 736.0], [916.0, 736.0], [918.0, 740.0], [960.0, 740.0], [961.0, 736.0], [971.0, 736.0], [971.0, 681.0], [975.0, 680.0], [975.0, 636.0], [971.0, 635.0], [971.0, 629.0], [965.0, 628.0], [965.0, 622.0], [971.0, 621.0], [971.0, 443.0], [975.0, 442.0], [975.0, 440.0], [971.0, 438.0], [942.0, 438.0]], \"area_px\": 45444, \"closed\": true}, {\"seed\": 10, \"polygon\": [[597.0, 748.0], [597.0, 1005.0], [630.0, 1005.0], [631.0, 1025.0], [722.0, 1026.0], [723.0, 1005.0], [757.0, 1005.0], [757.0, 818.0], [761.0, 817.0], [761.0, 772.0], [757.0, 771.0], [757.0, 753.0], [760.0, 750.0], [750.0, 747.0]], \"area_px\": 43717, \"closed\": true}, {\"seed\": 11, \"polygon\": [[971.0, 746.0], [961.0, 746.0], [960.0, 741.0], [918.0, 741.0], [916.0, 746.0], [768.0, 746.0], [765.0, 743.0], [761.0, 752.0], [766.0, 753.0], [766.0, 771.0], [762.0, 772.0], [762.0, 817.0], [766.0, 818.0], [766.0, 1005.0], [808.0, 1005.0], [809.0, 1025.0], [900.0, 1026.0], [900.0, 1007.0], [902.0, 1005.0], [971.0, 1005.0]], \"area_px\": 55839, \"closed\": true}, {\"seed\": 12, \"polygon\": [[981.0, 746.0], [980.0, 971.0], [1148.0, 972.0], [1149.0, 1031.0], [1199.0, 1030.0], [1198.0, 1027.0], [1182.0, 1026.0], [1181.0, 746.0], [1036.0, 746.0], [1035.0, 796.0], [1032.0, 795.0], [1032.0, 744.0], [987.0, 743.0], [986.0, 746.0]], \"area_px\": 47679, \"closed\": true}, {\"seed\": 13, \"polygon\": [[1393.0, 474.0], [1301.0, 475.0], [1301.0, 493.0], [1299.0, 495.0], [1272.0, 495.0], [1272.0, 575.0], [1270.0, 577.0], [1204.0, 576.0], [1204.0, 797.0], [1346.0, 797.0], [1347.0, 752.0], [1350.0, 753.0], [1351.0, 800.0], [1394.0, 800.0], [1395.0, 797.0], [1402.0, 797.0], [1402.0, 737.0], [1407.0, 736.0], [1407.0, 692.0], [1402.0, 691.0], [1402.0, 495.0], [1392.0, 494.0]], \"area_px\": 56888, \"closed\": true}, {\"seed\": 14, \"polygon\": [[1206.0, 801.0], [1204.0, 805.0], [1204.0, 1025.0], [1199.0, 1027.0], [1200.0, 1030.0], [1390.0, 1029.0], [1392.0, 1027.0], [1403.0, 1027.0], [1402.0, 805.0], [1395.0, 805.0], [1394.0, 801.0], [1351.0, 801.0], [1349.0, 806.0], [1209.0, 805.0], [1208.0, 801.0]], \"area_px\": 45072, \"closed\": true}, {\"seed\": 15, \"polygon\": [], \"area_px\": 0, \"closed\": false}, {\"seed\": 16, \"polygon\": [[1530.0, 474.0], [1530.0, 493.0], [1528.0, 495.0], [1504.0, 495.0], [1504.0, 681.0], [1603.0, 682.0], [1604.0, 636.0], [1607.0, 637.0], [1607.0, 662.0], [1614.0, 662.0], [1614.0, 495.0], [1592.0, 495.0], [1592.0, 474.0]], \"area_px\": 21805, \"closed\": true}, {\"seed\": 17, \"polygon\": [[1413.0, 495.0], [1413.0, 681.0], [1426.0, 682.0], [1425.0, 689.0], [1413.0, 689.0], [1412.0, 692.0], [1408.0, 692.0], [1408.0, 736.0], [1413.0, 737.0], [1414.0, 799.0], [1424.0, 799.0], [1425.0, 803.0], [1467.0, 803.0], [1468.0, 799.0], [1586.0, 799.0], [1586.0, 772.0], [1588.0, 770.0], [1610.0, 770.0], [1611.0, 779.0], [1596.0, 780.0], [1596.0, 788.0], [1614.0, 788.0], [1615.0, 759.0], [1626.0, 760.0], [1626.0, 799.0], [1773.0, 799.0], [1773.0, 763.0], [1720.0, 763.0], [1718.0, 761.0], [1719.0, 759.0], [1778.0, 759.0], [1778.0, 708.0], [1773.0, 707.0], [1773.0, 529.0], [1767.0, 528.0], [1766.0, 495.0], [1764.0, 495.0], [1763.0, 520.0], [1642.0, 520.0], [1641.0, 494.0], [1636.0, 495.0], [1637.0, 527.0], [1626.0, 529.0], [1625.0, 707.0], [1614.0, 706.0], [1614.0, 663.0], [1607.0, 663.0], [1606.0, 690.0], [1603.0, 689.0], [1603.0, 683.0], [1561.0, 683.0], [1560.0, 689.0], [1468.0, 689.0], [1468.0, 681.0], [1495.0, 681.0], [1495.0, 651.0], [1466.0, 651.0], [1466.0, 620.0], [1468.0, 618.0], [1495.0, 618.0], [1495.0, 533.0], [1480.0, 533.0], [1477.0, 530.0], [1480.0, 527.0], [1495.0, 527.0], [1495.0, 495.0], [1475.0, 494.0], [1476.0, 474.0], [1446.0, 474.0], [1446.0, 493.0], [1444.0, 495.0]], \"area_px\": 80099, \"closed\": true}, {\"seed\": 18, \"polygon\": [[1614.0, 789.0], [1596.0, 789.0], [1596.0, 799.0], [1610.0, 799.0], [1610.0, 808.0], [1468.0, 808.0], [1467.0, 804.0], [1425.0, 804.0], [1424.0, 808.0], [1413.0, 808.0], [1414.0, 1066.0], [1495.0, 1066.0], [1496.0, 1086.0], [1587.0, 1086.0], [1587.0, 1068.0], [1589.0, 1066.0], [1631.0, 1066.0], [1631.0, 880.0], [1635.0, 879.0], [1635.0, 835.0], [1631.0, 834.0], [1631.0, 817.0], [1635.0, 816.0], [1636.0, 811.0], [1633.0, 811.0], [1632.0, 808.0], [1615.0, 809.0], [1613.0, 807.0]], \"area_px\": 59118, \"closed\": true}, {\"seed\": 19, \"polygon\": [[1637.0, 811.0], [1636.0, 816.0], [1639.0, 817.0], [1639.0, 834.0], [1636.0, 835.0], [1636.0, 879.0], [1639.0, 880.0], [1639.0, 1062.0], [1635.0, 1063.0], [1635.0, 1065.0], [1681.0, 1066.0], [1682.0, 1086.0], [1773.0, 1086.0], [1773.0, 1068.0], [1775.0, 1066.0], [1812.0, 1066.0], [1812.0, 811.0]], \"area_px\": 46536, \"closed\": true}, {\"seed\": 20, \"polygon\": [], \"area_px\": 0, \"closed\": false}, {\"seed\": 21, \"polygon\": [], \"area_px\": 0, \"closed\": false}, {\"seed\": 22, \"polygon\": [[1817.0, 474.0], [1817.0, 493.0], [1815.0, 495.0], [1786.0, 495.0], [1785.0, 683.0], [1790.0, 683.0], [1791.0, 685.0], [1834.0, 685.0], [1835.0, 638.0], [1838.0, 639.0], [1838.0, 683.0], [1898.0, 683.0], [1898.0, 495.0], [1878.0, 494.0], [1879.0, 474.0]], \"area_px\": 22770, \"closed\": true}, {\"seed\": 23, \"polygon\": [[2001.0, 683.0], [2056.0, 683.0], [2056.0, 567.0], [2058.0, 565.0], [2279.0, 565.0], [2279.0, 537.0], [2012.0, 536.0], [2001.0, 538.0]], \"area_px\": 14963, \"closed\": true}, {\"seed\": 24, \"polygon\": [[1914.0, 474.0], [1914.0, 493.0], [1906.0, 496.0], [1906.0, 529.0], [1955.0, 530.0], [1954.0, 533.0], [1906.0, 533.0], [1906.0, 616.0], [1930.0, 617.0], [1930.0, 648.0], [1928.0, 650.0], [1906.0, 650.0], [1906.0, 683.0], [1931.0, 683.0], [1932.0, 690.0], [1835.0, 692.0], [1834.0, 686.0], [1791.0, 686.0], [1790.0, 689.0], [1785.0, 689.0], [1785.0, 707.0], [1779.0, 708.0], [1779.0, 759.0], [1786.0, 760.0], [1785.0, 799.0], [2004.0, 799.0], [2005.0, 803.0], [2048.0, 803.0], [2049.0, 799.0], [2061.0, 799.0], [2061.0, 756.0], [2057.0, 755.0], [2057.0, 739.0], [2064.0, 737.0], [2064.0, 695.0], [2058.0, 695.0], [2056.0, 691.0], [1974.0, 691.0], [1975.0, 671.0], [1978.0, 672.0], [1978.0, 683.0], [1991.0, 683.0], [1991.0, 496.0], [1976.0, 494.0], [1977.0, 474.0]], \"area_px\": 47859, \"closed\": true}, {\"seed\": 25, \"polygon\": [[2066.0, 574.0], [2067.0, 690.0], [2065.0, 695.0], [2065.0, 737.0], [2112.0, 737.0], [2113.0, 741.0], [2279.0, 741.0], [2279.0, 732.0], [2281.0, 730.0], [2301.0, 730.0], [2301.0, 668.0], [2279.0, 668.0], [2279.0, 574.0]], \"area_px\": 37166, \"closed\": true}, {\"seed\": 26, \"polygon\": [[2066.0, 749.0], [2066.0, 755.0], [2062.0, 756.0], [2062.0, 799.0], [2067.0, 800.0], [2066.0, 1006.0], [2279.0, 1006.0], [2279.0, 981.0], [2281.0, 979.0], [2301.0, 979.0], [2301.0, 917.0], [2279.0, 917.0], [2279.0, 749.0]], \"area_px\": 56746, \"closed\": true}, {\"seed\": 27, \"polygon\": [[2057.0, 808.0], [2049.0, 808.0], [2048.0, 804.0], [2005.0, 804.0], [2004.0, 808.0], [1823.0, 809.0], [1822.0, 1066.0], [1877.0, 1066.0], [1878.0, 1086.0], [1969.0, 1086.0], [1969.0, 1068.0], [1971.0, 1066.0], [2057.0, 1066.0]], \"area_px\": 63140, \"closed\": true}]\nRegions can be wrong (open plan, missing walls): check the overlay and correct polygons yourself."
+  },
+  {
+   "turn": 18,
+   "text": "polygon1620212224252627131417181968910111223412023",
+   "finish": "STOP"
+  },
+  {
+   "turn": 19,
+   "text": "",
+   "tool": "submit_schematic",
+   "args": {
+    "schematic_json": "<10032 chars>"
+   },
+   "result": "submitted: {'walls': 64, 'rooms': 28, 'doors': 26, 'windows': 21, 'fixtures': 16}. The episode is over."
+  }
+ ]
+}

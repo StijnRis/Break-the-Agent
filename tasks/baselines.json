@@ -1,0 +1,19 @@
+{
+ "reference (ground truth)": 1.0,
+ "GT + 5 cm noise": 0.999,
+ "GT + 20 cm noise": 0.963,
+ "do nothing": 0.103,
+ "stop early (25 %)": 0.419,
+ "stop early (50 %)": 0.671,
+ "scale only": 0.103,
+ "wall = whole building box": 0.187,
+ "one giant room": 0.103,
+ "door/window/fixture spam (961 each)": 0.109,
+ "grid of rooms over the building (as many cells as rooms)": 0.105,
+ "thick ring wall around the building": 0.167,
+ "every fixture type stacked on every true fixture": 0.132,
+ "true room outlines, every name set to the most common label": 0.925,
+ "rooms duplicated x3": 0.887,
+ "right geometry, scale x1.3": 0.91,
+ "malformed junk": 0.103
+}

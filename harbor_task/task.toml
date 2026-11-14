@@ -1,0 +1,45 @@
+schema_version = "1.3"
+artifacts = ["/tmp/answer.json"]
+
+[task]
+name = "afterquery/blueprint-schematic-site279"
+description = "Digitize a Swiss apartment floor plan into a scored geometric schematic."
+authors = [{ name = "Break the Agent team" }]
+keywords = ["reinforcement-learning", "computer-vision", "floor-plans", "mcp"]
+
+[metadata]
+difficulty = "hard"
+category = "reasoning"
+tags = ["vision", "geometry", "mcp", "partial-reward"]
+
+[verifier]
+timeout_sec = 1200.0
+environment_mode = "separate"
+
+[verifier.environment]
+network_mode = "no-network"
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+
+[agent]
+timeout_sec = 1800.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 1200.0
+cpus = 4
+memory_mb = 8192
+storage_mb = 20480
+gpus = 0
+
+[[environment.mcp_servers]]
+name = "blueprint"
+transport = "stdio"
+command = "python"
+args = ["-m", "blueprint_env.mcp_server", "--task", "site279_bldg514_floor2041", "--root", "/app/tasks", "--submission", "/tmp/answer.json"]
+
+[environment.env]
+PYTHONPATH = "/app"
+GOOGLE_GENERATIVE_AI_API_KEY = "${GEMINI_API_KEY}"

@@ -1,0 +1,21 @@
+[project]
+name = "blueprint-schematic-challenge"
+version = "0.1.0"
+description = "Agent evaluation environment for reading construction drawings"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "scipy",
+    "pillow",
+    "shapely",
+    "ezdxf",
+    "requests",
+    "opencv-python-headless",
+    "scikit-image",
+    "rapidocr-onnxruntime",
+    "mcp>=1.9,<2",
+    "openai",
+]
+
+[tool.uv]
+package = false

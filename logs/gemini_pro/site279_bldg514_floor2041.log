@@ -1,0 +1,49 @@
+== site279_bldg514_floor2041 run 0 (gemini-3.1-pro-preview)
+   [1] view_region {'x0': 500, 'y0': 1500, 'x1': 1000, 'y1': 1753} -> crop (500,1500)-(1000,1753)
+   [2] segment_rooms {'seeds': [[940, 110], [1040, 130], [1390, 130], [1445, 205], [1400, 275], [1460, 390], [1110, 250], [1060, 345], [1075, 415], [1210, 400], [945, 520], [1130, 520], [1420, 500], [1400, 535], [1110, 610], [1300, 630], [1460, 640], [940, 740], [1130, 740], [1400, 740]], 'm_per_px': 0.0084317} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [3] view_region {'x0': 600, 'y1': 1650, 'y0': 1580, 'x1': 1300} -> crop (600,1580)-(1300,1650)
+   [4] view_region {'y1': 350, 'x0': 850, 'x1': 1300, 'y0': 100} -> crop (850,100)-(1300,350)
+   [5] view_region {'y1': 350, 'y0': 100, 'x0': 1300, 'x1': 1600} -> crop (1300,100)-(1600,350)
+   [6] view_region {'y1': 550, 'x1': 1350, 'y0': 300, 'x0': 1000} -> crop (1000,300)-(1350,550)
+   [7] view_region {'x1': 1100, 'y1': 200, 'x0': 900, 'y0': 100} -> crop (900,100)-(1100,200)
+   [8] view_region {'y0': 100, 'y1': 300, 'x0': 1000, 'x1': 1100} -> crop (1000,100)-(1100,300)
+   [9] preview_schematic {'schematic_json': '<185 chars>'} -> preview counts {'walls': 0, 'rooms': 1, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.00843
+   [10] view_region {'y0': 250, 'x0': 1300, 'y1': 450, 'x1': 1600} -> crop (1300,250)-(1600,450)
+   [11] view_region {'x1': 1600, 'y0': 450, 'y1': 600, 'x0': 1300} -> crop (1300,450)-(1600,600)
+   [12] view_region {'x0': 1300, 'y0': 600, 'x1': 1600, 'y1': 800} -> crop (1300,600)-(1600,800)
+   [13] view_region {'y1': 800, 'x0': 1000, 'x1': 1350, 'y0': 500} -> crop (1000,500)-(1350,800)
+   [14] view_region {'y1': 550, 'y0': 300, 'x1': 1350, 'x0': 1100} -> crop (1100,300)-(1350,550)
+   [15] view_region {'y0': 400, 'x0': 1200, 'y1': 600, 'x1': 1500} -> crop (1200,400)-(1500,600)
+   [16] view_region {'y1': 550, 'y0': 300, 'x0': 900, 'x1': 1150} -> crop (900,300)-(1150,550)
+   [17] preview_schematic {'schematic_json': '<1071 chars>'} -> preview counts {'walls': 0, 'rooms': 9, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.00843
+   [18] view_region {'y0': 750, 'x1': 1600, 'y1': 950, 'x0': 900} -> crop (900,750)-(1600,950)
+   [19] view_region {'x1': 1600, 'y0': 950, 'x0': 900, 'y1': 1200} -> crop (900,950)-(1600,1200)
+   [20] view_region {'y0': 1150, 'y1': 1450, 'x0': 900, 'x1': 1600} -> crop (900,1150)-(1600,1450)
+   [21] preview_schematic {'schematic_json': '<1058 chars>'} -> preview counts {'walls': 0, 'rooms': 8, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.00843
+   [22] submit_schematic {'schematic_json': '<3938 chars>'} -> ERROR: JSONDecodeError: Expecting ',' delimiter: line 1 column 3261 (char 3260)
+   [23] submit_schematic {'schematic_json': '<3730 chars>'} -> ERROR: JSONDecodeError: Expecting ',' delimiter: line 1 column 3261 (char 3260)
+   [24] submit_schematic {'schematic_json': '<3709 chars>'} -> submitted: {'walls': 0, 'rooms': 20, 'doors': 12, 'windows': 10, 'fixtures': 12}. The episode is over.
+{"task": "site279_bldg514_floor2041", "reward": 0.3658, "components": {"walls": 0.0, "rooms": 0.68, "areas": 0.0, "doors": 0.359, "windows": 0.5217, "fixtures": 0.6364}, "tool_calls": 24, "seconds": 404, "tokens": {"in": 815951, "out": 42677}}
+== site279_bldg514_floor2041 run 1 (gemini-3.1-pro-preview)
+   [1] view_region {'y0': 1200, 'x0': 0, 'y1': 1753, 'x1': 2480} -> crop (0,1200)-(2480,1753)
+   [3] view_region {'x0': 200, 'y1': 1753, 'y0': 1500, 'x1': 600} -> crop (200,1500)-(600,1753)
+   [5] view_region {'x0': 600, 'y0': 1500, 'y1': 1650, 'x1': 1000} -> crop (600,1500)-(1000,1650)
+   [6] segment_rooms {'m_per_px': 0.01736111, 'seeds': [[947, 131], [1106, 137], [1422, 137], [1445, 206], [1419, 290], [1466, 381], [1152, 246], [1024, 329], [1061, 401], [1215, 396], [945, 461], [1133, 508], [1416, 545], [1152, 608], [1308, 620], [1453, 634], [945, 680], [1130, 726], [1419, 726], [1427, 470]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [8] view_region {'y1': 550, 'y0': 100, 'x1': 1350, 'x0': 850} -> crop (850,100)-(1350,550)
+   [10] view_region {'y1': 550, 'x1': 1600, 'y0': 100, 'x0': 1350} -> crop (1350,100)-(1600,550)
+   [12] view_region {'x1': 1350, 'y1': 1000, 'y0': 550, 'x0': 850} -> crop (850,550)-(1350,1000)
+   [14] view_region {'y1': 1000, 'x0': 1350, 'x1': 1600, 'y0': 550} -> crop (1350,550)-(1600,1000)
+   [16] view_region {'y0': 1000, 'y1': 1450, 'x1': 1350, 'x0': 850} -> crop (850,1000)-(1350,1450)
+   [18] view_region {'y1': 1450, 'x0': 1350, 'y0': 1000, 'x1': 1600} -> crop (1350,1000)-(1600,1450)
+   [20] submit_schematic {'schematic_json': '<4323 chars>'} -> submitted: {'walls': 5, 'rooms': 20, 'doors': 23, 'windows': 11, 'fixtures': 12}. The episode is over.
+{"task": "site279_bldg514_floor2041", "reward": 0.4331, "components": {"walls": 0.4515, "rooms": 0.6159, "areas": 0.4, "doors": 0.16, "windows": 0.5, "fixtures": 0.2727}, "tool_calls": 11, "seconds": 250, "tokens": {"in": 262280, "out": 26326}}
+== site279_bldg514_floor2041 run 2 (gemini-3.1-pro-preview)
+   [1] view_region {'y0': 1500, 'x0': 200, 'y1': 1700, 'x1': 1000} -> crop (200,1500)-(1000,1700)
+   [2] view_region {'y1': 800, 'x0': 800, 'x1': 1600, 'y0': 100} -> crop (800,100)-(1600,800)
+   [4] view_region {'x0': 800, 'x1': 1600, 'y0': 800, 'y1': 1500} -> crop (800,800)-(1600,1500)
+   [5] segment_rooms {'seeds': [[940, 200], [1120, 200], [1400, 200], [1420, 400], [1420, 580], [1420, 700], [1120, 450], [1050, 600], [1050, 700], [1225, 700], [940, 820], [1120, 900], [1350, 850], [1400, 950], [1120, 1050], [1300, 1050], [1420, 1100], [940, 1250], [1120, 1300], [1420, 1300]], 'm_per_px': 0.0142857} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [[901.0, 117.0], [901.0, 197.0], [940
+   [6] view_region {'y0': 100, 'x1': 1600, 'x0': 900, 'y1': 800} -> crop (900,100)-(1600,800)
+   [7] view_region {'x0': 1100, 'x1': 1600, 'y0': 700, 'y1': 1200} -> crop (1100,700)-(1600,1200)
+   [9] preview_schematic {'schematic_json': '<2151 chars>'} -> preview counts {'walls': 0, 'rooms': 20, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.0142857
+   [11] view_region {'y0': 100, 'y1': 800, 'x0': 800, 'x1': 1600} -> crop (800,100)-(1600,800)
+{"task": "site279_bldg514_floor2041", "reward": 0.0, "components": {"walls": 0.0, "rooms": 0.0, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 8, "seconds": 1074, "tokens": {"in": 4177543, "out": 157473}}

@@ -1,0 +1,12 @@
+numpy
+scipy
+pillow
+shapely
+ezdxf
+requests
+opencv-python-headless
+scikit-image
+rapidocr-onnxruntime
+mcp>=1.9,<2
+openai
+# training (Modal installs these in its image): torch transformers peft trl accelerate datasets vllm

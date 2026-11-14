@@ -1,0 +1,62 @@
+== site52_bldg298_floor1183 run 0 (gemini-3.1-pro-preview)
+   [1] view_region {'x1': 1000, 'y1': 1700, 'x0': 600, 'y0': 1500} -> crop (600,1500)-(1000,1700)
+   [2] segment_rooms {'m_per_px': 0.014285714, 'seeds': [[1430, 200], [1500, 200], [1600, 230], [1430, 270], [1180, 420], [1550, 470], [900, 450], [1020, 530], [1130, 560], [1320, 470], [920, 580], [1450, 640], [1170, 770], [910, 800], [1330, 360], [1430, 350]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [4] view_region {'x1': 1700, 'x0': 1300, 'y0': 100, 'y1': 500} -> crop (1300,100)-(1700,500)
+   [5] view_region {'x0': 0, 'y1': 1753, 'x1': 400, 'y0': 1500} -> crop (0,1500)-(400,1753)
+   [6] view_region {'x1': 1700, 'x0': 1300, 'y1': 800, 'y0': 400} -> crop (1300,400)-(1700,800)
+   [7] view_region {'x1': 1753, 'y0': 600, 'x0': 1400, 'y1': 1000} -> crop (1400,600)-(1753,1000)
+   [8] view_region {'x1': 1500, 'y1': 900, 'y0': 500, 'x0': 1100} -> crop (1100,500)-(1500,900)
+   [9] view_region {'y0': 400, 'y1': 800, 'x1': 1100, 'x0': 700} -> crop (700,400)-(1100,800)
+   [10] view_region {'y0': 300, 'x1': 1300, 'x0': 900, 'y1': 700} -> crop (900,300)-(1300,700)
+   [11] segment_rooms {'seeds': [[1430, 310], [1530, 280], [1640, 300], [1430, 370], [1160, 490], [1600, 530], [870, 480], [1020, 430], [1150, 550]], 'm_per_px': 0.014285714} -> [{"seed": 0, "polygon": [[1391.0, 280.0], [1390.0, 359.0], [1394.0, 366.0], [1461.0, 363.0], [1461.0, 341.0], [1423.0, 3
+   [12] segment_rooms {'m_per_px': 0.014285714, 'seeds': [[1430, 310], [1530, 280], [1640, 300], [1430, 370], [1160, 490], [1600, 530], [870, 480], [1020, 430], [1150, 550], [800, 600], [870, 670], [920, 850], [1150, 830], [1320, 320], [1360, 370]]} -> [{"seed": 0, "polygon": [[1391.0, 280.0], [1390.0, 359.0], [1394.0, 366.0], [1461.0, 363.0], [1461.0, 341.0], [1423.0, 3
+   [13] view_region {'y0': 100, 'x1': 1700, 'x0': 1300, 'y1': 400} -> crop (1300,100)-(1700,400)
+   [14] view_region {'y1': 450, 'y0': 250, 'x1': 1550, 'x0': 1350} -> crop (1350,250)-(1550,450)
+   [15] view_region {'x1': 1300, 'y0': 400, 'y1': 600, 'x0': 1100} -> crop (1100,400)-(1300,600)
+   api retry 0: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Read timed out. (read timeout=600)
+   [16] view_region {'y1': 800, 'x1': 1300, 'x0': 1100, 'y0': 600} -> crop (1100,600)-(1300,800)
+   [17] view_region {'x0': 950, 'x1': 1150, 'y1': 900, 'y0': 700} -> crop (950,700)-(1150,900)
+   [18] view_region {'x1': 1000, 'y0': 550, 'x0': 700, 'y1': 750} -> crop (700,550)-(1000,750)
+   [19] view_region {'x1': 1100, 'y0': 700, 'y1': 900, 'x0': 700} -> crop (700,700)-(1100,900)
+   [20] segment_rooms {'seeds': [[900, 630], [1020, 750], [1100, 750], [850, 800], [850, 1000], [1100, 1000], [1450, 800], [1300, 600], [1350, 360], [1450, 350]], 'm_per_px': 0.014285714} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [21] view_region {'y1': 500, 'x0': 1450, 'x1': 1700, 'y0': 200} -> crop (1450,200)-(1700,500)
+   [22] view_region {'y1': 1050, 'x1': 1100, 'x0': 700, 'y0': 850} -> crop (700,850)-(1100,1050)
+   [23] view_region {'x0': 1000, 'y0': 900, 'y1': 1300, 'x1': 1400} -> crop (1000,900)-(1400,1300)
+   [24] view_region {'y1': 1400, 'x1': 1750, 'x0': 1400, 'y0': 1000} -> crop (1400,1000)-(1750,1400)
+   [25] preview_schematic {'schematic_json': '<2613 chars>'} -> preview counts {'walls': 0, 'rooms': 15, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.014285714
+   [26] preview_schematic {'schematic_json': '<4844 chars>'} -> preview counts {'walls': 0, 'rooms': 16, 'doors': 15, 'windows': 10, 'fixtures': 8}, m_per_px=0.014285714
+   [27] submit_schematic {'schematic_json': '<4844 chars>'} -> submitted: {'walls': 0, 'rooms': 16, 'doors': 15, 'windows': 10, 'fixtures': 8}. The episode is over.
+{"task": "site52_bldg298_floor1183", "reward": 0.3373, "components": {"walls": 0.0, "rooms": 0.7308, "areas": 0.0, "doors": 0.3158, "windows": 0.2703, "fixtures": 0.6667}, "tool_calls": 26, "seconds": 1043, "tokens": {"in": 1079666, "out": 45137}}
+== site52_bldg298_floor1183 run 1 (gemini-3.1-pro-preview)
+   [1] view_region {'x1': 1000, 'y1': 1750, 'y0': 1300, 'x0': 0} -> crop (0,1300)-(1000,1750)
+   [2] view_region {'x1': 950, 'y0': 1550, 'y1': 1650, 'x0': 600} -> crop (600,1550)-(950,1650)
+   [4] view_region {'x1': 1550, 'x0': 1300, 'y1': 750, 'y0': 400} -> crop (1300,400)-(1550,750)
+   [5] view_region {'x0': 1350, 'y1': 550, 'y0': 150, 'x1': 1750} -> crop (1350,150)-(1750,550)
+   [6] segment_rooms {'m_per_px': 0.02, 'seeds': [[1431, 288], [1514, 310], [1640, 323], [1387, 419], [1408, 485], [1281, 489], [1537, 560], [1163, 480], [1254, 554], [866, 590], [982, 652], [1092, 720], [858, 745], [1474, 862], [1132, 960], [885, 986]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [[1391.0, 280.0], [1390.0, 359.0], [1
+   [7] view_region {'x1': 1550, 'x0': 1300, 'y0': 150, 'y1': 550} -> crop (1300,150)-(1550,550)
+   [8] view_region {'x0': 1100, 'y1': 550, 'x1': 1300, 'y0': 200} -> crop (1100,200)-(1300,550)
+   [9] view_region {'x1': 1600, 'x0': 1350, 'y1': 800, 'y0': 500} -> crop (1350,500)-(1600,800)
+   [10] view_region {'y0': 550, 'x0': 750, 'y1': 800, 'x1': 1000} -> crop (750,550)-(1000,800)
+   [11] view_region {'y1': 850, 'x1': 1250, 'x0': 950, 'y0': 650} -> crop (950,650)-(1250,850)
+   [12] view_region {'y1': 750, 'y0': 450, 'x1': 1750, 'x0': 1550} -> crop (1550,450)-(1750,750)
+   [13] view_region {'y1': 700, 'x0': 1100, 'x1': 1400, 'y0': 400} -> crop (1100,400)-(1400,700)
+   [14] view_region {'x1': 1150, 'x0': 750, 'y0': 850, 'y1': 1200} -> crop (750,850)-(1150,1200)
+   [15] view_region {'y0': 1000, 'y1': 1350, 'x0': 1300, 'x1': 1600} -> crop (1300,1000)-(1600,1350)
+   [16] preview_schematic {'schematic_json': '<5059 chars>'} -> preview counts {'walls': 0, 'rooms': 16, 'doors': 0, 'windows': 0, 'fixtures': 0}, m_per_px=0.02
+   [17] submit_schematic {'schematic_json': '<5571 chars>'} -> submitted: {'walls': 0, 'rooms': 16, 'doors': 0, 'windows': 0, 'fixtures': 11}. The episode is over.
+{"task": "site52_bldg298_floor1183", "reward": 0.2553, "components": {"walls": 0.0, "rooms": 0.7544, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.6667}, "tool_calls": 16, "seconds": 285, "tokens": {"in": 353345, "out": 38191}}
+== site52_bldg298_floor1183 run 2 (gemini-3.1-pro-preview)
+   [1] view_region {'y0': 1500, 'x0': 500, 'x1': 1100, 'y1': 1700} -> crop (500,1500)-(1100,1700)
+   [2] view_region {'y0': 200, 'y1': 800, 'x1': 1200, 'x0': 600} -> crop (600,200)-(1200,800)
+   [3] view_region {'y1': 800, 'y0': 200, 'x0': 1200, 'x1': 1800} -> crop (1200,200)-(1800,800)
+   [4] view_region {'x1': 1200, 'x0': 600, 'y0': 800, 'y1': 1400} -> crop (600,800)-(1200,1400)
+   [5] view_region {'x0': 1200, 'x1': 1800, 'y0': 800, 'y1': 1400} -> crop (1200,800)-(1800,1400)
+   [6] segment_rooms {'m_per_px': 0.010526315789473684, 'seeds': [[880, 630], [1030, 740], [1110, 750], [1180, 560], [1410, 250], [1520, 220], [1680, 280], [1380, 360], [1280, 480], [1420, 470], [1240, 610], [1610, 620], [900, 860], [920, 1140], [1140, 1130], [1470, 930]]} -> [{"seed": 0, "polygon": [[964.0, 592.0], [839.0, 592.0], [839.0, 677.0], [831.0, 678.0], [862.0, 677.0], [864.0, 687.0],
+   [7] segment_rooms {'m_per_px': 0.0105263157894737, 'seeds': [[1400, 230], [1530, 240], [1390, 360], [1190, 560]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [8] view_region {'y0': 100, 'x0': 1200, 'y1': 300, 'x1': 1800} -> crop (1200,100)-(1800,300)
+   [9] view_region {'y1': 480, 'x0': 1350, 'y0': 220, 'x1': 1600} -> crop (1350,220)-(1600,480)
+   [10] view_region {'x1': 1600, 'x0': 1400, 'y0': 450, 'y1': 650} -> crop (1400,450)-(1600,650)
+   [11] preview_schematic {'y1': 500, 'x1': 1600, 'y0': 200, 'schematic_json': '<182 chars>', 'x0': 1350} -> preview counts {'walls': 0, 'rooms': 0, 'doors': 2, 'windows': 0, 'fixtures': 0}, m_per_px=0.010526315789473684
+   [12] submit_schematic {'schematic_json': '<7545 chars>'} -> ERROR: JSONDecodeError: Expecting ',' delimiter: line 1 column 7068 (char 7067)
+   [13] submit_schematic {'schematic_json': '<7436 chars>'} -> submitted: {'walls': 0, 'rooms': 16, 'doors': 13, 'windows': 13, 'fixtures': 10}. The episode is over.
+{"task": "site52_bldg298_floor1183", "reward": 0.3434, "components": {"walls": 0.0, "rooms": 0.8669, "areas": 0.0, "doors": 0.2778, "windows": 0.3, "fixtures": 0.4}, "tool_calls": 13, "seconds": 318, "tokens": {"in": 268797, "out": 50597}}

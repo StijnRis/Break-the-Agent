@@ -1,0 +1,152 @@
+== site1015_bldg2113_floor9557 run 0 (gemini-3-flash-preview)
+   [1] view_region {'x1': 540, 'y0': 930, 'x0': 340, 'y1': 960} -> crop (340,930)-(540,960)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y0': 180, 'x1': 650, 'x0': 80, 'y1': 380} -> crop (80,180)-(650,380)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'y1': 960, 'y0': 930, 'x1': 540, 'x0': 340} -> crop (340,930)-(540,960)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] view_region {'x0': 340, 'x1': 540, 'y0': 2330, 'y1': 2460} -> crop (340,2330)-(540,2460)
+[0 tool calls left - submit your schematic with submit_schematic soon]
+   [5] submit_schematic {'schematic_json': '<1843 chars>'} -> submitted: {'walls': 5, 'rooms': 13, 'doors': 0, 'windows': 0, 'fixtures': 6}. The episode is over.
+{"task": "site1015_bldg2113_floor9557", "reward": 0.0025, "components": {"walls": 0.0101, "rooms": 0.0, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 5, "seconds": 40, "tokens": {"in": 15045, "out": 7677}}
+== site1047_bldg2154_floor9740 run 0 (gemini-3-flash-preview)
+   [1] view_region {'x1': 390, 'y0': 900, 'x0': 240, 'y1': 950} -> crop (240,900)-(390,950)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y0': 900, 'x0': 230, 'x1': 380, 'y1': 940} -> crop (230,900)-(380,940)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'x0': 0, 'y1': 1753, 'x1': 2480, 'y0': 0} -> crop (0,0)-(2480,1753)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] submit_schematic {'schematic_json': '<3776 chars>'} -> submitted: {'walls': 8, 'rooms': 20, 'doors': 13, 'windows': 5, 'fixtures': 6}. The episode is over.
+{"task": "site1047_bldg2154_floor9740", "reward": 0.0201, "components": {"walls": 0.0805, "rooms": 0.0, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 4, "seconds": 65, "tokens": {"in": 18054, "out": 12777}}
+== site11704_bldg18258_floor48967 run 0 (gemini-3-flash-preview)
+   [1] view_region {'y0': 1300, 'y1': 1700, 'x0': 200, 'x1': 1000} -> crop (200,1300)-(1000,1700)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y0': 250, 'y1': 750, 'x1': 1750, 'x0': 750} -> crop (750,250)-(1750,750)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'y0': 750, 'y1': 1250, 'x1': 1750, 'x0': 750} -> crop (750,750)-(1750,1250)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] segment_rooms {'m_per_px': 0.013966, 'seeds': [[1055, 340], [1055, 600], [870, 725], [900, 810], [1100, 810], [900, 1000], [1100, 1000], [1475, 340], [1240, 600], [1470, 600], [1650, 725], [1225, 785], [1370, 810], [1580, 810], [1400, 1000], [1600, 1000], [1240, 1000]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [[908.0, 307.0], [908.0, 470.0], [831
+   [5] submit_schematic {'schematic_json': '<3865 chars>'} -> submitted: {'walls': 9, 'rooms': 17, 'doors': 11, 'windows': 10, 'fixtures': 10}. The episode is over.
+{"task": "site11704_bldg18258_floor48967", "reward": 0.4173, "components": {"walls": 0.5496, "rooms": 0.6114, "areas": 0.0, "doors": 0.2759, "windows": 0.5714, "fixtures": 0.0}, "tool_calls": 5, "seconds": 42, "tokens": {"in": 33071, "out": 7380}}
+== site279_bldg514_floor2041 run 0 (gemini-3-flash-preview)
+   [1] view_region {'x0': 200, 'y1': 1450, 'y0': 1250, 'x1': 450} -> crop (200,1250)-(450,1450)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'x1': 1000, 'y0': 1400, 'y1': 1550, 'x0': 600} -> crop (600,1400)-(1000,1550)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   api retry 0: HTTPSConnectionPool(host='generativelanguage.googleapis.com', port=443): Max retries exceeded with url: /v1beta/models/gemini-3-flash-preview:generateContent (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:2427)')))
+   [3] view_region {'y1': 400, 'x0': 1400, 'x1': 1600, 'y0': 100} -> crop (1400,100)-(1600,400)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] segment_rooms {'m_per_px': 0.016, 'seeds': [[940, 180], [1100, 180], [1420, 180], [1500, 360], [1500, 480], [1500, 610], [1110, 330], [1110, 480], [1110, 580], [1240, 550], [940, 680], [1100, 680], [1500, 780], [1100, 830], [1240, 830], [1500, 900], [940, 1100], [1100, 1100], [1420, 1100], [1400, 680]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [[901.0, 117.0], [901.0, 177.0], [940
+   [5] submit_schematic {'schematic_json': '<4654 chars>'} -> submitted: {'walls': 21, 'rooms': 20, 'doors': 9, 'windows': 5, 'fixtures': 12}. The episode is over.
+{"task": "site279_bldg514_floor2041", "reward": 0.2929, "components": {"walls": 0.6722, "rooms": 0.2795, "areas": 0.05, "doors": 0.1111, "windows": 0.2222, "fixtures": 0.0}, "tool_calls": 5, "seconds": 73, "tokens": {"in": 39247, "out": 9436}}
+== site285_bldg527_floor51568 run 0 (gemini-3-flash-preview)
+   [1] view_region {'y1': 950, 'y0': 890, 'x0': 220, 'x1': 400} -> crop (220,890)-(400,950)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y1': 550, 'y0': 350, 'x1': 900, 'x0': 700} -> crop (700,350)-(900,550)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'y0': 900, 'x0': 240, 'x1': 400, 'y1': 940} -> crop (240,900)-(400,940)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] submit_schematic {'schematic_json': '<4527 chars>'} -> ERROR: JSONDecodeError: Extra data: line 1 column 4492 (char 4491)
+[0 tool calls left - submit your schematic with submi
+   [6] segment_rooms {'seeds': [[450, 315], [550, 315], [250, 340], [500, 385], [250, 480], [500, 500], [850, 315], [950, 315], [1100, 340], [850, 385], [700, 500], [850, 500], [1100, 500], [1850, 340], [2000, 340], [2200, 360], [2000, 425], [2200, 515], [1950, 540], [1450, 340], [1580, 340], [1320, 385], [1520, 425], [1320, 525], [1520, 540], [1750, 540], [700, 340], [1750, 385]], 'm_per_px': 0.030303} -> tool budget exhausted: only submit_schematic is accepted now
+{"task": "site285_bldg527_floor51568", "reward": 0.0, "components": {"walls": 0.0, "rooms": 0.0, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 5, "seconds": 100, "tokens": {"in": 40675, "out": 18765}}
+== site303_bldg598_floor2434 run 0 (gemini-3-flash-preview)
+   [1] view_region {'y1': 950, 'x0': 230, 'x1': 390, 'y0': 900} -> crop (230,900)-(390,950)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y0': 890, 'x1': 400, 'x0': 230, 'y1': 960} -> crop (230,890)-(400,960)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'y0': 1580, 'x1': 450, 'y1': 1660, 'x0': 230} -> crop (230,1580)-(450,1660)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] segment_rooms {'seeds': [[1085, 520], [1070, 850], [1235, 850], [890, 1000], [1270, 1130], [920, 1220], [1050, 1220], [930, 1450], [1100, 1500], [1240, 1500], [1270, 1720], [1580, 520], [1470, 850], [1610, 1030], [1420, 1220], [1580, 1220], [1560, 1450], [1640, 1720]], 'm_per_px': 0.01596} -> [{"seed": 0, "polygon": [[812.0, 376.0], [814.0, 676.0], [812.0, 678.0], [782.0, 677.0], [782.0, 615.0], [782.0, 763.0],
+   [5] submit_schematic {'schematic_json': '<4180 chars>'} -> submitted: {'walls': 15, 'rooms': 18, 'doors': 10, 'windows': 7, 'fixtures': 9}. The episode is over.
+{"task": "site303_bldg598_floor2434", "reward": 0.159, "components": {"walls": 0.4539, "rooms": 0.1048, "areas": 0.0, "doors": 0.129, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 5, "seconds": 43, "tokens": {"in": 29376, "out": 9092}}
+== site3259_bldg4943_floor22529 run 0 (gemini-3-flash-preview)
+   [1] view_region {'x0': 200, 'y0': 880, 'x1': 600, 'y1': 1000} -> crop (200,880)-(600,1000)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'x0': 1080, 'y0': 150, 'x1': 1400, 'y1': 700} -> crop (1080,150)-(1400,700)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'x1': 1380, 'x0': 1080, 'y1': 1250, 'y0': 550} -> crop (1080,550)-(1380,1250)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] segment_rooms {'seeds': [[1200, 400], [1150, 620], [1230, 700], [1280, 780], [1300, 860], [1300, 915], [1200, 1050], [1150, 710], [1160, 850]], 'm_per_px': 0.04} -> [{"seed": 0, "polygon": [[1214.0, 272.0], [1137.0, 275.0], [1138.0, 305.0], [1125.0, 308.0], [1104.0, 308.0], [1104.0, 3
+   [5] submit_schematic {'schematic_json': '<2581 chars>'} -> submitted: {'walls': 14, 'rooms': 9, 'doors': 5, 'windows': 6, 'fixtures': 3}. The episode is over.
+{"task": "site3259_bldg4943_floor22529", "reward": 0.4568, "components": {"walls": 0.6463, "rooms": 0.2665, "areas": 0.0, "doors": 0.2857, "windows": 0.6667, "fixtures": 0.8571}, "tool_calls": 5, "seconds": 44, "tokens": {"in": 25371, "out": 9567}}
+== site3377_bldg5220_floor23409 run 0 (gemini-3-flash-preview)
+   [1] view_region {'x1': 2200, 'x0': 200, 'y0': 1500, 'y1': 1753} -> crop (200,1500)-(2200,1753)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y0': 200, 'y1': 1200, 'x0': 700, 'x1': 1800} -> crop (700,200)-(1800,1200)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] segment_rooms {'m_per_px': 0.015528, 'seeds': [[850, 350], [1025, 350], [1130, 375], [850, 500], [1025, 500], [850, 700], [1025, 750], [1250, 750], [950, 900], [1450, 350], [1650, 350], [1450, 500], [1650, 500], [1450, 750], [1650, 750], [1650, 900], [1250, 275], [1270, 390], [1250, 500]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [4] submit_schematic {'schematic_json': '<3761 chars>'} -> submitted: {'walls': 12, 'rooms': 19, 'doors': 5, 'windows': 4, 'fixtures': 11}. The episode is over.
+{"task": "site3377_bldg5220_floor23409", "reward": 0.1172, "components": {"walls": 0.3901, "rooms": 0.0586, "areas": 0.05, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 4, "seconds": 55, "tokens": {"in": 27812, "out": 12333}}
+== site383_bldg846_floor3730 run 0 (gemini-3-flash-preview)
+   [1] view_region {'y0': 1500, 'x0': 240, 'y1': 1560, 'x1': 400} -> crop (240,1500)-(400,1560)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y1': 1600, 'x0': 200, 'y0': 1400, 'x1': 500} -> crop (200,1400)-(500,1600)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'x0': 600, 'x1': 1900, 'y0': 150, 'y1': 1250} -> crop (600,150)-(1900,1250)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] view_region {'x1': 2450, 'y0': 1400, 'x0': 1800, 'y1': 1753} -> crop (1800,1400)-(2450,1753)
+[0 tool calls left - submit your schematic with submit_schematic soon]
+   [5] submit_schematic {'schematic_json': '<4305 chars>'} -> ERROR: JSONDecodeError: Extra data: line 1 column 4304 (char 4303)
+   [6] submit_schematic {'schematic_json': '<3983 chars>'} -> ERROR: JSONDecodeError: Extra data: line 1 column 3982 (char 3981)
+{"task": "site383_bldg846_floor3730", "reward": 0.0, "components": {"walls": 0.0, "rooms": 0.0, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 6, "seconds": 72, "tokens": {"in": 49797, "out": 15004}}
+== site4038_bldg6362_floor26166 run 0 (gemini-3-flash-preview)
+   [1] view_region {'y0': 933, 'x1': 536, 'y1': 957, 'x0': 341} -> crop (341,933)-(536,957)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y0': 2000, 'x1': 1753, 'x0': 0, 'y1': 2480} -> crop (0,2000)-(1753,2480)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'y0': 150, 'x0': 450, 'x1': 1300, 'y1': 1850} -> crop (450,150)-(1300,1850)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] segment_rooms {'seeds': [[1150, 430], [820, 520], [965, 530], [1160, 540], [750, 600], [520, 650], [1010, 750], [1160, 660], [1160, 780], [820, 740], [925, 740], [750, 900], [520, 810], [730, 1080], [1160, 1020], [930, 1110], [920, 1015], [520, 970], [1160, 1140], [750, 1300], [1160, 1280], [820, 1350], [965, 1330], [1100, 1770], [895, 860], [1010, 915], [1140, 915], [895, 915]], 'm_per_px': 0.01063829787} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [5] submit_schematic {'schematic_json': '<3758 chars>'} -> submitted: {'walls': 0, 'rooms': 28, 'doors': 0, 'windows': 0, 'fixtures': 15}. The episode is over.
+{"task": "site4038_bldg6362_floor26166", "reward": 0.0583, "components": {"walls": 0.0, "rooms": 0.2334, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 5, "seconds": 50, "tokens": {"in": 38601, "out": 10187}}
+== site4267_bldg7556_floor30516 run 0 (gemini-3-flash-preview)
+   [1] view_region {'y1': 960, 'y0': 900, 'x0': 240, 'x1': 600} -> crop (240,900)-(600,960)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'x1': 1700, 'y0': 200, 'x0': 800, 'y1': 1200} -> crop (800,200)-(1700,1200)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] segment_rooms {'seeds': [[1030, 430], [1150, 360], [1360, 450], [1530, 520], [1300, 770], [1500, 770], [1500, 930], [1150, 930], [1000, 930], [1030, 800], [1120, 770]], 'm_per_px': 0.04} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [5] preview_schematic {'schematic_json': '<3288 chars>'} -> preview counts {'walls': 13, 'rooms': 11, 'doors': 8, 'windows': 11, 'fixtures': 8}, m_per_px=0.04
+[0 tool calls left - 
+   [6] submit_schematic {'schematic_json': '<3288 chars>'} -> submitted: {'walls': 13, 'rooms': 11, 'doors': 8, 'windows': 11, 'fixtures': 8}. The episode is over.
+{"task": "site4267_bldg7556_floor30516", "reward": 0.2789, "components": {"walls": 0.3789, "rooms": 0.4796, "areas": 0.0, "doors": 0.0833, "windows": 0.0952, "fixtures": 0.375}, "tool_calls": 5, "seconds": 285, "tokens": {"in": 200950, "out": 88741}}
+== site52_bldg298_floor1183 run 0 (gemini-3-flash-preview)
+   [1] view_region {'y1': 950, 'x1': 450, 'x0': 220, 'y0': 830} -> crop (220,830)-(450,950)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'x1': 500, 'y0': 800, 'y1': 980, 'x0': 200} -> crop (200,800)-(500,980)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'x0': 230, 'x1': 380, 'y0': 900, 'y1': 950} -> crop (230,900)-(380,950)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] segment_rooms {'m_per_px': 0.01667, 'seeds': [[1415, 325], [1500, 280], [1650, 345], [1415, 410], [1130, 540], [1550, 630], [895, 645], [1030, 750], [1130, 785], [1300, 635], [885, 835], [1480, 915], [1180, 1100], [905, 1130], [1300, 480], [1415, 475]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [5] submit_schematic {'schematic_json': '<7189 chars>'} -> submitted: {'walls': 0, 'rooms': 16, 'doors': 0, 'windows': 0, 'fixtures': 12}. The episode is over.
+{"task": "site52_bldg298_floor1183", "reward": 0.2352, "components": {"walls": 0.0, "rooms": 0.693, "areas": 0.4375, "doors": 0.0, "windows": 0.0, "fixtures": 0.1818}, "tool_calls": 5, "seconds": 129, "tokens": {"in": 59150, "out": 34450}}
+== site644_bldg1390_floor6077 run 0 (gemini-3-flash-preview)
+   [1] view_region {'y0': 900, 'y1': 950, 'x1': 400, 'x0': 240} -> crop (240,900)-(400,950)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'x0': 390, 'y0': 40, 'x1': 620, 'y1': 820} -> crop (390,40)-(620,820)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'x0': 240, 'y0': 900, 'x1': 380, 'y1': 930} -> crop (240,900)-(380,930)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] view_region {'x0': 200, 'y0': 850, 'x1': 450, 'y1': 950} -> crop (200,850)-(450,950)
+[0 tool calls left - submit your schematic with submit_schematic soon]
+   [5] submit_schematic {'schematic_json': '<2935 chars>'} -> submitted: {'walls': 7, 'rooms': 21, 'doors': 3, 'windows': 2, 'fixtures': 6}. The episode is over.
+{"task": "site644_bldg1390_floor6077", "reward": 0.0, "components": {"walls": 0.0, "rooms": 0.0, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 5, "seconds": 27, "tokens": {"in": 15366, "out": 5609}}
+== site936_bldg1976_floor8706 run 0 (gemini-3-flash-preview)
+   [1] view_region {'x1': 400, 'x0': 200, 'y1': 950, 'y0': 900} -> crop (200,900)-(400,950)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y1': 1100, 'x0': 350, 'x1': 650, 'y0': 70} -> crop (350,70)-(650,1100)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'y1': 950, 'x0': 240, 'x1': 380, 'y0': 900} -> crop (240,900)-(380,950)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [5] segment_rooms {'m_per_px': 0.01393, 'seeds': [[1020, 130], [1180, 130], [1450, 175], [1100, 400], [1285, 330], [1225, 365], [1450, 410], [1260, 625], [1260, 725], [1100, 850], [1450, 850], [1020, 1140], [1180, 1140], [1285, 1145]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+{"task": "site936_bldg1976_floor8706", "reward": 0.0, "components": {"walls": 0.0, "rooms": 0.0, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 4, "seconds": 51, "tokens": {"in": 40004, "out": 12207}}
+== site980_bldg2055_floor9178 run 0 (gemini-3-flash-preview)
+   [1] view_region {'y0': 200, 'y1': 1000, 'x0': 200, 'x1': 1700} -> crop (200,200)-(1700,1000)
+[3 tool calls left - submit your schematic with submit_schematic soon]
+   [2] view_region {'y1': 1700, 'y0': 1400, 'x1': 600, 'x0': 200} -> crop (200,1400)-(600,1700)
+[2 tool calls left - submit your schematic with submit_schematic soon]
+   [3] view_region {'x0': 240, 'y0': 1500, 'y1': 1550, 'x1': 450} -> crop (240,1500)-(450,1550)
+[1 tool calls left - submit your schematic with submit_schematic soon]
+   [4] segment_rooms {'m_per_px': 0.0362, 'seeds': [[1110, 410], [1380, 470], [1000, 650], [1150, 720], [780, 750], [1280, 730], [1100, 940], [1300, 960], [780, 490], [960, 440]]} -> [{"seed": 0, "polygon": [], "area_px": 0, "closed": false}, {"seed": 1, "polygon": [], "area_px": 0, "closed": false}, {
+   [5] submit_schematic {'schematic_json': '<3446 chars>'} -> submitted: {'walls': 18, 'rooms': 10, 'doors': 9, 'windows': 9, 'fixtures': 8}. The episode is over.
+{"task": "site980_bldg2055_floor9178", "reward": 0.0709, "components": {"walls": 0.2836, "rooms": 0.0, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0}, "tool_calls": 5, "seconds": 62, "tokens": {"in": 18665, "out": 14765}}
