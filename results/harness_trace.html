@@ -204,6 +204,77 @@ figure img { display: block; width: 100%; height: auto; border-radius: var(--r);
 figcaption { font: 400 12px/1.6 var(--f-mono); color: var(--muted); }
 figcaption b { color: var(--fg); font: 600 14px var(--f-head); display: block; margin-bottom: 2px; }
 
+
+/* replay player -------------------------------------------------- */
+.player { display: grid; gap: 14px; }
+.pl-main { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 14px; align-items: stretch; }
+@media (max-width: 900px) { .pl-main { grid-template-columns: 1fr; } }
+.stage { position: relative; background: #000; border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; display: grid; place-items: center; min-height: 320px; }
+.stage .map { width: 100%; border-radius: 0; }
+.stage .map .zr { fill: transparent; stroke: rgba(79,209,169,.35); stroke-width: 1.5; pointer-events: none; display: none; }
+.stage .map .zr.past { display: block; }
+.stage .map .zr.cur { display: block; fill: rgba(79,209,169,.22); stroke: #fff; stroke-width: 3; animation: pulse 1.1s ease-in-out infinite alternate; }
+.stage .map .zn { display: none; }
+.stage .map .zn.past, .stage .map .zn.cur { display: block; }
+.stage .map .zn.past { opacity: .5; }
+.stage .map .seed { display: none; } .stage .map .seed.past { display: block; }
+@keyframes pulse { from { fill: rgba(79,209,169,.12); } to { fill: rgba(79,209,169,.38); } }
+@media (prefers-reduced-motion: reduce) { .stage .map .zr.cur { animation: none; } }
+.mag { position: absolute; top: 12px; right: 12px; border: 2px solid var(--green-hi); border-radius: var(--r); overflow: hidden; background: #000;
+  box-shadow: 0 10px 40px rgba(0,0,0,.7); opacity: 0; transform: translateY(-6px) scale(.97); transition: opacity .25s, transform .25s; pointer-events: none; }
+.mag.show { opacity: 1; transform: none; }
+.mag img { position: absolute; max-width: none; height: auto; filter: invert(.93) hue-rotate(180deg) contrast(1.05); }
+.mag .lab { position: absolute; left: 0; bottom: 0; right: 0; padding: 4px 8px; font: 400 10px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--green-hi); background: linear-gradient(0deg, rgba(0,0,0,.85), transparent); }
+.stage .cmp { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #0b0b0b; opacity: 0; transition: opacity .6s; pointer-events: none; }
+.stage .cmp.show { opacity: 1; }
+.stage .cap { position: absolute; left: 12px; bottom: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; pointer-events: none;
+  background: rgba(10,10,10,.82); border: 1px solid var(--line); border-radius: var(--r); padding: 8px 10px; backdrop-filter: blur(6px); font: 400 12px/1.4 var(--f-mono); color: var(--fg-2); }
+.stage .cap:empty { display: none; }
+.bigplay { position: absolute; inset: 0; margin: auto; width: max-content; height: max-content; display: inline-flex; align-items: center; gap: 12px; cursor: pointer;
+  background: var(--green); color: #fff; border: 0; border-radius: 999px; padding: 18px 30px; font: 600 18px/1 var(--f-head); box-shadow: 0 0 0 10px rgba(29,148,120,.25), 0 20px 60px rgba(0,0,0,.6); transition: transform .15s, box-shadow .15s; }
+.bigplay:hover { transform: scale(1.04); box-shadow: 0 0 0 14px rgba(29,148,120,.3), 0 20px 60px rgba(0,0,0,.6); }
+.bigplay svg { width: 20px; height: 20px; fill: currentColor; }
+.pl-side { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); display: grid; grid-template-rows: auto minmax(0, 1fr); min-height: 420px; max-height: 640px; overflow: hidden; }
+.pl-head { padding: 16px 18px 14px; border-bottom: 1px solid var(--line); display: grid; gap: 10px; background: rgba(255,255,255,.015); }
+.pl-head .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.pl-head .no { font: 700 13px/1 var(--f-mono); color: var(--muted); }
+.pl-head h3 { margin: 0; font: 600 18px/1.3 var(--f-head); letter-spacing: -0.01em; min-height: 1.3em; }
+.pl-body { padding: 14px 18px 18px; overflow-y: auto; display: grid; gap: 14px; align-content: start; }
+.pl-blk { display: grid; gap: 6px; }
+.pl-lab { font: 400 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.pl-lab::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--green-hi)); }
+.pl-think { font: 400 14px/1.7 var(--f-head); color: var(--fg-2); white-space: pre-wrap; margin: 0; }
+.pl-think strong { color: var(--fg); font-weight: 600; }
+.pl-think.typing::after { content: ""; display: inline-block; width: 7px; height: 1em; margin-left: 2px; vertical-align: -2px; background: var(--green-hi); animation: blink .8s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.pl-blk pre { margin: 0; max-height: 200px; }
+.pl-blk.in { animation: rise .35s ease-out both; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.hud { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 560px) { .hud { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.hud div { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 10px 12px; display: grid; gap: 4px; }
+.hud .k { font: 400 10px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.hud .v { font: 700 20px/1 var(--f-head); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.ctl { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 14px 16px; display: grid; gap: 12px; }
+.ctl .btns { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ib { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: var(--r); border: 1px solid var(--line); background: var(--card-2); color: var(--fg); cursor: pointer; transition: border-color .15s, background .15s; }
+.ib:hover { border-color: var(--line-2); } .ib:focus-visible, .seg:focus-visible, .spd:focus-visible { outline: 2px solid var(--green-hi); outline-offset: 2px; }
+.ib.go { background: var(--green); border-color: var(--green); width: 46px; }
+.ib svg { width: 16px; height: 16px; fill: currentColor; }
+.ib:disabled { opacity: .35; cursor: default; }
+.ctl .clock { margin-left: 6px; font: 400 13px/1 var(--f-mono); color: var(--fg-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ctl .clock b { color: var(--fg); font-weight: 700; }
+.ctl .spd-wrap { margin-left: auto; display: flex; gap: 4px; align-items: center; }
+.spd { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 6px; padding: 7px 10px; font: 700 12px/1 var(--f-mono); cursor: pointer; }
+.spd[aria-pressed="true"] { background: var(--green-wash); border-color: var(--green); color: var(--green-hi); }
+.scrub { display: flex; gap: 2px; height: 26px; align-items: stretch; }
+.seg { flex: var(--g, 1) 1 0; min-width: 4px; border: 0; padding: 0; background: color-mix(in oklab, var(--c) 28%, transparent); border-radius: 3px; cursor: pointer; position: relative; overflow: hidden; transition: transform .12s; }
+.seg:hover { transform: scaleY(1.2); }
+.seg::after { content: ""; position: absolute; inset: 0; background: var(--c); transform-origin: left; transform: scaleX(var(--f, 0)); }
+.seg.cur { box-shadow: 0 0 0 2px #fff; z-index: 1; }
+.scrub-note { font: 400 11px/1.4 var(--f-mono); color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 16px; justify-content: space-between; }
+.scrub-note kbd { font: 700 10px var(--f-mono); border: 1px solid var(--line-2); border-radius: 4px; padding: 1px 5px; color: var(--fg-2); }
+
 footer { margin-top: 110px; border-top: 1px solid var(--line); padding: 28px 0 calc(40px + env(safe-area-inset-bottom, 0px)); }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; justify-content: space-between; font: 400 12px/1.6 var(--f-mono); color: var(--muted); }
 code { font-family: var(--f-mono); font-size: .92em; background: var(--card-2); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; color: var(--fg); }
@@ -214,7 +285,7 @@ code { font-family: var(--f-mono); font-size: .92em; background: var(--card-2); 
 <nav class="top" id="nav">
   <div class="wrap">
     <a class="mark" href="#top">Break <b>the</b> Agent</a>
-    <div class="links"><a href="#timeline-sec">Timeline</a><a href="#map-sec">Attention</a><a href="#steps-sec">Steps</a><a href="#verdict-sec">Verdict</a></div>
+    <div class="links"><a href="#player-sec">Replay</a><a href="#timeline-sec">Timeline</a><a href="#map-sec">Attention</a><a href="#steps-sec">Steps</a><a href="#verdict-sec">Verdict</a></div>
     <span class="pill solid" id="nav-reward">Reward —</span>
   </div>
 </nav>
@@ -225,11 +296,52 @@ code { font-family: var(--f-mono); font-size: .92em; background: var(--card-2); 
     <h1>Harness trace</h1>
     <p class="lede" id="lede"></p>
     <div class="chips" id="hero-chips"></div>
+    <p style="margin:30px 0 0"><a class="pill solid" id="hero-play" href="#player-sec" style="font-size:16px;padding:14px 22px;text-decoration:none">▶ Watch the model work, step by step</a></p>
   </div>
 </header>
 
 <main class="wrap">
   <div class="stats" id="stats"></div>
+
+  <section class="block" id="player-sec">
+    <div class="head">
+      <span class="eyebrow">00 · Replay</span>
+      <h2>Watch the model work.</h2>
+      <p>The whole run, played back one step at a time: what the model thought, the call it made, what the harness answered, and where on the plan it was looking.</p>
+    </div>
+    <div class="player">
+      <div class="hud" id="hud"></div>
+      <div class="pl-main">
+        <div class="stage" id="stage">
+          <div class="map" id="pl-map"><img id="pl-img" alt="Source floor plan, inverted to dark"><svg id="pl-svg" preserveAspectRatio="none"></svg></div>
+          <div class="mag" id="pl-mag"><img id="pl-mag-img" alt=""><span class="lab">Zoom crop the model requested</span></div>
+          <img class="cmp" id="pl-cmp" alt="Submitted schematic beside the source drawing">
+          <div class="cap" id="pl-cap"></div>
+          <button class="bigplay" id="pl-big"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg>Play replay</button>
+        </div>
+        <div class="pl-side">
+          <div class="pl-head"><div class="row" id="pl-meta"></div><h3 id="pl-title"></h3></div>
+          <div class="pl-body" id="pl-body">
+            <div class="pl-blk" id="b-think"><div class="pl-lab" id="l-think">Reasoning</div><div class="pl-think" id="pl-think"></div></div>
+            <div class="pl-blk" id="b-call"><div class="pl-lab" style="--c:var(--c-preview)">Call</div><pre id="pl-call"></pre></div>
+            <div class="pl-blk" id="b-obs"><div class="pl-lab" style="--c:var(--c-perceive)">Harness returned</div><pre id="pl-obs"></pre></div>
+          </div>
+        </div>
+      </div>
+      <div class="ctl">
+        <div class="btns">
+          <button class="ib" id="pl-first" aria-label="Restart" title="Restart"><svg viewBox="0 0 16 16"><path d="M3 2h2v12H3zM14 2v12L6 8z"/></svg></button>
+          <button class="ib" id="pl-prev" aria-label="Previous step" title="Previous step (left arrow)"><svg viewBox="0 0 16 16"><path d="M13 2v12L4 8z"/></svg></button>
+          <button class="ib go" id="pl-play" aria-label="Play" title="Play / pause (space)"></button>
+          <button class="ib" id="pl-next" aria-label="Next step" title="Next step (right arrow)"><svg viewBox="0 0 16 16"><path d="M3 2v12l9-6z"/></svg></button>
+          <span class="clock" id="pl-clock"></span>
+          <span class="spd-wrap" role="group" aria-label="Playback speed"><button class="spd" data-s="1" aria-pressed="true">1×</button><button class="spd" data-s="2" aria-pressed="false">2×</button><button class="spd" data-s="4" aria-pressed="false">4×</button></span>
+        </div>
+        <div class="scrub" id="pl-scrub" role="group" aria-label="Steps. Click one to jump to it."></div>
+        <div class="scrub-note"><span id="pl-legend"></span><span><kbd>space</kbd> play/pause · <kbd>←</kbd> <kbd>→</kbd> step</span></div>
+      </div>
+    </div>
+  </section>
 
   <section class="block" id="timeline-sec">
     <div class="head">
@@ -498,6 +610,163 @@ $("#legend").innerHTML = usedCats.map(c => `<span class="chip ${CATS[c].cls}" st
     const c = b.dataset.cat;
     host.querySelectorAll(".step").forEach(el => el.hidden = c !== "all" && !el.dataset.cats.split(" ").includes(c));
   });
+})();
+
+/* replay player ------------------------------------------------ */
+(function player() {
+  const steps = D.steps, N = steps.length;
+  const pmap = $("#pl-map"), pimg = $("#pl-img"), psvg = $("#pl-svg"), mag = $("#pl-mag"), magImg = $("#pl-mag-img"), cmp = $("#pl-cmp"), cap = $("#pl-cap"), stage = $("#stage");
+  const clipS = (s, n) => (s || "").length > n ? s.slice(0, n) + "\n… (" + ((s || "").length - n).toLocaleString() + " more characters)" : (s || "");
+  const stepCat = s => s.source === "user" ? "task" : (s.tools[0] ? s.tools[0].cat : "final");
+  const stepColor = s => ({ task: "var(--c-perceive)", final: "var(--green-hi)" })[stepCat(s)] || CATS[stepCat(s)].color;
+  const lastAgent = agentSteps.at(-1);
+  const submitIdx = steps.findIndex(s => s.tools && s.tools.some(t => t.cat === "submit"));
+
+  // stage: same framing as the attention map, built once
+  const zooms = calls.filter(c => c.region), seedCalls = calls.filter(c => c.fn === "blueprint_segment_rooms");
+  const seedPts = []; seedCalls.forEach(c => { try { JSON.parse(c.args).seeds.forEach(p => seedPts.push({ p, id: c.step.id })); } catch (e) {} });
+  const xs = [...zooms.flatMap(z => [z.region[0], z.region[2]]), ...seedPts.map(o => o.p[0])], ys = [...zooms.flatMap(z => [z.region[1], z.region[3]]), ...seedPts.map(o => o.p[1])];
+  let [bx0, by0, bx1, by1] = xs.length ? [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)] : [0, 0, D.drawing.w, D.drawing.h];
+  const padB = 0.12 * Math.max(bx1 - bx0, by1 - by0);
+  bx0 = Math.max(0, bx0 - padB); by0 = Math.max(0, by0 - padB); bx1 = Math.min(D.drawing.w, bx1 + padB); by1 = Math.min(D.drawing.h, by1 + padB);
+  const bw = bx1 - bx0, bh = by1 - by0;
+  pmap.style.aspectRatio = `${bw} / ${bh}`;
+  pimg.src = D.drawing.src; magImg.src = D.drawing.src;
+  Object.assign(pimg.style, { width: (100 * D.drawing.w / bw) + "%", left: (-100 * bx0 / bw) + "%", top: (-100 * by0 / bh) + "%" });
+  psvg.setAttribute("viewBox", `${bx0} ${by0} ${bw} ${bh}`);
+  const k = bw / 1200;
+  const seedEls = seedPts.map(o => { const e = svgEl("circle", { cx: o.p[0], cy: o.p[1], r: 7 * k, class: "seed", "stroke-width": 2 * k }); psvg.append(e); return { e, id: o.id }; });
+  const zoomEls = zooms.map((z, i) => {
+    const [x0, y0, x1, y1] = z.region;
+    const r = svgEl("rect", { x: x0, y: y0, width: x1 - x0, height: y1 - y0, class: "zr" });
+    const n = svgEl("text", { x: x0 + 6 * k, y: y0 + 22 * k, class: "zn", style: `font-size:${18 * k}px;stroke-width:${4 * k}px` }); n.textContent = i + 1;
+    psvg.append(r, n); return { r, n, z, i };
+  });
+  if (D.comparison) cmp.src = D.comparison;
+  const stepIndex = {}; steps.forEach((s, i) => stepIndex[s.id] = i);
+
+  // scrubber
+  const scrub = $("#pl-scrub");
+  scrub.innerHTML = steps.map((s, i) => {
+    const dt = s.t != null && s.start != null ? Math.max(0, s.t - s.start) : 0;
+    return `<button class="seg" data-i="${i}" style="--c:${stepColor(s)};--g:${Math.max(1.5, Math.min(dt, 120)).toFixed(1)}" aria-label="Step ${s.id}: ${esc(s.headline || stepCat(s))}" title="#${s.id} · ${esc(s.headline || (s.tools[0] ? short(s.tools[0].fn) : stepCat(s)))}"></button>`;
+  }).join("");
+  const segs = [...scrub.children];
+  $("#pl-legend").innerHTML = ["task", ...usedCats, "final"].map(c => `<span style="display:inline-flex;align-items:center;gap:6px;margin-right:10px"><i style="width:8px;height:8px;border-radius:50%;background:${c === "task" ? "var(--c-perceive)" : c === "final" ? "var(--green-hi)" : CATS[c].color};display:inline-block"></i>${c === "task" ? "Prompt" : c === "final" ? "Done" : CATS[c].label}</span>`).join("");
+
+  const ICON_PLAY = '<svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg>', ICON_PAUSE = '<svg viewBox="0 0 16 16"><path d="M3 2h4v12H3zM9 2h4v12H9z"/></svg>';
+  const playBtn = $("#pl-play");
+
+  let idx = 0, p = 1, playing = false, speed = 1, started = false, last = 0, shownIdx = -1;
+
+  function plan(s) {
+    const body = s.source === "user" ? "" : (s.headline ? s.reasoning.replace(`**${s.headline}**`, "").trim() : s.reasoning);
+    const text = s.source === "user" ? s.message : [body, s.message].filter(Boolean).join("\n\n");
+    const hasCall = s.tools.length > 0;
+    const typeT = Math.min(7, text.length / 150);
+    const dur = Math.max(2.6, 1.2 + typeT + (hasCall ? 2.4 : 0));
+    const a = text ? (1.0 + typeT) / dur : 0.04, b = hasCall ? a + 1.0 / dur : a;
+    return { text, hasCall, dur, a, b };
+  }
+  const plans = steps.map(plan);
+
+  function setStage(i) {
+    const s = steps[i];
+    zoomEls.forEach(o => { const si = stepIndex[o.z.step.id]; o.r.classList.toggle("past", si < i); o.n.classList.toggle("past", si < i); o.r.classList.toggle("cur", si === i); o.n.classList.toggle("cur", si === i); });
+    seedEls.forEach(o => o.e.classList.toggle("past", stepIndex[o.id] <= i));
+    const z = s.tools.find(t => t.region);
+    if (z) {
+      const [x0, y0, x1, y1] = z.region, rw = x1 - x0, rh = y1 - y0;
+      const sw = stage.clientWidth, sh = stage.clientHeight;
+      const w = Math.max(90, Math.min(.4 * sw, .55 * sh * rw / rh)), h = w * rh / rw;
+      mag.style.width = w + "px"; mag.style.height = h + "px";
+      Object.assign(magImg.style, { width: (100 * D.drawing.w / rw) + "%", left: (-100 * x0 / rw) + "%", top: (-100 * y0 / rh) + "%" });
+      mag.classList.add("show");
+    } else mag.classList.remove("show");
+    cmp.classList.toggle("show", !!D.comparison && submitIdx >= 0 && i >= submitIdx);
+    cap.innerHTML = s.tools.length ? s.tools.map(t => `<span class="tool ${CATS[t.cat].cls}">${esc(short(t.fn))}</span><span>${esc(t.summary)}</span>`).join("") : (s.source === "user" ? `<span class="tool c-perceive">task</span><span>Prompt handed to the harness</span>` : "");
+    let nCalls = 0, cost = 0, ctx = 0;
+    for (let j = 0; j <= i; j++) { nCalls += steps[j].tools.length; cost += steps[j].cost || 0; if (steps[j].prompt) ctx = steps[j].prompt; }
+    const dim = "color:var(--muted);font-size:13px";
+    $("#hud").innerHTML = [["Step", `${i + 1}<span style="${dim}"> / ${N}</span>`], ["Tool calls", `${nCalls}<span style="${dim}"> / ${calls.length}</span>`], ["Context", kfmt(ctx)], ["Spent", "$" + cost.toFixed(2)]].map(([a, b]) => `<div><span class="k">${a}</span><span class="v">${b}</span></div>`).join("");
+    const cat = stepCat(s);
+    $("#pl-meta").innerHTML = `<span class="no">#${s.id}</span>` + (s.tools.length ? s.tools.map(t => `<span class="tool ${CATS[t.cat].cls}">${esc(short(t.fn))}</span>`).join("") : `<span class="tool" style="--c:${stepColor(s)}">${cat === "task" ? "instruction" : "done"}</span>`) + (s.t != null ? `<span class="toks">+${mmss(s.t)}</span>` : "");
+    $("#pl-title").textContent = s.source === "user" ? "The task" : (s.headline || (s === lastAgent ? "Closing message" : "Working"));
+    $("#l-think").textContent = s.source === "user" ? "Prompt" : (s.reasoning ? "Reasoning summary" : "Message");
+    $("#pl-call").textContent = s.tools.map(t => clipS(t.args, 900)).join("\n\n— — —\n\n");
+    $("#pl-obs").textContent = s.tools.map(t => clipS(t.obs, 1100)).join("\n\n— — —\n\n");
+    segs.forEach((e, j) => { e.classList.toggle("cur", j === i); e.style.setProperty("--f", j < i ? 1 : 0); });
+    $("#pl-body").scrollTop = 0;
+    shownIdx = i;
+  }
+
+  let seenCall = false, seenObs = false;
+  function paint() {
+    if (shownIdx !== idx) { setStage(idx); seenCall = seenObs = false; }
+    const s = steps[idx], pl = plans[idx];
+    const tw = pl.a > 0 ? Math.min(1, p / pl.a) : 1;
+    const full = pl.text, n = Math.floor(full.length * tw);
+    const th = $("#pl-think");
+    th.innerHTML = md(full.slice(0, n));
+    th.classList.toggle("typing", tw < 1 && playing);
+    $("#b-think").hidden = !full;
+    const showCall = pl.hasCall && p >= pl.a, showObs = pl.hasCall && p >= pl.b;
+    const bc = $("#b-call"), bo = $("#b-obs");
+    bc.hidden = !showCall; bo.hidden = !showObs;
+    if (showCall && !seenCall) { seenCall = true; if (playing) { bc.classList.remove("in"); void bc.offsetWidth; bc.classList.add("in"); } }
+    if (showObs && !seenObs) { seenObs = true; if (playing) { bo.classList.remove("in"); void bo.offsetWidth; bo.classList.add("in"); } }
+    if (playing) { const b = $("#pl-body"); b.scrollTop = b.scrollHeight; }
+    segs[idx].style.setProperty("--f", Math.min(1, p).toFixed(3));
+    const tNow = s.source === "user" ? 0 : s.t != null ? (s.start != null ? s.start + (s.t - s.start) * Math.min(1, p) : s.t) : 0;
+    $("#pl-clock").innerHTML = `<b>${mmss(tNow)}</b> / ${mmss(D.duration)}`;
+    $("#pl-prev").disabled = idx === 0; $("#pl-next").disabled = idx === N - 1;
+  }
+
+  function setPlaying(v) {
+    playing = v; playBtn.innerHTML = v ? ICON_PAUSE : ICON_PLAY; playBtn.setAttribute("aria-label", v ? "Pause" : "Play");
+    if (v) { started = true; $("#pl-big").hidden = true; last = performance.now(); requestAnimationFrame(tick); }
+    paint();
+  }
+  function go(i, fresh) { idx = Math.max(0, Math.min(N - 1, i)); p = fresh ? 0 : 1; shownIdx = -1; paint(); }
+  function tick(now) {
+    if (!playing) return;
+    const dt = Math.min(.1, (now - last) / 1000); last = now;
+    p += dt * speed / plans[idx].dur;
+    if (p >= 1) {
+      if (idx < N - 1) { idx++; p = 0; shownIdx = -1; } else { p = 1; setPlaying(false); return; }
+    }
+    paint(); requestAnimationFrame(tick);
+  }
+  function toggle() {
+    if (!playing && idx === N - 1 && p >= 1) go(0, true);
+    else if (!playing && !started) go(idx, true);
+    setPlaying(!playing);
+  }
+  const reveal = () => { started = true; $("#pl-big").hidden = true; };
+
+  playBtn.addEventListener("click", toggle);
+  $("#pl-big").addEventListener("click", () => { go(0, true); setPlaying(true); });
+  $("#pl-first").addEventListener("click", () => { go(0, true); if (!playing) setPlaying(true); });
+  $("#pl-prev").addEventListener("click", () => { reveal(); go(idx - 1, playing); });
+  $("#pl-next").addEventListener("click", () => { reveal(); go(idx + 1, playing); });
+  scrub.addEventListener("click", e => { const b = e.target.closest(".seg"); if (!b) return; reveal(); go(+b.dataset.i, playing); });
+  document.querySelectorAll(".spd").forEach(b => b.addEventListener("click", () => { speed = +b.dataset.s; document.querySelectorAll(".spd").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false")); }));
+  $("#hero-play").addEventListener("click", () => { if (!playing) setTimeout(() => { go(0, true); setPlaying(true); }, 500); });
+
+  let inView = false;
+  new IntersectionObserver(es => { inView = es[0].isIntersecting; }, { threshold: .15 }).observe($("#player-sec"));
+  addEventListener("keydown", e => {
+    if (!inView || e.metaKey || e.ctrlKey || e.altKey) return;
+    const tag = e.target && e.target.tagName;
+    if (tag === "INPUT" || tag === "SUMMARY" || tag === "A") return;
+    if (e.key === " " && tag !== "BUTTON") { e.preventDefault(); toggle(); }
+    else if (e.key === "ArrowRight") { e.preventDefault(); reveal(); go(idx + 1, playing); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); reveal(); go(idx - 1, playing); }
+  });
+  addEventListener("resize", () => { shownIdx = -1; paint(); });
+
+  playBtn.innerHTML = ICON_PLAY;
+  go(0, false);
 })();
 
 /* verdict ------------------------------------------------------ */
