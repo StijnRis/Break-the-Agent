@@ -1,5 +1,14 @@
 # Harbor run: Blueprint schematic
 
+**Latest verification (2026-11-15, Harbor 0.26.0, Docker, current code):**
+
+| command | reward | job |
+|---|---|---|
+| `harbor run -p ./harbor_task -a oracle` | **1.0000** (reference answer) | [`jobs/verify-oracle`](../jobs/verify-oracle) |
+| `harbor run -p ./harbor_task -a opencode -m google/gemini-3.1-pro-preview` | **0.7222** (7 min, no errors) | [`jobs/verify-opencode`](../jobs/verify-opencode) |
+
+The sections below describe an earlier run (0.6159).
+
 **Reward: 0.6159 / 1.0**
 
 - Harbor: 0.26.0

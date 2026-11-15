@@ -2,20 +2,7 @@
 
 # DrawingSense: Blueprint → Schematic, an RL environment for reading construction drawings
 
-*Junction 2026 · Break the Agent (AfterQuery).* Quick links: [run the evaluation](#run-the-evaluation-one-command) · [results](#results-test-split-15-plans) · [Harbor task](harbor_task/README.md) · [challenge brief and criteria mapping](CHALLENGE.md) · [repository layout](#repository-layout)
-
-## Run the interactive demo website
-
-Install the project dependencies once, then start the local demo from the repository root:
-
-```bash
-uv sync
-uv run python -m blueprint_env.demo_server
-```
-
-Open `http://127.0.0.1:8766`. Choose one of the 15 held-out benchmark plans or upload a floor-plan image, edit the prepared prompt, and run the agent. The page shows four full-image views: the source drawing, surveyed answer, our computer-vision solver, and Gemini's submission. The reference solver and Gemini run concurrently. Gemini's panel opens on a step-by-step reasoning/activity view, including zoom coordinates and returned crops; it switches to the submitted output when the run finishes. Benchmark plans include per-component weighted scores. Uploaded drawings can be compared visually but have no score because there is no surveyed answer key.
-
-The live agent uses the Gemini runner and needs `GEMINI_API_KEY` in `.env` or the environment. Set `DEMO_MODEL` to a supported Gemini model name to change the model; the default is `gemini-3.1-pro-preview`. The reference solver runs locally. The demo binds to localhost only.
+*Junction 2026 · Break the Agent (AfterQuery).* Quick links: [run the evaluation](#run-the-evaluation-one-command) · [results](#results-test-split-15-plans) · [Harbor + OpenCode](#run-it-with-harbor--opencode-the-required-stack) · [challenge brief and criteria mapping](CHALLENGE.md) · [repository layout](#repository-layout)
 
 An agent gets a raster construction floor plan (one storey of a Swiss apartment building) and has to turn it into a **formal schematic**. The schematic holds walls, room outlines with their printed number and name, doors, windows, sanitary and kitchen fixtures, and the drawing scale, all in image-pixel coordinates. With a correct schematic, questions like "net area of room 2.05?" or "how many WCs?" become a few lines of deterministic code. Producing the schematic is the skill worth learning.
 
@@ -23,11 +10,34 @@ Frontier agents are poor at this. On the same 15 test drawings, Gemini 3.1 Pro (
 
 The brief is in [CHALLENGE.md](CHALLENGE.md), with a table mapping each judging criterion to where this repository answers it. Slide-ready figures are in [presentation/](presentation) (rebuild them with `python -m blueprint_env.make_figures`).
 
-## Harbor submission
+## Run it with Harbor + OpenCode (the required stack)
 
-The organizer's update is saved in [ORGANIZER_REQUIREMENTS.md](ORGANIZER_REQUIREMENTS.md). A Harbor task for the `site279_bldg514_floor2041` benchmark plan is packaged in [harbor_task/](harbor_task), including the required task files and isolated verifier. It has been run with Harbor/OpenCode and scored 0.6159. The run summary, logs, trajectory, and source-versus-submission comparison image are linked from [results/harbor_run.md](results/harbor_run.md).
+The environment is a standard Harbor task in [`harbor_task/`](harbor_task) and is played over MCP by the OpenCode harness.
 
-The AI receives eight MCP tools: `get_task` (instructions and overview), `view_region` (zoom with pixel rulers), `estimate_scale` (scale bar/title-block estimate), `read_room_labels` (room-label OCR and coordinates), `segment_rooms` (seeded polygon proposals), `measure_area` (pixel and square-metre area), `preview_schematic` (overlay review), and `submit_schematic` (final answer). Full input and output descriptions are in [the Harbor task README](harbor_task/README.md).
+```bash
+uv tool install harbor            # Harbor 0.26.0 was used; Docker must be running
+export GEMINI_API_KEY=...         # or put it in .env and add --env-file .env
+
+# 1. Play it: an OpenCode agent solves the task over MCP, the verifier scores it
+harbor run -p ./harbor_task -a opencode -m google/gemini-3.1-pro-preview
+
+# 2. Sanity check, no model and no cost: the oracle submits the reference answer (reward 1.0)
+harbor run -p ./harbor_task -a oracle
+```
+
+Any other `provider/model` works the same way (`-m openai/...`). Results land in `jobs/<name>/`; `harbor view jobs` browses them. Windows: set `PYTHONUTF8=1`.
+
+| organizer requirement | where |
+|---|---|
+| Harbor task: `instruction.md`, `task.toml`, `environment/Dockerfile`, `tests/`, `solution/` | all present in [`harbor_task/`](harbor_task) |
+| Run with `harbor run -p ./my-task -a opencode -m provider/model` | command above (verified 2026-11-15) |
+| Verifier writes one 0–1 score to `/logs/verifier/reward.txt` | `tests/test.sh` → `tests/grader.py`, partial credit from the same scorer as the one-command eval |
+| At least one Harbor run log with its score | [results/harbor_run.md](results/harbor_run.md): OpenCode + Gemini 3.1 Pro scored **0.7222** in a fresh run on 2026-11-15 (`jobs/verify-opencode`) and 0.6159 / 0.8004 in earlier runs; the oracle scores 1.0 (`jobs/verify-oracle`). Logs, trajectories and comparison images are in [`jobs/`](jobs) |
+| Short README: objective, why hard, scoring | this file; the Harbor-specific version is [harbor_task/README.md](harbor_task/README.md) |
+
+Cheating is prevented structurally: the verifier runs in a **separate container with no network** that holds the surveyed ground truth; the agent's container only has the drawing and the MCP server. The agent never sees its score.
+
+The agent gets eight MCP tools: `get_task` (instructions and overview), `view_region` (zoom with pixel rulers), `estimate_scale` (scale bar/title-block estimate), `read_room_labels` (room-label OCR and coordinates), `segment_rooms` (seeded polygon proposals), `measure_area` (pixel and square-metre area), `preview_schematic` (overlay review), and `submit_schematic` (final answer). Full descriptions are in [the Harbor task README](harbor_task/README.md). The Harbor task is one plan (`site279_bldg514_floor2041`); the one-command evaluation below covers all 15 test plans, including the do-nothing and stop-early baselines and the exploit suite.
 
 Data: Swiss Dwellings (Archilyse AG, CC BY 4.0, doi:10.5281/zenodo.7788422), as rendered for Junction 2026. Each PNG comes with the DXF it was drawn from, so the ground truth is exact.
 
@@ -74,6 +84,19 @@ Notes on these numbers:
 - **Rough room outlines (rooms ≈ 0.27).** The agent draws boxes by eye from a downscaled view instead of zooming in. It also doesn't use `segment_rooms`, which returns exact outlines from a seed point per room. The reference does exactly that, and gets rooms to 0.59 and areas to 0.37.
 - **Doors and windows (≈ 0.2).** The agent counts too few or places them by eye, with an error above 40 cm. They are visible in `view_region` crops at full resolution.
 - **Walls (≈ 0.4–0.5).** The agent outlines the building's outer shell and skips the interior partitions.
+
+## Run the interactive demo website
+
+Install the project dependencies once, then start the local demo from the repository root:
+
+```bash
+uv sync
+uv run python -m blueprint_env.demo_server
+```
+
+Open `http://127.0.0.1:8766`. Choose one of the 15 held-out benchmark plans or upload a floor-plan image, edit the prepared prompt, and run the agent. The page shows four full-image views: the source drawing, surveyed answer, our computer-vision solver, and Gemini's submission. The reference solver and Gemini run concurrently. Gemini's panel opens on a step-by-step reasoning/activity view, including zoom coordinates and returned crops; it switches to the submitted output when the run finishes. Benchmark plans include per-component weighted scores. Uploaded drawings can be compared visually but have no score because there is no surveyed answer key.
+
+The live agent uses the Gemini runner and needs `GEMINI_API_KEY` in `.env` or the environment. Set `DEMO_MODEL` to a supported Gemini model name to change the model; the default is `gemini-3.1-pro-preview`. The reference solver runs locally. The demo binds to localhost only.
 
 ## The environment
 

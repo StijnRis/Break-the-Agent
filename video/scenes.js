@@ -318,7 +318,7 @@ const SCENES = [
     parts.forEach(([name, w, color, how], i) => {
       const pw = W * w / 100;
       const seg = div(root, 'abs', `left:${x}px;top:${Y}px;width:${pw - 6}px;height:${H}px;border-radius:16px;background:${color};overflow:hidden;transform-origin:left center;`,
-        `<div style="padding:18px 22px;"><div style="font-size:30px;font-weight:700;letter-spacing:-0.02em;">${name}</div><div class="score" style="font-size:78px;margin-top:4px;">${w}%</div></div>`);
+        `<div style="padding:18px ${pw < 200 ? 14 : 22}px;"><div style="font-size:${pw < 200 ? 26 : 30}px;font-weight:700;letter-spacing:-0.02em;">${name}</div><div class="score" style="font-size:${pw < 200 ? 56 : 78}px;margin-top:4px;white-space:nowrap;">${w}%</div></div>`);
       const at = [0.1, 0.5, 2.1, 2.5, 4.1, 4.5][i];
       tl.fromTo(seg, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.55, ease: 'expo.out' }, at);
       x += pw;
@@ -348,7 +348,7 @@ const SCENES = [
     drawIn(tl, rr, 3.0, { dur: 0.7, stagger: 0.1 });
     const rd = drawSegs(Rv.g('doors'), rs.doors, GREEN, 10);
     popIn(tl, rd, 6.4, { stagger: 0.04, y: 0, scale: 0.4 });
-    const done = div(root, 'abs pill', 'left:1000px;top:770px;font-size:22px;', 'done · no model calls');
+    const done = div(root, 'abs pill', `left:1000px;top:${Y + H - 62}px;font-size:22px;`, 'done · no model calls');
     popIn(tl, done, 8.2);
 
     // ---- left: Gemini, replayed from its real tool trace

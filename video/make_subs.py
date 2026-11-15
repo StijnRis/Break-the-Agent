@@ -88,8 +88,20 @@ def srt_time(x: float) -> str:
     return f"{ms // 3600000:02}:{ms // 60000 % 60:02}:{ms // 1000 % 60:02},{ms % 1000:03}"
 
 
+_MAP = {"’": "'", "‘": "'", "“": '"', "”": '"', "–": "-", "—": "-", "…": "...", " ": " ", "→": "to"}
+
+
+def plain(text: str) -> str:
+    """captions are plain ASCII: players that guess the wrong encoding for the .srt turn curly quotes into 'â€™'"""
+    for k, v in _MAP.items():
+        text = text.replace(k, v)
+    return "".join(c if ord(c) < 128 else "" for c in text)
+
+
 def export() -> list[dict]:
     cues = build()
+    for c in cues:
+        c["text"] = plain(c["text"])
     (HERE / "media" / "subs.json").write_text(json.dumps(cues, ensure_ascii=False), encoding="utf-8")
     out = HERE / "out"
     out.mkdir(exist_ok=True)
