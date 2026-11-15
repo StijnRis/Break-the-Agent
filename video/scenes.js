@@ -171,7 +171,7 @@ const SCENES = [
     const rows = [
       ['Our reference', R('reference').reward, BLUE, 'deterministic'],
       ['Our reference, stopped at 50 %', R('stop early (50').reward, '#5A5A62', ''],
-      ['Gemini 3.1 Pro', R('agent: gemini-3.1').reward, ORANGE, R('agent: gemini-3.1').runs.map(v => v.toFixed(3)).join(' · ')],
+      ['Gemini 3.1 Pro', R('agent: gemini-3.1-pro-preview').reward, ORANGE, R('agent: gemini-3.1-pro-preview').runs.map(v => v.toFixed(3)).join(' · ')],
       ['Do nothing', 0, '#5A5A62', ''],
     ];
     const MAXW = 1120;
