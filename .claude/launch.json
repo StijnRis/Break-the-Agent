@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "video",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8777", "--directory", "video"],
+      "port": 8777
+    }
+  ]
+}
