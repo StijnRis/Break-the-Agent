@@ -14,3 +14,4 @@ video/clean_tts/
 video/recorded_build/
 results/final_pitch_video*.mp4
 results/final_pitch_video*.srt
+video/out/

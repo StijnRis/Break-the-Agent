@@ -109,3 +109,8 @@ function sceneFades(tl, root, dur, { inn = 0.4, out = 0.4 } = {}) {
   if (out) tl.to(root, { opacity: 0, duration: out }, dur - out);
   tl.set({}, {}, dur); // make the timeline exactly `dur` long
 }
+
+// Reveal an element left to right with a clip-path wipe (no per-word animation).
+function wipe(tl, el, at, dur = 0.8) {
+  tl.fromTo(el, { clipPath: 'inset(-10% 100% -10% 0)', x: -30 }, { clipPath: 'inset(-10% 0% -10% 0)', x: 0, duration: dur, ease: 'power3.out', immediateRender: true }, at);
+}
