@@ -69,15 +69,22 @@ h2 { font: 600 17px/1.3 var(--sans); margin: 0 0 4px; letter-spacing: -.01em; }
 /* player */
 .status { display: flex; flex-wrap: wrap; gap: 4px 22px; font: 13px var(--mono); color: var(--muted); margin-bottom: 10px; }
 .status b { color: var(--fg); font-weight: 600; }
+.process { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+.process li { min-width: 0; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); color: var(--muted); font-size: 12px; line-height: 1.35; }
+.process li b { display: block; margin-bottom: 4px; color: var(--fg-2); font: 600 12px var(--mono); }
+.process li.active { border-color: var(--accent); background: var(--accent-bg); color: var(--fg-2); }
+.process li.active b { color: var(--accent); }
+.process li.done b { color: var(--fg); }
+@media (max-width: 700px) { .process { grid-template-columns: 1fr 1fr; } }
 .pl-main { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 12px; }
 @media (max-width: 900px) { .pl-main { grid-template-columns: 1fr; } }
 .stage { position: relative; background: #000; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; display: grid; place-items: center; min-height: 300px; }
-.map { position: relative; width: 100%; background: #000; overflow: hidden; }
+.map { position: relative; width: 100%; background: #000; overflow: hidden;  }
 .map img { position: absolute; display: block; max-width: none; height: auto; filter: invert(.93) hue-rotate(180deg) contrast(1.05); }
 .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .map .zr { fill: transparent; stroke: rgba(63,182,139,.4); stroke-width: 1.5; vector-effect: non-scaling-stroke; display: none; }
 .map .zr.past { display: block; }
-.map .zr.cur { display: block; fill: rgba(63,182,139,.2); stroke: #fff; stroke-width: 2.5; }
+.map .zr.cur { display: block; fill: rgba(63,182,139,.24); stroke: var(--accent); stroke-width: 3; }
 .map .zn { font: 700 22px var(--mono); fill: var(--accent); paint-order: stroke; stroke: #000; stroke-width: 4px; pointer-events: none; display: none; }
 .map .zn.past { display: block; opacity: .55; } .map .zn.cur { display: block; }
 .map .seed { fill: var(--c-perceive); stroke: #000; stroke-width: 2; display: none; } .map .seed.past { display: block; }
@@ -135,18 +142,26 @@ pre { margin: 0; padding: 10px 12px; background: #0b0c0e; border: 1px solid var(
 .lg i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
 
 /* timeline */
-.scroll-x { overflow-x: auto; padding: 14px; }
-#timeline { display: block; width: 100%; min-width: 720px; height: auto; }
-#timeline .lane-bg { fill: rgba(255,255,255,.03); }
-#timeline .lane-lab { font: 11px var(--mono); fill: var(--muted); }
+.scroll-x { overflow-x: auto; padding: 18px; background: radial-gradient(ellipse at 50% 0%, rgba(63,182,139,.055), transparent 70%), var(--panel); }
+#timeline { display: block; width: 100%; min-width: 840px; height: auto; overflow: visible; }
+#timeline .lane-bg { stroke-width: 1; }
+#timeline .lane-lab { font: 600 11px var(--mono); fill: var(--fg-2); letter-spacing: .04em; }
+#timeline .swatch { rx: 2; }
 #timeline .tick { font: 10px var(--mono); fill: var(--muted); }
-#timeline .grid { stroke: rgba(255,255,255,.06); }
+#timeline .grid { stroke: rgba(255,255,255,.09); stroke-dasharray: 2 5; }
+#timeline .axis { stroke: rgba(255,255,255,.2); stroke-width: 1; }
 #timeline .ev { cursor: pointer; }
-#timeline .ev:hover rect { stroke: #fff; stroke-width: 1.5; }
-#timeline .ctx-area { fill: rgba(63,182,139,.14); }
-#timeline .ctx-line { fill: none; stroke: var(--accent); stroke-width: 1.5; }
-#timeline .ctx-lab { font: 10px var(--mono); fill: var(--accent); }
-#timeline .head { stroke: #fff; stroke-width: 1.5; pointer-events: none; }
+#timeline .ev rect { stroke: rgba(255,255,255,.32); stroke-width: .7; transition: filter .12s, stroke .12s; }
+#timeline .ev:hover rect, #timeline .ev:focus rect { stroke: #fff; stroke-width: 1.5; filter: brightness(1.2); }
+#timeline .token-bg { fill: rgba(255,255,255,.025); stroke: rgba(255,255,255,.07); }
+#timeline .token-grid { stroke: rgba(255,255,255,.075); stroke-dasharray: 2 5; }
+#timeline .token-axis { font: 10px var(--mono); fill: var(--muted); }
+#timeline .token-title { font: 600 10px var(--mono); letter-spacing: .03em; }
+#timeline .token-area { opacity: .09; }
+#timeline .token-line { fill: none; stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+#timeline .token-point { stroke: var(--panel); stroke-width: 1.5; }
+#timeline .head { stroke: #f4f7f6; stroke-width: 1.5; stroke-dasharray: 3 3; pointer-events: none; }
+#timeline .head-dot { fill: #f4f7f6; stroke: var(--accent); stroke-width: 2; pointer-events: none; }
 .tip { position: fixed; z-index: 50; pointer-events: none; background: #000; border: 1px solid var(--line-2); border-radius: 4px; padding: 8px 10px; font: 12px/1.45 var(--mono); color: var(--fg); max-width: 320px; }
 .tip .m { color: var(--muted); }
 
@@ -157,11 +172,22 @@ pre { margin: 0; padding: 10px 12px; background: #0b0c0e; border: 1px solid var(
 .big .n { font: 600 clamp(2.6rem, 6vw, 3.4rem)/1 var(--sans); letter-spacing: -.03em; color: var(--accent); font-variant-numeric: tabular-nums; }
 .big .k { font: 12px var(--mono); color: var(--muted); }
 .comps { padding: 16px 18px; display: grid; gap: 12px; align-content: center; }
-.comp { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) 3rem; gap: 12px; align-items: center; font: 13px var(--mono); }
-.comp .w { color: var(--muted); font-size: 11px; margin-left: 6px; }
-.comp .track { height: 6px; border-radius: 3px; background: var(--panel-2); overflow: hidden; }
-.comp .fill { height: 100%; background: var(--accent); width: 0; transition: width .8s ease-out; }
+.comp-guide { display: grid; gap: 4px; margin-bottom: 2px; }
+.comp-guide h3 { margin: 0; font: 600 14px var(--sans); }
+.comp-guide p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+.comp-scale { display: grid; grid-template-columns: 7rem minmax(0, 1fr) 3.2rem; gap: 12px; align-items: end; color: var(--muted); font: 10px var(--mono); }
+.comp-scale .axis { display: grid; gap: 4px; }
+.comp-scale .axis-title { color: var(--fg-2); }
+.comp-scale .marks { display: flex; justify-content: space-between; }
+.comp { display: grid; grid-template-columns: 7rem minmax(0, 1fr) 3.2rem; gap: 12px; align-items: center; font: 13px var(--mono); }
+.comp .name { display: grid; gap: 3px; }
+.comp .w { color: var(--muted); font-size: 10px; line-height: 1.25; }
+.comp .plot { position: relative; height: 24px; border-left: 1px solid var(--line-2); border-right: 1px solid var(--line-2); border-bottom: 1px solid var(--line); }
+.comp .gridlines { position: absolute; inset: 0; pointer-events: none; }
+.comp .gridlines i { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,.25); }
+.comp .point { position: absolute; top: 50%; width: 12px; height: 12px; border: 2px solid var(--panel); border-radius: 50%; background: var(--accent); transform: translate(-50%, -50%); box-shadow: 0 0 0 1px var(--accent); }
 .comp .val { text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .comp-scale, .comp { grid-template-columns: 5.5rem minmax(0, 1fr) 2.7rem; gap: 7px; } }
 .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
 @media (max-width: 720px) { .pair { grid-template-columns: 1fr; } }
 figure { margin: 0; display: grid; gap: 8px; }
@@ -212,12 +238,18 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: s
 <main class="wrap">
   <section id="player-sec">
     <h2>Replay</h2>
-    <p class="sub">The run, one step at a time: the model's reasoning, the tool it calls, what comes back, and where on the plan it is looking.</p>
+    <p class="sub">Follow the chain for each moment: what the model is working on, which tool it uses, and what that tool returns. The timeline and full transcript below preserve every step.</p>
+    <ol class="process" id="process" aria-label="How the agent processes the drawing">
+      <li data-phase="0"><b>1 · Read the plan</b>Calibrate the scale and find printed room labels.</li>
+      <li data-phase="1"><b>2 · Map rooms</b>Use label positions as seeds for room outlines.</li>
+      <li data-phase="2"><b>3 · Build the schematic</b>Trace walls, then locate fixtures and openings.</li>
+      <li data-phase="3"><b>4 · Review the draft</b>Preview the overlay and refine missing geometry.</li>
+      <li data-phase="4"><b>5 · Submit</b>Send the completed schematic to the verifier.</li>
+    </ol>
     <div class="status" id="hud"></div>
     <div class="pl-main">
       <div class="stage" id="stage">
         <div class="map" id="pl-map"><img id="pl-img" alt="Source floor plan, inverted to dark"><svg id="pl-svg" preserveAspectRatio="none"></svg></div>
-        <div class="mag" id="pl-mag"><img id="pl-mag-img" alt=""><span class="lab">crop requested</span></div>
         <img class="cmp" id="pl-cmp" alt="Submitted schematic beside the source drawing">
         <div class="cap" id="pl-cap"></div>
         <button class="bigplay" id="pl-big"><svg viewBox="0 0 16 16"><path d="M3 1.5v13l11-6.5z"/></svg>Play replay</button>
@@ -225,9 +257,10 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: s
       <div class="pl-side">
         <div class="pl-head"><div class="row" id="pl-meta"></div><h3 id="pl-title"></h3></div>
         <div class="pl-body" id="pl-body">
-          <div class="pl-blk" id="b-think"><div class="pl-lab" id="l-think">Reasoning</div><div class="pl-think" id="pl-think"></div></div>
-          <div class="pl-blk" id="b-call"><div class="pl-lab">Tool call</div><div id="pl-tools" class="pl-tools"></div><pre id="pl-call"></pre></div>
-          <div class="pl-blk" id="b-obs"><div class="pl-lab">Result</div><pre id="pl-obs"></pre></div>
+          <div class="pl-blk" id="b-think"><div class="pl-lab" id="l-think">What the model is doing</div><div class="pl-think" id="pl-think"></div></div>
+          <div class="pl-blk" id="b-call"><div class="pl-lab">Action</div><div id="pl-tools" class="pl-tools"></div></div>
+          <div class="pl-blk" id="b-obs"><div class="pl-lab">What came back</div><div id="pl-result" class="sum"></div></div>
+          <details id="pl-raw"><summary>Show raw tool input and output</summary><pre id="pl-call"></pre><pre id="pl-obs"></pre></details>
         </div>
       </div>
     </div>
@@ -247,7 +280,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: s
 
   <section id="verdict-sec">
     <h2>Result</h2>
-    <p class="sub">An isolated verifier scores the submitted schematic against the surveyed DXF.</p>
+    <p class="sub">Each bar is a category match score from 0% to 100%. Its weight sets the maximum points it can add; the line under the category shows points earned. The weights add to 100%, and those points make up the overall reward. First is the actual submission; second shows only differences from the survey.</p>
     <div class="verdict">
       <div class="box big"><span class="k">reward</span><span class="n" id="big-reward">—</span><span class="k" id="big-sub"></span></div>
       <div class="box comps" id="comps"></div>
@@ -257,8 +290,8 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: s
 
   <section id="timeline-sec">
     <h2>Timeline</h2>
-    <p class="sub">Each block is one agent turn, in the lane of the tool it called. The curve is prompt size per turn. The white line follows the replay; click a block to jump there.</p>
-    <div class="box scroll-x"><svg id="timeline" role="img" aria-label="Tool calls over time, by tool type, with prompt size per turn"></svg></div>
+    <p class="sub">The top lanes show tool calls. Below, aligned plots show prompt/context tokens sent and generated tokens per turn, each with its own token-count scale. Each plot shows its total; hover any point for an exact per-turn count. Tool blocks are clickable.</p>
+    <div class="box scroll-x"><svg id="timeline" role="img" aria-label="Tool calls, prompt tokens, and generated tokens over time"></svg></div>
   </section>
 
   <section id="benchmark">
@@ -327,6 +360,17 @@ const md = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(
 const mmss = t => { t = Math.max(0, Math.round(t)); return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`; };
 const kfmt = n => n >= 1e6 ? (n / 1e6).toFixed(2) + "M" : n >= 1e3 ? (n / 1e3).toFixed(n >= 1e4 ? 0 : 1) + "k" : String(n);
 const short = fn => fn.replace(/^blueprint_/, "");
+const inputText = t => {
+  try {
+    const args = JSON.parse(t.args || "{}");
+    if (args && typeof args === "object" && !Array.isArray(args) && !Object.keys(args).length) {
+      if (t.fn === "blueprint_estimate_scale") return "No parameters — reads the printed scale from the full drawing.";
+      if (t.fn === "blueprint_read_room_labels") return "No crop bounds — reads labels across the full drawing.";
+      return "No parameters.";
+    }
+  } catch (_) {}
+  return t.args || "No parameters.";
+};
 const svgEl = (tag, attrs = {}) => { const e = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
 
 const agentSteps = D.steps.filter(s => s.source === "agent");
@@ -369,52 +413,100 @@ function jumpTo(stepId) { if (window.plSeek) window.plSeek(stepId); $("#player-s
 /* timeline ----------------------------------------------------- */
 (function timeline() {
   const svg = $("#timeline");
-  const W = 1000, L = 78, Rr = 12, laneH = 22, laneGap = 5, top = 8;
+  const W = 1000, L = 112, Rr = 16, laneH = 22, laneGap = 5, top = 10;
   const lanesH = usedCats.length * (laneH + laneGap);
-  const ctxTop = top + lanesH + 22, ctxH = 80, axisY = ctxTop + ctxH + 8, H = axisY + 20;
+  const plotsTop = top + lanesH + 24, plotH = 116, plotGap = 22;
+  const axisY = plotsTop + plotH * 2 + plotGap + 8, H = axisY + 22;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
   const T = Math.max(1, D.duration);
   const X = t => L + (t / T) * (W - L - Rr);
   const step = T > 600 ? 120 : T > 240 ? 60 : 30;
   for (let t = 0; t <= T + 0.1; t += step) {
     svg.append(svgEl("line", { x1: X(t), x2: X(t), y1: top - 4, y2: axisY - 6, class: "grid" }));
-    const lab = svgEl("text", { x: X(t), y: axisY + 10, class: "tick", "text-anchor": "middle" }); lab.textContent = mmss(t); svg.append(lab);
+    const lab = svgEl("text", { x: X(t), y: axisY + 11, class: "tick", "text-anchor": "middle" }); lab.textContent = mmss(t); svg.append(lab);
   }
   usedCats.forEach((c, i) => {
     const y = top + i * (laneH + laneGap);
-    svg.append(svgEl("rect", { x: L, y, width: W - L - Rr, height: laneH, rx: 3, class: "lane-bg" }));
-    const t = svgEl("text", { x: L - 10, y: y + laneH / 2 + 4, class: "lane-lab", "text-anchor": "end" }); t.textContent = CATS[c].label; svg.append(t);
+    svg.append(svgEl("rect", { x: L, y, width: W - L - Rr, height: laneH, rx: 5, class: "lane-bg", fill: CATS[c].color, "fill-opacity": .055, stroke: CATS[c].color, "stroke-opacity": .2 }));
+    svg.append(svgEl("rect", { x: L - 72, y: y + 7, width: 5, height: 8, rx: 2, class: "swatch", fill: CATS[c].color }));
+    const t = svgEl("text", { x: L - 60, y: y + laneH / 2 + 4, class: "lane-lab" }); t.textContent = CATS[c].label; svg.append(t);
   });
-  const maxP = Math.max(...agentSteps.map(s => s.prompt || 0), 1);
-  const Y = p => ctxTop + ctxH - (p / maxP) * ctxH;
-  const pts = agentSteps.filter(s => s.t != null).map(s => [X(s.t), Y(s.prompt || 0)]);
-  if (pts.length) {
-    const line = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join("");
-    svg.append(svgEl("path", { d: `${line}L${pts.at(-1)[0]},${ctxTop + ctxH}L${pts[0][0]},${ctxTop + ctxH}Z`, class: "ctx-area" }));
-    svg.append(svgEl("path", { d: line, class: "ctx-line" }));
-    const lab = svgEl("text", { x: L - 10, y: ctxTop + 10, class: "lane-lab", "text-anchor": "end" }); lab.textContent = "Context"; svg.append(lab);
-    const mx = svgEl("text", { x: pts.at(-1)[0] - 4, y: pts.at(-1)[1] - 8, class: "ctx-lab", "text-anchor": "end" }); mx.textContent = kfmt(maxP) + " tokens"; svg.append(mx);
-  }
+
+  const tokenSeries = [
+    { label: "PROMPT / CONTEXT TOKENS", color: "#3fb68b", value: s => s.prompt || 0 },
+    { label: "GENERATED TOKENS (OUTPUT + REASONING)", color: "#7ab8ff", value: s => (s.completion || 0) + (s.thinking || 0) },
+  ];
+  tokenSeries.forEach((series, seriesIndex) => {
+    const topY = plotsTop + seriesIndex * (plotH + plotGap);
+    const values = agentSteps.filter(s => s.t != null).map(s => ({ s, value: series.value(s) }));
+    const max = Math.max(...values.map(v => v.value), 1);
+    const total = values.reduce((sum, v) => sum + v.value, 0);
+    const yAt = value => topY + plotH - value / max * plotH;
+    svg.append(svgEl("rect", { x: L, y: topY, width: W - L - Rr, height: plotH, rx: 5, class: "token-bg" }));
+    [.25, .5, .75].forEach(f => svg.append(svgEl("line", { x1: L, x2: W - Rr, y1: topY + plotH * (1 - f), y2: topY + plotH * (1 - f), class: "token-grid" })));
+    [0, .25, .5, .75, 1].forEach(f => {
+      const label = svgEl("text", { x: L - 8, y: yAt(max * f) + 3, class: "token-axis", "text-anchor": "end" });
+      label.textContent = kfmt(Math.round(max * f)); svg.append(label);
+    });
+    const title = svgEl("text", { x: L + 8, y: topY + 12, class: "token-title", fill: series.color }); title.textContent = `${series.label} · TOTAL ${kfmt(total)}`; svg.append(title);
+    const pts = values.map(({ s, value }) => [X(s.t), yAt(value)]);
+    if (pts.length) {
+      const line = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join("");
+      svg.append(svgEl("path", { d: `${line}L${pts.at(-1)[0]},${topY + plotH}L${pts[0][0]},${topY + plotH}Z`, class: "token-area", fill: series.color }));
+      svg.append(svgEl("path", { d: line, class: "token-line", stroke: series.color }));
+      values.forEach(({ s, value }, i) => {
+        const point = svgEl("circle", { cx: pts[i][0], cy: pts[i][1], r: 2.8, class: "token-point", fill: series.color });
+        const tip = svgEl("title"); tip.textContent = `Step ${s.id}: ${value.toLocaleString()} ${series.label.toLowerCase()} tokens`;
+        point.append(tip); svg.append(point);
+      });
+    }
+  });
   agentSteps.forEach(s => s.tools.forEach(tc => {
     const i = usedCats.indexOf(tc.cat), y = top + i * (laneH + laneGap);
     const x0 = X(s.start), x1 = Math.max(X(s.t), x0 + 5);
     const g = svgEl("g", { class: "ev", tabindex: 0, role: "button", "aria-label": `Step ${s.id}: ${short(tc.fn)}` });
-    g.append(svgEl("rect", { x: x0 + 1, y: y + 3, width: Math.max(4, x1 - x0 - 2), height: laneH - 6, rx: 3, fill: CATS[tc.cat].color, "fill-opacity": .9 }));
-    g.addEventListener("mouseenter", ev => showTip(ev, `<b>#${s.id} · ${esc(short(tc.fn))}</b><br>${esc(tc.summary || "")}<br><span class="m">+${mmss(s.t)} · ${(s.t - s.start).toFixed(0)} s · ctx ${kfmt(s.prompt)}</span>`));
+    g.append(svgEl("rect", { x: x0 + 1, y: y + 3, width: Math.max(4, x1 - x0 - 2), height: laneH - 6, rx: 5, fill: CATS[tc.cat].color, "fill-opacity": .88 }));
+    const generated = (s.completion || 0) + (s.thinking || 0);
+    g.addEventListener("mouseenter", ev => showTip(ev, `<b>#${s.id} · ${esc(short(tc.fn))}</b><br>${esc(tc.summary || "")}<br><span class="m">+${mmss(s.t)} · ${(s.t - s.start).toFixed(0)} s · prompt ${kfmt(s.prompt)} · generated ${kfmt(generated)}</span>`));
     g.addEventListener("mousemove", moveTip);
     g.addEventListener("mouseleave", hideTip);
     g.addEventListener("click", () => jumpTo(s.id));
     g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); jumpTo(s.id); } });
     svg.append(g);
   }));
-  const head = svgEl("line", { x1: L, x2: L, y1: top - 4, y2: axisY - 6, class: "head" }); svg.append(head);
-  window.tlHead = t => { const x = X(Math.max(0, Math.min(T, t))); head.setAttribute("x1", x); head.setAttribute("x2", x); };
+  svg.append(svgEl("line", { x1: L, x2: W - Rr, y1: axisY - 6, y2: axisY - 6, class: "axis" }));
+  const head = svgEl("line", { x1: L, x2: L, y1: top - 3, y2: axisY - 6, class: "head" });
+  const headDot = svgEl("circle", { cx: L, cy: top - 3, r: 4.5, class: "head-dot" }); svg.append(head, headDot);
+  window.tlHead = t => { const x = X(Math.max(0, Math.min(T, t))); head.setAttribute("x1", x); head.setAttribute("x2", x); headDot.setAttribute("cx", x); };
 })();
 
 /* replay player ------------------------------------------------ */
 (function player() {
-  const steps = D.steps, N = steps.length;
-  const pmap = $("#pl-map"), pimg = $("#pl-img"), psvg = $("#pl-svg"), mag = $("#pl-mag"), magImg = $("#pl-mag-img"), cmp = $("#pl-cmp"), cap = $("#pl-cap"), stage = $("#stage");
+  const allSteps = D.steps;
+  const findStep = test => allSteps.findIndex(s => s.tools.some(t => test(t.fn)));
+  const picks = [0];
+  const addPick = i => { if (i >= 0 && !picks.includes(i)) picks.push(i); };
+  addPick(findStep(fn => fn.includes("estimate_scale")));
+  addPick(findStep(fn => fn.includes("read_room_labels")));
+  addPick(findStep(fn => fn.includes("segment_rooms")));
+  addPick(allSteps.findIndex((s, i) => i > picks.at(-1) && /wall|polygon|boundary/i.test(s.headline)));
+  addPick(allSteps.findIndex((s, i) => i > picks.at(-1) && /fixture|bathroom/i.test(s.headline)));
+  addPick(allSteps.findIndex((s, i) => i > picks.at(-1) && /door|entrance/i.test(s.headline)));
+  addPick(findStep(fn => fn.includes("preview_schematic")));
+  const previewAt = picks.at(-1);
+  addPick(allSteps.findIndex((s, i) => i > previewAt && /wall|door|review|refin/i.test(s.headline)));
+  addPick(findStep(fn => fn.includes("submit_schematic")));
+  addPick(allSteps.length - 1);
+  if (picks.length < 6) allSteps.forEach((s, i) => { if (s.source === "user" || s.headline || s.tools.some(t => /preview|submit/.test(t.fn))) addPick(i); });
+  const zoomStepIndices = allSteps.flatMap((s, i) => s.tools.some(t => t.region) ? [i] : []);
+  zoomStepIndices.filter((_, i) => i % 2 === 0).forEach(addPick);
+  picks.sort((a, b) => a - b);
+  const segmentAt = findStep(fn => fn.includes("segment_rooms"));
+  const previewAtSource = findStep(fn => fn.includes("preview_schematic"));
+  const submitAtSource = findStep(fn => fn.includes("submit_schematic"));
+  const phaseFor = i => { const source = picks[i]; if (source < segmentAt) return 0; if (source === segmentAt) return 1; if (source < previewAtSource) return 2; if (source < submitAtSource) return 3; return 4; };
+  const steps = picks.map(i => allSteps[i]), N = steps.length;
+  const pmap = $("#pl-map"), pimg = $("#pl-img"), psvg = $("#pl-svg"), cmp = $("#pl-cmp"), cap = $("#pl-cap"), stage = $("#stage");
   const clipS = (s, n) => (s || "").length > n ? s.slice(0, n) + "\n… (" + ((s || "").length - n).toLocaleString() + " more characters)" : (s || "");
   const stepCat = s => s.source === "user" ? "task" : (s.tools[0] ? s.tools[0].cat : "final");
   const stepColor = s => ({ task: "var(--c-perceive)", final: "var(--accent)" })[stepCat(s)] || CATS[stepCat(s)].color;
@@ -422,7 +514,8 @@ function jumpTo(stepId) { if (window.plSeek) window.plSeek(stepId); $("#player-s
   const submitIdx = steps.findIndex(s => s.tools && s.tools.some(t => t.cat === "submit"));
 
   // stage: framed on the area the model actually inspected
-  const zooms = calls.filter(c => c.region), seedCalls = calls.filter(c => c.fn === "blueprint_segment_rooms");
+  const guidedIds = new Set(steps.map(s => s.id));
+  const zooms = calls.filter(c => c.region && guidedIds.has(c.step.id)), seedCalls = calls.filter(c => c.fn === "blueprint_segment_rooms" && guidedIds.has(c.step.id));
   const seedPts = []; seedCalls.forEach(c => { try { JSON.parse(c.args).seeds.forEach(p => seedPts.push({ p, id: c.step.id })); } catch (e) {} });
   const xs = [...zooms.flatMap(z => [z.region[0], z.region[2]]), ...seedPts.map(o => o.p[0])], ys = [...zooms.flatMap(z => [z.region[1], z.region[3]]), ...seedPts.map(o => o.p[1])];
   let [bx0, by0, bx1, by1] = xs.length ? [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)] : [0, 0, D.drawing.w, D.drawing.h];
@@ -430,19 +523,19 @@ function jumpTo(stepId) { if (window.plSeek) window.plSeek(stepId); $("#player-s
   bx0 = Math.max(0, bx0 - padB); by0 = Math.max(0, by0 - padB); bx1 = Math.min(D.drawing.w, bx1 + padB); by1 = Math.min(D.drawing.h, by1 + padB);
   const bw = bx1 - bx0, bh = by1 - by0;
   pmap.style.aspectRatio = `${bw} / ${bh}`;
-  pimg.src = D.drawing.src; magImg.src = D.drawing.src;
+  pimg.src = D.drawing.src;
   Object.assign(pimg.style, { width: (100 * D.drawing.w / bw) + "%", left: (-100 * bx0 / bw) + "%", top: (-100 * by0 / bh) + "%" });
   psvg.setAttribute("viewBox", `${bx0} ${by0} ${bw} ${bh}`);
   const k = bw / 1200;
   const seedEls = seedPts.map(o => { const e = svgEl("circle", { cx: o.p[0], cy: o.p[1], r: 7 * k, class: "seed", "stroke-width": 2 * k }); psvg.append(e); return { e, id: o.id }; });
-  const zoomEls = zooms.map((z, i) => {
-    const [x0, y0, x1, y1] = z.region;
-    const r = svgEl("rect", { x: x0, y: y0, width: x1 - x0, height: y1 - y0, class: "zr" });
-    const n = svgEl("text", { x: x0 + 6 * k, y: y0 + 22 * k, class: "zn", style: `font-size:${18 * k}px;stroke-width:${4 * k}px` }); n.textContent = i + 1;
-    psvg.append(r, n); return { r, n, z, i };
-  });
+  const activeZoom = svgEl("rect", { class: "zr" });
+  const activeZoomLabel = svgEl("text", { class: "zn", style: `font-size:${18 * k}px;stroke-width:${4 * k}px` });
+  psvg.append(activeZoom, activeZoomLabel);
+  let highlightFrame = 0;
+  const zoomNumber = new Map(zooms.map((z, i) => [z.step.id, i + 1]));
   if (D.comparison) cmp.src = D.comparison;
-  const stepIndex = {}; steps.forEach((s, i) => stepIndex[s.id] = i);
+  const stepIndex = {};
+  allSteps.forEach((s, sourceIdx) => { let i = 0; for (let j = 0; j < picks.length; j++) { if (picks[j] > sourceIdx) break; i = j; } stepIndex[s.id] = i; });
 
   const scrub = $("#pl-scrub");
   scrub.innerHTML = steps.map((s, i) => {
@@ -457,42 +550,117 @@ function jumpTo(stepId) { if (window.plSeek) window.plSeek(stepId); $("#player-s
   const playBtn = $("#pl-play");
   let idx = 0, p = 1, playing = false, speed = 1, started = false, last = 0, shownIdx = -1;
 
+  const hints = { blueprint_get_task: "Loads the drawing and task instructions.", blueprint_estimate_scale: "Calibrates pixel coordinates to metres.", blueprint_read_room_labels: "Reads the printed room names and numbers.", blueprint_segment_rooms: "Proposes room outlines from seed points.", blueprint_view_region: "Inspects a zoomed part of the plan.", blueprint_preview_schematic: "Checks the draft against the drawing.", blueprint_submit_schematic: "Submits the completed schematic.", bash: "Builds or updates the draft schematic." };
+  const toolHint = t => {
+    if (t.fn.includes("estimate_scale")) return hints.blueprint_estimate_scale;
+    if (t.fn.includes("read_room_labels")) return hints.blueprint_read_room_labels;
+    if (t.fn.includes("segment_rooms")) return `Uses ${t.summary.match(/\d+/)?.[0] || "room"} seed points to propose room outlines.`;
+    if (t.fn.includes("view_region")) return `Inspects a zoomed crop of the plan ${t.summary}.`;
+    if (t.fn.includes("preview_schematic")) return "Overlays the draft on the drawing to spot missing or misplaced geometry.";
+    if (t.fn.includes("submit_schematic")) return "Sends the finished walls, rooms, doors, windows, and fixtures for scoring.";
+    if (t.fn === "bash") return "Runs a script to build or refine schematic geometry.";
+    return t.summary || hints[t.fn] || "Uses a tool to refine the schematic.";
+  };
+  function whyThisStep(s) {
+    const fn = s.tools[0]?.fn || "";
+    if (s.source === "user") return "The agent sees the drawing and tool instructions; the surveyed answer stays with the verifier.";
+    if (fn.includes("estimate_scale")) return "This converts pixel measurements into metres, so later lengths and room areas have real-world units.";
+    if (fn.includes("read_room_labels")) return "Each room number and label gives the agent a named target and a point to start tracing from.";
+    if (fn.includes("segment_rooms")) return "The outlines are first proposals. The agent checks gaps and awkward shapes, then builds the final room polygons.";
+    if (fn.includes("view_region")) return "Zooming in makes small door, window, and fixture symbols easier to distinguish from wall lines.";
+    if (fn.includes("preview_schematic")) return "The overlay is a visual checkpoint: it shows what the draft covers and what the agent still needs to add.";
+    if (fn.includes("submit_schematic")) return "After submission, the verifier compares the geometry with the surveyed plan and calculates the score.";
+    if (fn === "bash" && /Door between/.test(s.tools[0].obs)) return "The first preview had no doors, so the agent searches room boundaries for gaps that could be door openings.";
+    if (fn === "bash") return "The agent turns its measurements into explicit schematic records that can be previewed and scored.";
+    if (s.source === "agent" && !s.tools.length) return "The tool work is complete; the final score appears in the Result section below.";
+    return "This adds another piece of evidence to the schematic before it is checked.";
+  }
+  function concise(s) {
+    const body = s.source === "user" ? "Turn the floor plan into a schematic of its rooms, walls, doors, windows, fixtures, and scale." : (s.headline ? s.reasoning.replace(`**${s.headline}**`, "").trim() : s.reasoning || s.message);
+    const first = body.split(/\n\s*\n/)[0].replace(/\*\*/g, "").trim();
+    let excerpt = first;
+    if (excerpt.length > 300) {
+      const end = Math.max(excerpt.lastIndexOf(". ", 300), excerpt.lastIndexOf("? ", 300), excerpt.lastIndexOf("! ", 300));
+      excerpt = end > 145 ? excerpt.slice(0, end + 1) : excerpt.slice(0, 297).replace(/\s+\S*$/, "") + "…";
+    }
+    return [excerpt, whyThisStep(s)].filter(Boolean).join("\n\n");
+  }
+  function titleFor(s) {
+    if (s.headline) return s.headline;
+    const fn = s.tools[0]?.fn || "";
+    return ({ blueprint_view_region: "Inspect this part of the plan", blueprint_estimate_scale: "Calibrate the scale", blueprint_read_room_labels: "Read room labels", blueprint_segment_rooms: "Outline the rooms", blueprint_preview_schematic: "Review the draft", blueprint_submit_schematic: "Submit the schematic" })[fn] || (s.source === "user" ? "The task" : s === lastAgent ? "Closing message" : "Refine the schematic");
+  }
+  function shortResult(s) {
+    const t = s.tools[0];
+    if (!t) return s.source === "agent" ? "The model finished its turn." : "";
+    if (t.fn.includes("estimate_scale")) {
+      try { const r = JSON.parse(t.obs); return `Scale read from the printed drawing: 1 m ≈ ${Number(r.pixels_per_metre).toFixed(2)} px (${Number(r.m_per_px).toFixed(5)} m/px).`; } catch (_) {}
+    }
+    if (t.fn.includes("read_room_labels")) {
+      try { const r = JSON.parse(t.obs); return `Returned ${r.length} printed room labels with coordinates.`; } catch (_) { return "Returned printed room numbers, names, and positions to guide the next step."; }
+    }
+    if (t.fn.includes("segment_rooms")) return `Returned room-boundary proposals for the ${t.summary.match(/\d+/)?.[0] || "seeded"} locations. The model checks and adjusts these outlines before submission.`;
+    if (t.fn.includes("preview_schematic") || t.fn.includes("submit_schematic")) {
+      const counts = t.summary.match(/walls:\s*(\d+).*rooms:\s*(\d+).*doors:\s*(\d+).*windows:\s*(\d+).*fixtures:\s*(\d+)/);
+      if (counts) return `${t.fn.includes("preview") ? "Draft" : "Submitted schematic"}: ${counts[1]} walls, ${counts[2]} rooms, ${counts[3]} doors, ${counts[4]} windows, ${counts[5]} fixtures${t.fn.includes("preview") && counts[3] === "0" ? ". The preview revealed that no doors had been added yet." : "."}`;
+    }
+    if (t.fn.includes("view_region")) return `Inspected the drawing crop ${t.summary}.`;
+    if (t.fn === "bash" && /Door between/.test(t.obs)) return `Generated door candidates from room boundaries; ${t.obs.split("\n").filter(x => x.startsWith("Door between")).length} candidates found.`;
+    if (t.fn === "bash" && !t.obs.trim()) return "The geometry script ran and updated the draft schematic.";
+    const result = t.obs.replace(/\s+/g, " ").trim();
+    return result.length > 180 ? result.slice(0, 177).replace(/\s+\S*$/, "") + "…" : result;
+  }
   function plan(s) {
-    const body = s.source === "user" ? "" : (s.headline ? s.reasoning.replace(`**${s.headline}**`, "").trim() : s.reasoning);
-    const text = s.source === "user" ? s.message : [body, s.message].filter(Boolean).join("\n\n");
-    const hasCall = s.tools.length > 0;
-    const typeT = Math.min(7, text.length / 150);
-    const dur = Math.max(2.6, 1.2 + typeT + (hasCall ? 2.4 : 0));
+    const text = concise(s), hasCall = s.tools.length > 0;
+    const typeT = Math.min(3.2, text.length / 120);
+    const dur = Math.max(2.8, 1.2 + typeT + (hasCall ? 1.0 : 0)) + 1.0;
     const a = text ? (1.0 + typeT) / dur : 0.04, b = hasCall ? a + 1.0 / dur : a;
     return { text, hasCall, dur, a, b };
   }
   const plans = steps.map(plan);
 
+  function moveHighlight(region, number) {
+    const [x0, y0, x1, y1] = region, to = [x0, y0, x1 - x0, y1 - y0];
+    const names = ["x", "y", "width", "height"];
+    const visible = activeZoom.classList.contains("cur");
+    const from = names.map((name, i) => visible ? Number(activeZoom.getAttribute(name)) : to[i]);
+    activeZoom.classList.add("cur"); activeZoomLabel.classList.add("cur");
+    activeZoomLabel.textContent = number;
+    if (!visible) names.forEach((name, i) => activeZoom.setAttribute(name, to[i]));
+    if (!visible) { activeZoomLabel.setAttribute("x", x0 + 6 * k); activeZoomLabel.setAttribute("y", y0 + 22 * k); }
+    if (highlightFrame) cancelAnimationFrame(highlightFrame);
+    const started = performance.now(), duration = visible ? 720 : 0;
+    function animate(now) {
+      const raw = duration ? Math.min(1, (now - started) / duration) : 1;
+      const t = 1 - (1 - raw) ** 3;
+      names.forEach((name, i) => activeZoom.setAttribute(name, from[i] + (to[i] - from[i]) * t));
+      activeZoomLabel.setAttribute("x", from[0] + (x0 - from[0]) * t + 6 * k);
+      activeZoomLabel.setAttribute("y", from[1] + (y0 - from[1]) * t + 22 * k);
+      if (raw < 1) highlightFrame = requestAnimationFrame(animate); else highlightFrame = 0;
+    }
+    highlightFrame = requestAnimationFrame(animate);
+  }
+
   function setStage(i) {
-    const s = steps[i];
-    zoomEls.forEach(o => { const si = stepIndex[o.z.step.id]; o.r.classList.toggle("past", si < i); o.n.classList.toggle("past", si < i); o.r.classList.toggle("cur", si === i); o.n.classList.toggle("cur", si === i); });
+    const s = steps[i], phase = phaseFor(i);
+    document.querySelectorAll("#process li").forEach((el, j) => { el.classList.toggle("active", j === phase); el.classList.toggle("done", j < phase); });
     seedEls.forEach(o => o.e.classList.toggle("past", stepIndex[o.id] <= i));
     const z = s.tools.find(t => t.region);
-    if (z) {
-      const [x0, y0, x1, y1] = z.region, rw = x1 - x0, rh = y1 - y0;
-      const sw = stage.clientWidth, sh = stage.clientHeight;
-      const w = Math.max(90, Math.min(.4 * sw, .55 * sh * rw / rh)), h = w * rh / rw;
-      mag.style.width = w + "px"; mag.style.height = h + "px";
-      Object.assign(magImg.style, { width: (100 * D.drawing.w / rw) + "%", left: (-100 * x0 / rw) + "%", top: (-100 * y0 / rh) + "%" });
-      mag.classList.add("show");
-    } else mag.classList.remove("show");
+    if (z) moveHighlight(z.region, zoomNumber.get(s.id) || "");
     cmp.classList.toggle("show", !!D.comparison && submitIdx >= 0 && i >= submitIdx);
     cap.innerHTML = s.tools.length ? s.tools.map(t => `<span class="tool ${CATS[t.cat].cls}">${esc(short(t.fn))}</span><span>${esc(t.summary)}</span>`).join("") : "";
     let nCalls = 0, cost = 0, ctx = 0;
-    for (let j = 0; j <= i; j++) { nCalls += steps[j].tools.length; cost += steps[j].cost || 0; if (steps[j].prompt) ctx = steps[j].prompt; }
+    for (let j = 0; j <= picks[i]; j++) { nCalls += allSteps[j].tools.length; cost += allSteps[j].cost || 0; if (allSteps[j].prompt) ctx = allSteps[j].prompt; }
     $("#hud").innerHTML = [["step", `${i + 1}/${N}`], ["tool calls", `${nCalls}/${calls.length}`], ["context", kfmt(ctx)], ["spent", "$" + cost.toFixed(2)]].map(([a, b]) => `<span>${a} <b>${b}</b></span>`).join("");
     const cat = stepCat(s);
     $("#pl-meta").innerHTML = `<span>#${s.id}</span>` + (s.tools.length ? s.tools.map(t => `<span class="tool ${CATS[t.cat].cls}">${esc(short(t.fn))}</span>`).join("") : `<span class="tool" style="--c:${stepColor(s)}">${cat === "task" ? "prompt" : "done"}</span>`) + (s.t != null ? `<span>+${mmss(s.t)}</span>` : "");
-    $("#pl-title").textContent = s.source === "user" ? "The task" : (s.headline || (s === lastAgent ? "Closing message" : "Working"));
-    $("#l-think").textContent = s.source === "user" ? "Prompt" : (s.reasoning ? "Reasoning summary" : "Message");
-    $("#pl-tools").innerHTML = s.tools.map(t => `<div class="pl-tool ${CATS[t.cat].cls}"><b>${esc(t.fn)}()</b><span>${esc(TOOLDOC[t.fn] || "")}${t.summary ? (TOOLDOC[t.fn] ? "<br>" : "") + esc(t.summary) : ""}</span></div>`).join("");
-    $("#pl-call").textContent = s.tools.map(t => clipS(t.args, 900)).join("\n\n— — —\n\n");
+    $("#pl-title").textContent = titleFor(s);
+    $("#l-think").textContent = s.source === "user" ? "Task" : "Key point";
+    $("#pl-tools").innerHTML = s.tools.map(t => `<div class="pl-tool ${CATS[t.cat].cls}"><b>${esc(short(t.fn))}</b><span>${esc(toolHint(t))}</span></div>`).join("");
+    $("#pl-call").textContent = s.tools.map(t => clipS(inputText(t), 900)).join("\n\n— — —\n\n");
     $("#pl-obs").textContent = s.tools.map(t => clipS(t.obs, 1100)).join("\n\n— — —\n\n");
+    $("#pl-result").textContent = shortResult(s);
+    $("#pl-raw").open = false;
     segs.forEach((e, j) => { e.classList.toggle("cur", j === i); e.style.setProperty("--f", j < i ? 1 : 0); });
     $("#pl-body").scrollTop = 0;
     shownIdx = i;
@@ -508,7 +676,8 @@ function jumpTo(stepId) { if (window.plSeek) window.plSeek(stepId); $("#player-s
     th.classList.toggle("typing", tw < 1 && playing);
     $("#b-think").hidden = !full;
     $("#b-call").hidden = !(pl.hasCall && p >= pl.a);
-    $("#b-obs").hidden = !(pl.hasCall && p >= pl.b);
+    $("#b-obs").hidden = !(pl.hasCall && p >= pl.b && !!shortResult(s));
+    $("#pl-raw").hidden = !(pl.hasCall && p >= pl.b);
     if (playing) { const b = $("#pl-body"); b.scrollTop = b.scrollHeight; }
     segs[idx].style.setProperty("--f", Math.min(1, p).toFixed(3));
     const tNow = s.source === "user" ? 0 : s.t != null ? (s.start != null ? s.start + (s.t - s.start) * Math.min(1, p) : s.t) : 0;
@@ -567,19 +736,21 @@ function jumpTo(stepId) { if (window.plSeek) window.plSeek(stepId); $("#player-s
 /* result ------------------------------------------------------- */
 (function verdict() {
   $("#big-reward").textContent = R == null ? "—" : R.toFixed(3);
-  $("#big-sub").textContent = R == null ? "no reward written" : "weighted, 0 to 1";
+  $("#big-sub").textContent = R == null ? "no reward written" : `${(R * 100).toFixed(1)} / 100 weighted points`;
   const C = D.components;
   if (C) {
     const order = Object.keys(WEIGHTS).filter(k => k in C);
-    $("#comps").innerHTML = order.map(k => `<div class="comp"><span>${k}<span class="w">${WEIGHTS[k]}%</span></span><div class="track"><div class="fill" data-w="${(C[k] * 100).toFixed(1)}"></div></div><span class="val">${C[k].toFixed(2)}</span></div>`).join("");
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll(".fill").forEach(f => f.style.width = f.dataset.w + "%"); io.disconnect(); } }), { threshold: .3 });
-    io.observe($("#comps"));
+    const scale = `<div class="comp-guide"><h3>Match score by category</h3><p>Each dot’s position on the 0–100% horizontal axis is the category match score. The line below the category shows its weighted points toward the overall reward.</p></div><div class="comp-scale"><span>Category (y-axis)</span><div class="axis"><span class="axis-title">Match score (x-axis)</span><div class="marks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div></div><span>Score</span></div>`;
+    $("#comps").innerHTML = scale + order.map(k => {
+      const score = C[k], weight = WEIGHTS[k], points = score * weight;
+      return `<div class="comp"><span class="name">${k}<span class="w">${points.toFixed(1)} / ${weight} pts</span></span><div class="plot" role="img" aria-label="${k}: ${(score * 100).toFixed(0)} percent match"><div class="gridlines" aria-hidden="true"><i style="left:25%"></i><i style="left:50%"></i><i style="left:75%"></i></div><span class="point" style="left:${(score * 100).toFixed(1)}%"></span></div><span class="val">${(score * 100).toFixed(0)}%</span></div>`;
+    }).join("");
   } else {
     $("#comps").innerHTML = `<p style="color:var(--muted);margin:0;font:13px var(--mono)">Component breakdown unavailable: rerun the generator with numpy, scipy and shapely installed.</p>`;
   }
   const figs = [];
-  if (D.comparison) figs.push(`<figure><img src="${D.comparison}" alt="Source drawing beside the submitted schematic overlay"><figcaption><b>Submission</b>source drawing beside the submitted geometry</figcaption></figure>`);
-  if (D.errors) figs.push(`<figure><img src="${D.errors}" alt="Submitted elements compared with surveyed ground truth"><figcaption><b>Errors</b>matched, missed and invented elements vs. the survey</figcaption></figure>`);
+  if (D.comparison) figs.push(`<figure><img src="${D.comparison}" alt="Left: source drawing given to the agent. Right: the agent's actual submitted schematic."><figcaption><b>1 · Actual submission</b>Left is the drawing the agent saw. Right is what it submitted, with its walls, rooms, doors, windows and fixtures overlaid.</figcaption></figure>`);
+  if (D.errors) figs.push(`<figure><img src="${D.errors}" alt="Only geometry that differs from the surveyed answer is highlighted."><figcaption><b>2 · Differences from the survey</b>Only mismatches are marked: red means surveyed detail the agent missed; green means extra or misplaced submitted detail. Unmarked geometry matched within the scoring tolerance.</figcaption></figure>`);
   $("#pair").innerHTML = figs.join("");
   if (!figs.length) $("#pair").hidden = true;
 })();
@@ -599,7 +770,7 @@ function jumpTo(stepId) { if (window.plSeek) window.plSeek(stepId); $("#player-s
     const tools = s.tools.map(t => `<span class="tool ${CATS[t.cat].cls}">${esc(short(t.fn))}</span><span class="sum">${esc(t.summary)}</span>`).join("");
     const body = head ? s.reasoning.replace(`**${head}**`, "").trim() : s.reasoning;
     const reason = body ? `<details><summary>Reasoning · ${kfmt(s.thinking || 0)} tokens</summary><div class="think">${md(body)}</div></details>` : "";
-    const io = s.tools.map(t => `<details><summary>Call and result</summary><pre>${esc(t.args)}</pre><pre>${esc(t.obs)}</pre></details>`).join("");
+    const io = s.tools.map(t => `<details><summary>Call and result</summary><pre>${esc(inputText(t))}</pre><pre>${esc(t.obs)}</pre></details>`).join("");
     const msg = s.message ? (final ? `<div class="msg">${md(s.message)}</div>` : `<details><summary>Message</summary><div class="msg">${md(s.message)}</div></details>`) : "";
     return `<article class="step" data-cats="${s.tools.map(t => t.cat).join(" ") || "final"}"><div class="rail"><span class="no">${s.id}</span><span class="at">+${mmss(s.t ?? 0)}</span></div>
       <div class="body"><div class="top">${tools || `<span class="tool" style="--c:var(--accent)">done</span>`}<span class="toks">ctx ${kfmt(s.prompt)} · out ${kfmt((s.completion || 0) + (s.thinking || 0))}${s.cost ? " · $" + s.cost.toFixed(3) : ""}</span></div>
