@@ -4,13 +4,19 @@ Everything is matched one-to-one (Hungarian) against the DXF ground truth, dista
 real metres (using the TRUE scale, so placement is measured independently of calibration), and each
 class gets an F1 score, so both missing objects and spammed objects cost reward.
 
-    walls     0.25  tolerant mask F1 (0.15 m tolerance)
+    walls     0.25  tolerant mask F1 averaged over 0.15 / 0.30 / 0.60 m tolerances (graded: a wall that
+                    is close but not exact still earns partial credit)
     rooms     0.25  polygon IoU match, soft credit IoU 0.5 -> 0.9, half credit if label wrong
-    doors     0.15  opening midpoint within 0.4 m
-    windows   0.15  midpoint within 0.4 m
-    fixtures  0.10  same type, centre within 0.5 m
-    areas     0.10  fraction of GT rooms whose matched polygon area, computed with the AGENT's own
-                    scale (m_per_px), is within 5 %  -> rewards calibration only together with rooms
+    doors     0.15  opening midpoint distance: full credit within 0.2 m, linear decay to 0 at 1.0 m
+    windows   0.15  same as doors
+    fixtures  0.10  same type, centre distance: full credit within 0.25 m, linear decay to 0 at 1.5 m
+    areas     0.10  per matched GT room, credit 1 if the polygon area, computed with the AGENT's own
+                    scale (m_per_px), is within 5 %, decaying linearly to 0 at 30 % error -> rewards
+                    calibration only together with rooms
+Doors, windows and fixtures use the soft credit as a fractional true-positive count inside the F1, so
+spamming extra objects still lowers the score.
+    speed           multiplier on earned geometry credit: 1.00 through 5 minutes, declining to 0.90
+                    at the 8-minute deadline
 """
 from __future__ import annotations
 
@@ -22,8 +28,12 @@ from scipy.ndimage import binary_dilation
 from scipy.optimize import linear_sum_assignment
 from shapely.geometry import Polygon
 
+# Geometry remains the task reward.  Speed scales that earned reward by 0.90--1.00,
+# so a fast empty or junk submission never earns credit on its own.
 WEIGHTS = {"walls": 0.25, "rooms": 0.25, "doors": 0.15, "windows": 0.15, "fixtures": 0.10, "areas": 0.10}
 MAX_ITEMS = 2000
+SPEED_FULL_CREDIT_SECONDS = 5 * 60
+SPEED_ZERO_CREDIT_SECONDS = 8 * 60
 
 
 def _f1(tp: float, n_pred: int, n_gt: int) -> float:
@@ -84,18 +94,37 @@ def _wall_masks(gt, pred_walls, size, mpp, ds=2):
     return np.asarray(g, bool), np.asarray(p, bool)
 
 
+WALL_TOLERANCES_M = (0.15, 0.30, 0.60)
+
+
 def score_walls(gt, pred, size):
     mpp = gt["m_per_px"]
     G, P = _wall_masks(gt, pred.get("walls") or [], size, mpp)
     if P.sum() == 0:
         return 0.0, {"precision": 0.0, "recall": 0.0}
-    r = max(1, int(round(0.15 / mpp / 2)))
-    yy, xx = np.mgrid[-r:r + 1, -r:r + 1]
-    disk = xx ** 2 + yy ** 2 <= r * r
-    prec = (P & binary_dilation(G, disk)).sum() / P.sum()
-    rec = (G & binary_dilation(P, disk)).sum() / max(G.sum(), 1)
-    f = 0.0 if prec + rec == 0 else 2 * prec * rec / (prec + rec)
-    return float(f), {"precision": round(float(prec), 3), "recall": round(float(rec), 3)}
+    fs, precs, recs = [], [], []
+    for tol in WALL_TOLERANCES_M:
+        r = max(1, int(round(tol / mpp / 2)))
+        yy, xx = np.mgrid[-r:r + 1, -r:r + 1]
+        disk = xx ** 2 + yy ** 2 <= r * r
+        prec = (P & binary_dilation(G, disk)).sum() / P.sum()
+        rec = (G & binary_dilation(P, disk)).sum() / max(G.sum(), 1)
+        fs.append(0.0 if prec + rec == 0 else 2 * prec * rec / (prec + rec))
+        precs.append(prec); recs.append(rec)
+    return float(np.mean(fs)), {"precision": round(float(precs[0]), 3), "recall": round(float(recs[0]), 3),
+                                "f1_by_tol_m": {str(t): round(float(f), 3) for t, f in zip(WALL_TOLERANCES_M, fs)}}
+
+
+def _ramp(d, full, zero):
+    """1.0 up to `full`, then linear decay to 0.0 at `zero`."""
+    if d <= full:
+        return 1.0
+    if d >= zero:
+        return 0.0
+    return (zero - d) / (zero - full)
+
+
+AREA_FULL_ERR, AREA_ZERO_ERR = 0.05, 0.30
 
 
 # ---------------------------------------------------------------- rooms + areas
@@ -133,22 +162,26 @@ def score_rooms(gt, pred):
         c = min(1.0, (iou[i, j] - 0.5) / 0.4) * (1.0 if name_ok else 0.5)
         credit += c
         agent_area = p.area * mpp_agent ** 2
-        a_ok = g["area_m2"] > 0 and abs(agent_area / g["area_m2"] - 1) <= 0.05
-        area_ok += a_ok
+        err = abs(agent_area / g["area_m2"] - 1) if g["area_m2"] > 0 else 1.0
+        a_cred = _ramp(err, AREA_FULL_ERR, AREA_ZERO_ERR)
+        a_ok = err <= AREA_FULL_ERR
+        area_ok += a_cred
         matches.append({"gt": g["id"], "iou": round(float(iou[i, j]), 3), "name_ok": bool(name_ok),
-                        "gt_area": g["area_m2"], "agent_area": round(agent_area, 2), "area_ok": bool(a_ok)})
+                        "gt_area": g["area_m2"], "agent_area": round(agent_area, 2), "area_ok": bool(a_ok), "area_credit": round(float(a_cred), 3)})
     rooms = _f1(credit, len(prs), len(gp))
     areas = area_ok / max(len(gp), 1)
     return rooms, areas, {"matched": matched, "n_pred": len(prs), "n_gt": len(gp), "matches": matches}
 
 
 # ---------------------------------------------------------------- point-like objects
-def _match_points(gpts, ppts, tol_px):
+def _match_points(gpts, ppts, full_px, zero_px):
+    """Soft one-to-one matching: each matched pair earns ramp(distance); returns the summed credit."""
     if not gpts or not ppts:
-        return 0
+        return 0.0
     D = np.array([[math.dist(g, p) for p in ppts] for g in gpts])
-    ri, ci = linear_sum_assignment(D)
-    return int(sum(D[i, j] <= tol_px for i, j in zip(ri, ci)))
+    C = np.vectorize(lambda d: _ramp(d, full_px, zero_px))(D)
+    ri, ci = linear_sum_assignment(-C)
+    return float(sum(C[i, j] for i, j in zip(ri, ci)))
 
 
 def _mids(items):
@@ -162,14 +195,15 @@ def _mids(items):
     return out
 
 
-def score_segments(gt, pred, key, tol_m=0.4):
+def score_segments(gt, pred, key, full_m=0.2, zero_m=1.0):
     g = _mids(gt[key]); p = _mids(pred.get(key))
-    tp = _match_points(g, p, tol_m / gt["m_per_px"])
-    return _f1(tp, len(p), len(g)), {"tp": tp, "n_pred": len(p), "n_gt": len(g)}
+    mpp = gt["m_per_px"]
+    tp = _match_points(g, p, full_m / mpp, zero_m / mpp)
+    return _f1(tp, len(p), len(g)), {"tp": round(tp, 2), "n_pred": len(p), "n_gt": len(g)}
 
 
-def score_fixtures(gt, pred, tol_m=0.5):
-    tol = tol_m / gt["m_per_px"]
+def score_fixtures(gt, pred, full_m=0.25, zero_m=1.5):
+    full, zero = full_m / gt["m_per_px"], zero_m / gt["m_per_px"]
     preds = []
     for f in (pred.get("fixtures") or [])[:MAX_ITEMS]:
         try:
@@ -180,14 +214,29 @@ def score_fixtures(gt, pred, tol_m=0.5):
     for t in sorted({f["type"] for f in gt["fixtures"]} | {t for t, _ in preds}):
         gg = [(f["x"], f["y"]) for f in gt["fixtures"] if f["type"] == t]
         pp = [p for tt, p in preds if tt == t]
-        k = _match_points(gg, pp, tol)
-        tp += k; per[t] = {"tp": k, "n_pred": len(pp), "n_gt": len(gg)}
-    return _f1(tp, len(preds), len(gt["fixtures"])), {"tp": tp, "n_pred": len(preds),
+        k = _match_points(gg, pp, full, zero)
+        tp += k; per[t] = {"tp": round(k, 2), "n_pred": len(pp), "n_gt": len(gg)}
+    return _f1(tp, len(preds), len(gt["fixtures"])), {"tp": round(tp, 2), "n_pred": len(preds),
                                                       "n_gt": len(gt["fixtures"]), "per_type": per}
 
 
 # ---------------------------------------------------------------- total
-def score(gt: dict, pred: dict | None, size) -> dict:
+def speed_credit(elapsed_seconds: float | None) -> float:
+    """Return bounded time credit; omitted timings are offline/replay evaluations."""
+    if elapsed_seconds is None:
+        return 1.0
+    try:
+        seconds = max(0.0, float(elapsed_seconds))
+    except (TypeError, ValueError):
+        return 0.0
+    if seconds <= SPEED_FULL_CREDIT_SECONDS:
+        return 1.0
+    if seconds >= SPEED_ZERO_CREDIT_SECONDS:
+        return 0.0
+    return (SPEED_ZERO_CREDIT_SECONDS - seconds) / (SPEED_ZERO_CREDIT_SECONDS - SPEED_FULL_CREDIT_SECONDS)
+
+
+def score(gt: dict, pred: dict | None, size, elapsed_seconds: float | None = None) -> dict:
     if not isinstance(pred, dict):
         pred = {}
     comp, det = {}, {}
@@ -196,10 +245,13 @@ def score(gt: dict, pred: dict | None, size) -> dict:
     comp["doors"], det["doors"] = score_segments(gt, pred, "doors")
     comp["windows"], det["windows"] = score_segments(gt, pred, "windows")
     comp["fixtures"], det["fixtures"] = score_fixtures(gt, pred)
+    comp["speed"] = speed_credit(elapsed_seconds)
     try:
         sc = _num(pred.get("m_per_px", 0)) / gt["m_per_px"]
     except Exception:
         sc = 0.0
     det["scale_ratio"] = round(sc, 4)
-    total = sum(WEIGHTS[k] * comp[k] for k in WEIGHTS)
+    det["elapsed_seconds"] = None if elapsed_seconds is None else round(float(elapsed_seconds), 3)
+    quality = sum(WEIGHTS[k] * comp[k] for k in WEIGHTS)
+    total = quality * (0.90 + 0.10 * comp["speed"])
     return {"reward": round(total, 4), "components": {k: round(v, 4) for k, v in comp.items()}, "details": det}

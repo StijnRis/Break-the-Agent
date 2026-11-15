@@ -21,7 +21,7 @@ from . import cv
 from .score import score
 
 
-def solve(img) -> dict:
+def solve(img, use_yolo: bool = False) -> dict:
     ink, walls, h, v = cv.masks(img)
     texts = cv.ocr(img)
     ppm = cv.printed_scale(texts) or cv.scale_bar(img) or cv.ppm_for(100)
@@ -36,7 +36,7 @@ def solve(img) -> dict:
     for r in rooms:
         n = labels[r["label_id"] - 1] if labels else {"id": None, "name": None}
         out_rooms.append({"id": n["id"], "name": n["name"], "polygon": r["polygon"]})
-    return {
+    out = {
         "m_per_px": 1.0 / ppm,
         "walls": cv.wall_rects(h, v),
         "rooms": out_rooms,
@@ -44,6 +44,10 @@ def solve(img) -> dict:
         "windows": wins,
         "fixtures": cv.fixtures(ink, walls, fp, ppm),
     }
+    if use_yolo:                       # learned detector replaces the hand-written opening/symbol rules
+        from . import yolo
+        out["doors"], out["windows"], out["fixtures"] = yolo.detect(img)
+    return out
 
 
 def main():
@@ -51,6 +55,7 @@ def main():
     ap.add_argument("tasks", nargs="?", default="")
     ap.add_argument("--root", default="tasks")
     ap.add_argument("--out", default="")
+    ap.add_argument("--yolo", action="store_true", help="doors/windows/fixtures from the trained YOLO model")
     a = ap.parse_args()
     ids = a.tasks.split(",") if a.tasks else sorted(d for d in os.listdir(a.root) if os.path.isdir(os.path.join(a.root, d)))
     rows = []
@@ -58,7 +63,7 @@ def main():
         td = os.path.join(a.root, t)
         img = Image.open(os.path.join(td, "drawing.png")).convert("RGB")
         gt = json.load(open(os.path.join(td, "ground_truth.json"), encoding="utf8"))
-        sch = solve(img)
+        sch = solve(img, a.yolo)
         res = score(gt, sch, img.size)
         rows.append(res)
         if a.out:

@@ -1,4 +1,8 @@
-# Blueprint → Schematic: an RL environment for reading construction drawings
+<p align="center"><img src="assets/cover.png" alt="DrawingSense: can an AI agent read a floor plan?" width="100%"></p>
+
+# DrawingSense: Blueprint → Schematic, an RL environment for reading construction drawings
+
+*Junction 2026 · Break the Agent (AfterQuery).* Quick links: [run the evaluation](#run-the-evaluation-one-command) · [results](#results-test-split-15-plans) · [Harbor task](harbor_task/README.md) · [challenge brief and criteria mapping](CHALLENGE.md) · [repository layout](#repository-layout)
 
 ## Run the interactive demo website
 
@@ -15,7 +19,7 @@ The live agent uses the Gemini runner and needs `GEMINI_API_KEY` in `.env` or th
 
 An agent gets a raster construction floor plan (one storey of a Swiss apartment building) and has to turn it into a **formal schematic**. The schematic holds walls, room outlines with their printed number and name, doors, windows, sanitary and kitchen fixtures, and the drawing scale, all in image-pixel coordinates. With a correct schematic, questions like "net area of room 2.05?" or "how many WCs?" become a few lines of deterministic code. Producing the schematic is the skill worth learning.
 
-Frontier agents are poor at this. On the same drawings they score **0.26–0.29**, while our scripted computer-vision reference scores **0.57** and the reward ceiling is **1.0**. The agent has every tool it needs (zoom, a room segmenter, an area calculator, an overlay preview). Its failures come from measuring and committing to precise geometry, not from missing information.
+Frontier agents are poor at this. On the same 15 test drawings, Gemini 3.1 Pro (our runner, 3 runs per plan) scores **0.39**, while our scripted computer-vision reference scores **0.63** and the reward ceiling is **1.0**. The agent has every tool it needs (zoom, a room segmenter, an area calculator, an overlay preview). Its failures come from measuring and committing to precise geometry, not from missing information.
 
 The brief is in [CHALLENGE.md](CHALLENGE.md), with a table mapping each judging criterion to where this repository answers it. Slide-ready figures are in [presentation/](presentation) (rebuild them with `python -m blueprint_env.make_figures`).
 
@@ -30,9 +34,12 @@ Data: Swiss Dwellings (Archilyse AG, CC BY 4.0, doi:10.5281/zenodo.7788422), as 
 ## Run the evaluation (one command)
 
 ```bash
-python -m venv .venv && .venv/Scripts/pip install -r requirements.txt     # Linux/macOS: .venv/bin/pip
-python -m blueprint_env.evaluate
+uv sync && uv run python -m blueprint_env.evaluate
+# without uv:  python -m venv .venv && .venv/bin/pip install -r requirements.txt && .venv/bin/python -m blueprint_env.evaluate
+#              (Windows: .venv/Scripts/pip and .venv/Scripts/python)
 ```
+
+Needs Python 3.11+ and no API key. It takes about 5–6 minutes on a laptop CPU (verified on 2026-11-15; the printed table matches the one below). Nothing is downloaded: the 15 test drawings, their ground truth and all saved runs are in the repository.
 
 This scores every row below on the fixed 15-plan test split (`split.json`) and writes `results/summary.md` and `results/summary.json`. The rows are the ground-truth ceiling, the CV reference (recomputed if missing), do-nothing, stop-early, the exploit suite, and every agent run found under `runs/`.
 
@@ -47,9 +54,8 @@ python -m blueprint_env.evaluate --agent gemini-3.1-pro-preview --runs 3
 | run | episodes | reward | sd over runs | walls | rooms | doors | windows | fixtures | areas |
 |---|---|---|---|---|---|---|---|---|---|
 | ceiling (ground-truth replay) | 15 | **1.000** | 0.000 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
-| **reference (CV solver, no ground truth)** | 15 | **0.573** | 0.000 | 0.89 | 0.59 | 0.56 | 0.49 | 0.09 | 0.37 |
-| agent: gemini-3-flash-preview | 6 | **0.294** | – | 0.50 | 0.26 | 0.17 | 0.24 | 0.41 | 0.01 |
-| agent: gemini-3.1-pro-preview (3 runs) | 18 | **0.263** | 0.016 | 0.39 | 0.29 | 0.19 | 0.17 | 0.28 | 0.09 |
+| **reference (CV solver, no ground truth)** | 15 | **0.628** | 0.000 | 0.92 | 0.64 | 0.59 | 0.51 | 0.17 | 0.56 |
+| agent: gemini-3.1-pro-preview (3 runs) | 45 | **0.393** | 0.009 | 0.28 | 0.54 | 0.39 | 0.40 | 0.51 | 0.31 |
 | do nothing | 15 | **0.000** | 0.000 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
 
 `results/summary.md` holds the current table, including the stop-early rows and the agent stop-early run (`runs/stop-early-gemini-3-flash-4calls`).
@@ -57,7 +63,9 @@ python -m blueprint_env.evaluate --agent gemini-3.1-pro-preview --runs 3
 A fresh two-batch, eight-plan concurrent Gemini smoke test, its per-plan outcomes, and the interpretation alongside the full repeated result are in [`results/gemini_parallel_benchmark_2026-11-14.md`](results/gemini_parallel_benchmark_2026-11-14.md).
 
 Notes on these numbers:
-- The Gemini runs above were made before `segment_rooms` and `measure_area` were added to the toolset. They cover 6 of the 15 test plans. Rerun them with `--agent` for the full split.
+- The Gemini rows are 3 runs on each of the 15 test plans. Rerun them with `--agent` (needs a key).
+- `results/summary.md` also lists a "reference + YOLO detector" row (a YOLO11s door/window/fixture detector trained on Modal, weights in `models/`). It is an extra, optional row, not our headline reference: the detector was trained on a different plan set and we have not verified there is no overlap with the 15 test plans, so treat 0.80 as an upper bound. It needs `pip install ultralytics` to regenerate.
+- Rows named `gemini-3.1-pro-parallel-*` are small smoke tests (4 episodes each) of the concurrent runner and are not part of the headline comparison.
 - The reference is deterministic, so its sd over runs is 0. The agent's sd is computed over its 3 runs.
 
 ### Where the agent fails (and why that is a fair test)
@@ -79,14 +87,16 @@ Notes on these numbers:
 
 ### Reward (`blueprint_env/score.py`)
 
+Doors, windows, fixtures, walls and areas use graded credit (it falls off with distance or error instead of a hard cutoff), so a near miss earns partial credit and a model that improves placement sees the reward move. Extras still cost reward, because the soft credit feeds an F1. The pre-change scoring is kept in `results/_old_scoring/` for comparison.
+
 | component | weight | how |
 |---|---|---|
-| walls | 0.25 | mask F1, 15 cm tolerance |
+| walls | 0.25 | mask F1 averaged over 15 / 30 / 60 cm tolerances (graded) |
 | rooms | 0.25 | Hungarian match on polygon IoU (credit ramps from IoU 0.5 to 0.9); half credit if the label is wrong |
-| doors | 0.15 | Hungarian match, opening midpoint within 40 cm, F1 |
-| windows | 0.15 | midpoint within 40 cm, F1 |
-| fixtures | 0.10 | same type (wc, washbasin, bathtub, shower, kitchen), within 50 cm, F1 |
-| areas | 0.10 | share of GT rooms whose area, computed with the agent's own scale, is within 5 % |
+| doors | 0.15 | Hungarian match on opening midpoint; credit 1 within 20 cm, linear to 0 at 1 m; soft F1 |
+| windows | 0.15 | same as doors |
+| fixtures | 0.10 | same type (wc, washbasin, bathtub, shower, kitchen); credit 1 within 25 cm, linear to 0 at 1.5 m; soft F1 |
+| areas | 0.10 | per matched GT room, credit 1 if the area (with the agent's own scale) is within 5 %, linear to 0 at 30 % error |
 | speed | ×0.90–1.00 | multiplier on geometry earned: full credit through 5 minutes, decreasing linearly to ×0.90 at the 8-minute deadline |
 
 - Placement is judged with the **true** scale.
@@ -102,16 +112,16 @@ Notes on these numbers:
 | do nothing / no submission | 0.000 |
 | scale only | 0.000 |
 | one giant room covering the building | 0.000 |
-| one wall = whole building box | 0.094 |
-| thick ring wall around the building | 0.073 |
-| grid of rooms over the building (as many cells as rooms) | 0.002 |
+| one wall = whole building box | 0.139 |
+| thick ring wall around the building | 0.097 |
+| grid of rooms over the building (as many cells as rooms) | 0.003 |
 | every fixture type stacked on every true fixture | 0.033 |
 | true room outlines, every name set to the most common label | 0.914 (< 1.0) |
-| 961 doors + windows + fixtures on a grid | 0.011 |
+| 961 doors + windows + fixtures on a grid | 0.012 |
 | malformed / NaN / junk JSON | 0.000 |
 | correct geometry, rooms duplicated ×3 | 0.875 (< 1.0) |
 | correct geometry, scale ×1.3 | 0.900 (< 1.0) |
-| stop early: first 25 % / 50 % of the reference's elements | 0.28 / 0.43 (proportional to the work done) |
+| stop early: first 25 % / 50 % of the reference's elements | 0.30 / 0.47 (proportional to the work done) |
 
 **Fairness fixes found while auditing.** These were all applied before the agent runs reported above:
 - Room labels are compared without case or accents, so `Pièce` matches `piece`.
@@ -166,9 +176,9 @@ It works in this order:
 4. **Rooms:** a watershed of the free space, seeded at each printed room number. This is the same algorithm the agent gets through `segment_rooms`.
 5. **Doors:** where two rooms touch without a wall between them.
 6. **Windows and exterior doors:** gaps in the outer wall.
-7. **Fixtures:** closed thin-line symbols, classified by size and contents following the legend. This is the weakest part (F1 0.09).
+7. **Fixtures:** closed thin-line symbols, classified by size and contents following the legend. This is the weakest part (fixtures score 0.17).
 
-It scores 0.573 on the test split and 0.575 over all 64 valid plans, in about 8 s per plan.
+It scores 0.628 on the test split, in about 8 s per plan.
 
 ## Training a smaller model (stretch goal): `modal_app.py`
 
@@ -214,6 +224,30 @@ How it fits together:
 | `split.json` | fixed test split (never trained on) and excluded plans |
 
 Rebuild the tasks from the dataset with `python -m blueprint_env.build_tasks <junction-dataset>/data/swiss_dwellings tasks --procs 8`.
+
+## Built with
+
+- **Agents benchmarked:** Google Gemini (`gemini-3.1-pro-preview`, `gemini-3-flash-preview`) and Google Gemma (open weights).
+- **Training and cloud runs:** [Modal](https://modal.com) (H100/L4 GPUs) for fine-tuning the smaller model and for Harbor trials (`modal_app.py`).
+- **Coding:** OpenAI Codex helped write the code.
+- **Voice:** ElevenLabs generated some of the voice-over in the demo video.
+
+## Repository layout
+
+| path | what |
+|---|---|
+| `blueprint_env/` | the environment, scorer, baselines, reference solver, MCP server, demo server, training code |
+| `tasks/` | the 65 prepared plans (`drawing.png`, ground truth, task metadata) |
+| `split.json` | fixed test split and excluded plans |
+| `runs/` | saved episodes: reference, agent runs, stop-early run (read by `evaluate.py`) |
+| `results/` | `summary.md/json` (output of the evaluation), Harbor run write-up, benchmark notes, `logs/` of the agent runs |
+| `harbor_task/` | the Harbor task (instruction, Dockerfile, isolated verifier, solution) |
+| `jobs/` | the Harbor/OpenCode trials cited in `results/harbor_run.md` |
+| `docs/`, `web_demo/` | the public trace site and the local interactive demo |
+| `presentation/`, `assets/` | slide figures and the cover image |
+| `video/` | sources of the demo video |
+| `modal_app.py`, `TRAINING.md`, `harbor_modal.json` | optional fine-tuning pipeline and Harbor-on-Modal run |
+| `CHALLENGE.md`, `ORGANIZER_REQUIREMENTS.md` | the brief and the organizer's submission format |
 
 ## Credits
 

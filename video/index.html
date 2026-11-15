@@ -61,7 +61,7 @@ body.clean { cursor: none; }
 .ph .shot { font-family: 'Inter Tight', sans-serif; font-size: 56px; font-weight: 600; line-height: 1.15; letter-spacing: -0.03em; max-width: 1500px; }
 
 /* subtitles */
-#subs { position: absolute; left: 50%; bottom: 44px; transform: translateX(-50%); max-width: 1500px; text-align: center; font-size: 32px; font-weight: 500; line-height: 1.35; padding: 10px 22px; border-radius: 12px; background: rgba(12,12,13,.78); color: #fff; z-index: 50; }
+#subs { position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); width: max-content; max-width: 1760px; text-align: center; font-size: 56px; font-weight: 600; line-height: 1.2; padding: 12px 30px; border-radius: 16px; background: rgba(12,12,13,.78); color: #fff; z-index: 50; }
 #subs:empty, body.nosubs #subs { display: none; }
 
 /* ---------- transport ---------- */
@@ -91,7 +91,7 @@ button.primary { background: var(--orange); color: #14202B; border-color: var(--
 .item .m .ok { color: var(--green); } .item .m .no { color: #E58A8A; }
 </style>
 </head>
-<body class="nosubs">
+<body>
 <div id="app">
   <div id="viewport"><div id="stage"><div id="subs"></div></div></div>
   <div id="transport">

@@ -16,9 +16,9 @@ const shade = root => div(root, 'abs', 'inset:0;background:linear-gradient(180de
 const SCENES = [
 
 // ───────────────────────────── 0 · intro (filmed, cut from the phone recording)
-// media/intro.mp4 = WhatsApp clip trimmed to 2.2 s–35.6 s (starts mid-jump). Times below are seconds in the cut (original − 2.2).
+// media/intro.mp4 = WhatsApp clip trimmed to 2.2 s–37.6 s (starts mid-jump). Times below are seconds in the cut (original − 2.2).
 {
-  id: 'intro', title: 'Intro', dur: 33.4, clip: 'intro.mp4', clipAudio: true, noTTS: true,
+  id: 'intro', title: 'Intro', dur: 35.4, clip: 'intro.mp4', clipAudio: true, noTTS: true,
   shot: 'Intro: where are the toilets? (already filmed)',
   vo: 'Yo everybody. After a long day of hacking, I need the toilet. But where is it? I got the schematics of this building. Secret intel. So I take out Gemini 4 Hydrogen, take a picture, and ask: where are the toilets? It’s thinking… it says they’re over there. And that is wrong. Frontier intelligence, and it can’t even tell me where to go. Well, I’m finding an organizer.',
   build(root, tl, scene) {
@@ -56,6 +56,20 @@ const SCENES = [
       document.head.appendChild(st);
     }
     const vid = scene.layer.querySelector('video');
+
+    // cover: this is the very first frame (also exported as cover.png), it fades out into the clip
+    {
+      const cv = div(root, 'abs', 'inset:0;background:#0C0C0D;z-index:30;');
+      const cp = planView(cv, { x: 1010, y: 130, w: 800, h: 820, view: BLD });
+      const rs = D.ref.schematic;
+      cp.g('walls').setAttribute('opacity', 1);
+      drawRooms(cp.g('rooms'), rs.rooms, BLUE, { fill: 0.14, width: 5 });
+      drawSegs(cp.g('doors'), rs.doors, GREEN, 10);
+      div(cv, 'abs disp', 'left:110px;top:290px;font-size:122px;width:900px;white-space:nowrap;color:#F4F2EE;', 'Drawing<span class="o">Sense</span>');
+      div(cv, 'abs serif o', 'left:116px;top:610px;font-size:62px;width:860px;line-height:1.1;', 'Can an AI agent read a floor plan?');
+      div(cv, 'abs mono', 'left:116px;bottom:90px;font-size:26px;color:#8C8C93;', 'DrawingSense · Junction 2026 · Break the Agent');
+      tl.fromTo(cv, { opacity: 1 }, { opacity: 0, duration: 0.45, ease: 'power1.in', immediateRender: true }, 0.4);
+    }
 
     // vignette over the footage + opening title that peels away
     div(root, 'abs', 'inset:0;background:radial-gradient(ellipse at 40% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%);pointer-events:none;');
@@ -130,144 +144,122 @@ const SCENES = [
   },
 },
 
-// ───────────────────────────── 1b · the problem: a scan line finds questions on the plan
+// ───────────────────────────── 2 · by hand: problem, then see / calibrate / measure (timed to the voiceover)
+// voiceover timestamps: looks easy 1.2 · isn’t 3.5 · see the walls 5.1 · find the scale 6.0 · measure every room 7.0
 {
-  id: 'problem', title: 'The problem', dur: 10, theme: 'dark',
-  vo: 'That’s the problem. Reading a floor plan looks easy. For an AI agent, it isn’t. So we built an environment around it: Blueprint to Schematic.',
-  build(root, tl) {
-    const BX = 360, BW = 1200, BH = 1080;
-    const pv = planView(root, { x: BX, y: 0, w: BW, h: BH, view: BLD });
-    pv.box.style.borderRadius = '0';
-    tl.fromTo(pv.box, { opacity: 0 }, { opacity: 1, duration: 0.8 }, 0);
-    // drawing-pixel -> stage coordinates (the plan is letterboxed in its box)
-    const vw = BLD[2] - BLD[0], vh = BLD[3] - BLD[1], sc = Math.min(BW / vw, BH / vh);
-    const sx = px => BX + BW / 2 + (px - (BLD[0] + BLD[2]) / 2) * sc;
-    const sy = py => BH / 2 + (py - (BLD[1] + BLD[3]) / 2) * sc;
-    const cen = r => [r.polygon.reduce((a, p) => a + p[0], 0) / r.polygon.length, r.polygon.reduce((a, p) => a + p[1], 0) / r.polygon.length];
-
-    div(root, 'abs label', 'left:60px;top:60px;', 'The problem');
-
-    // scan line sweeps left → right; every room it passes gets a question
-    const T0 = 1.0, T1 = 4.2;
-    const line = div(root, 'abs', `left:${BX}px;top:0;width:6px;height:1080px;background:${ORANGE};box-shadow:0 0 40px 10px rgba(255,91,31,.55);opacity:0;`);
-    tl.set(line, { opacity: 1 }, T0);
-    tl.fromTo(line, { x: 0 }, { x: BW, duration: T1 - T0, ease: 'none' }, T0);
-    tl.to(line, { opacity: 0, duration: 0.2 }, T1);
-    const qs = ['wall?', 'which room?', 'scale?', 'door?', 'how big?', 'where?', 'wall?', 'how big?'];
-    D.gt.rooms.slice(0, 8).forEach((r, i) => {
-      const [cx, cy] = cen(r);
-      const x = sx(cx), y = sy(cy);
-      const t = T0 + (x - BX) / BW * (T1 - T0);
-      const tag = div(root, 'abs mono', `left:${x - 70}px;top:${y - 24}px;padding:8px 16px;border-radius:999px;background:${ORANGE};color:#111;font-size:26px;font-weight:600;white-space:nowrap;opacity:0;`, qs[i % qs.length]);
-      tl.fromTo(tag, { opacity: 0, scale: 0.2, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: 'back.out(2.2)', immediateRender: false }, t);
-      tl.to(tag, { y: -8, duration: 0.9, yoyo: true, repeat: 3, ease: 'sine.inOut' }, t + 0.35);
-    });
-
-    // lower-third types the thought, then swaps it
-    const band = div(root, 'abs', `left:${BX + 80}px;bottom:70px;width:${BW - 160}px;padding:26px 44px;border-radius:22px;background:${INK};box-shadow:0 16px 60px rgba(0,0,0,.5);`);
-    const l1 = div(band, 'disp', 'font-size:72px;color:#F4F2EE;', '');
-    const l2 = div(band, 'disp', 'font-size:72px;position:absolute;left:44px;top:26px;opacity:0;', '');
-    tl.fromTo(band, { y: 140, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'expo.out' }, 3.4);
-    typeText(tl, l1, 'Looks easy.', 3.8, { cps: 14 });
-    tl.to(l1, { opacity: 0, duration: 0.2 }, 5.0);
-    tl.set(l2, { opacity: 1 }, 5.2);
-    l2.innerHTML = '<span class="serif o" id="x"></span>';
-    typeText(tl, l2.firstChild, 'For an agent, it isn’t.', 5.2, { cps: 17 });
-    // the answer to the question: what we built
-    const pill = div(root, 'abs pill', `left:${BX + 80}px;top:60px;font-size:34px;padding:14px 28px;background:${ORANGE};color:#111;border-color:${ORANGE};`, 'Blueprint → Schematic');
-    tl.fromTo(pill, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: 'expo.out' }, 7.2);
-  },
-},
-
-// ───────────────────────────── 2 · by hand: see, calibrate, measure (animated, replaces the filmed close-ups)
-{
-  id: 'measure', title: 'By hand', dur: 9, theme: 'light',
-  vo: 'To read one, you have to see the walls, find the scale, and measure every room. That’s spatial reasoning. There’s no answer to look up.',
+  id: 'measure', title: 'By hand', dur: 8.9, theme: 'light',
+  vo: 'Reading a floor plan looks easy. For an AI agent, it isn’t: it has to see the walls, find the scale, and measure every room.',
   build(root, tl) {
     const truth = D.gt.m_per_px;
-    const beat = (n, word, at, until) => {
-      const e = div(root, 'abs', 'left:80px;top:56px;opacity:0;', `<span class="label" style="font-size:24px;">0${n}</span><br><span class="disp" style="font-size:88px;color:${INK};">${word}</span>`);
-      tl.fromTo(e, { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.5, ease: 'expo.out', immediateRender: false }, at);
-      tl.to(e, { opacity: 0, duration: 0.25 }, until - 0.25);
-    };
-    const show = (box, at, until) => {
-      tl.fromTo(box, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', immediateRender: false }, at);
-      tl.to(box, { opacity: 0, duration: 0.3 }, until - 0.3);
-    };
-    const T = [[0, 2.9], [2.7, 5.4], [5.2, 9]];
+    const BX = 310, BY = 50, BW = 1300, BH = 800;       // one stage for all three beats, so nothing jumps around
+    const boxes = [
+      planView(root, { x: BX, y: BY, w: BW, h: BH, view: BLD }),
+      planView(root, { x: BX, y: BY, w: BW, h: BH, view: [1560, 1400, 2440, 1752] }),
+      planView(root, { x: BX, y: BY, w: BW, h: BH, view: [1030, 985, 1430, 1255] }),
+    ];
+    const [C, A, B] = boxes;
+    const cuts = [0, 6.0, 7.0];                          // when each view takes over
+    boxes.forEach((b, i) => {
+      tl.set(b.box, { opacity: i === 0 ? 1 : 0 }, 0);
+      if (i > 0) { tl.set(b.box, { opacity: 1 }, cuts[i]); tl.set(boxes[i - 1].box, { opacity: 0 }, cuts[i]); }
+    });
+    tl.fromTo(C.box, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0);
 
-    // ---- 01 See: a pencil traces an interior wall, then the walls fill in
-    beat(1, 'See.', T[0][0] + 0.2, T[0][1]);
-    const C = planView(root, { x: 480, y: 70, w: 1300, h: 940, view: BLD });
-    tl.set(C.box, { opacity: 0 }, 0);
-    show(C.box, T[0][0], T[0][1] + 0.1);
-    const trace = svgEl('line', { x1: 1092, y1: 915, x2: 1092, y2: 1215, stroke: INK, 'stroke-width': 14, 'stroke-linecap': 'round' }, C.g('pencil'));
-    const wl = svgEl('line', { x1: 1092, y1: 915, x2: 1092, y2: 1215, stroke: ORANGE, 'stroke-width': 18, 'stroke-linecap': 'round', opacity: 0.9 }, C.g('pencil'));
+    // ---- “Reading a floor plan looks easy. For an AI agent, it isn’t.”: a scan line finds questions
+    {
+      const vw = BLD[2] - BLD[0], vh = BLD[3] - BLD[1], k = Math.min(BW / vw, BH / vh);
+      const sx = px => BX + BW / 2 + (px - (BLD[0] + BLD[2]) / 2) * k, sy = py => BY + BH / 2 + (py - (BLD[1] + BLD[3]) / 2) * k;
+      const cen = r => [r.polygon.reduce((a, p) => a + p[0], 0) / r.polygon.length, r.polygon.reduce((a, p) => a + p[1], 0) / r.polygon.length];
+      const S0 = 2.1, S1 = 4.3;
+      const line = div(root, 'abs', `left:${BX}px;top:${BY}px;width:6px;height:${BH}px;background:${ORANGE};box-shadow:0 0 40px 10px rgba(255,91,31,.55);opacity:0;`);
+      tl.set(line, { opacity: 1 }, S0);
+      tl.fromTo(line, { x: 0 }, { x: BW, duration: S1 - S0, ease: 'none' }, S0);
+      tl.to(line, { opacity: 0, duration: 0.2 }, S1);
+      const qs = ['wall?', 'which room?', 'scale?', 'door?', 'how big?', 'where?', 'wall?', 'how big?'], tagEls = [];
+      D.gt.rooms.slice(0, 8).forEach((r, i) => {
+        const [cx, cy] = cen(r), x = sx(cx), y = sy(cy), t = S0 + (x - BX) / BW * (S1 - S0);
+        const tag = div(root, 'abs mono', `left:${x - 70}px;top:${y - 24}px;padding:8px 16px;border-radius:999px;background:${ORANGE};color:#111;font-size:26px;font-weight:600;white-space:nowrap;opacity:0;`, qs[i % qs.length]);
+        tagEls.push(tag);
+        tl.fromTo(tag, { opacity: 0, scale: 0.2, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.35, ease: 'back.out(2.2)', immediateRender: false }, t);
+      });
+      tl.to(tagEls, { opacity: 0, scale: 0.5, duration: 0.25, stagger: 0.02 }, 4.6);
+      const band = div(root, 'abs', `left:${BX + 80}px;top:${BY + BH - 120}px;width:${BW - 160}px;padding:22px 44px;border-radius:22px;background:${INK};box-shadow:0 16px 60px rgba(0,0,0,.4);`);
+      const l1 = div(band, 'disp', 'font-size:64px;color:#F4F2EE;', '');
+      const l2 = div(band, 'disp', 'font-size:64px;position:absolute;left:44px;top:22px;', '<span class="serif o"></span>');
+      tl.fromTo(band, { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'expo.out' }, 0.6);
+      typeText(tl, l1, 'Looks easy.', 1.2, { cps: 14 });
+      tl.to(l1, { opacity: 0, duration: 0.12 }, 2.05);
+      tl.set(l2, { opacity: 0 }, 0); tl.set(l2, { opacity: 1 }, 2.1);
+      typeText(tl, l2.firstChild, 'For an agent, it isn’t.', 2.1, { cps: 17 });
+      tl.to(band, { opacity: 0, y: 60, duration: 0.35 }, 4.5);
+    }
+
+    // one big word per beat, always in the same spot
+    const word = (w, at, until) => {
+      const e = div(root, 'abs disp', `left:80px;top:50px;font-size:88px;color:${INK};opacity:0;`, w);
+      tl.set(e, { opacity: 1 }, at); tl.set(e, { opacity: 0 }, until);
+    };
+    word('See.', 4.9, 6.0); word('Calibrate.', 6.0, 7.0); word('Measure.', 7.0, 8.9);
+
+    // ---- See: a pencil traces an interior wall, the walls fill in
+    const gC = C.g('pencil');
+    const wl = svgEl('line', { x1: 1092, y1: 915, x2: 1092, y2: 1215, stroke: ORANGE, 'stroke-width': 18, 'stroke-linecap': 'round' }, gC);
     wl.style.strokeDasharray = 300;
-    const pen = svgEl('g', {}, C.g('pencil'));
+    const pen = svgEl('g', {}, gC);
     svgEl('polygon', { points: '0,0 -16,-50 16,-50', fill: '#E8B98A', stroke: INK, 'stroke-width': 4 }, pen);
     svgEl('polygon', { points: '-16,-50 16,-50 16,-260 -16,-260', fill: '#F5C542', stroke: INK, 'stroke-width': 4 }, pen);
     svgEl('polygon', { points: '-16,-260 16,-260 16,-285 -16,-285', fill: '#E5302A', stroke: INK, 'stroke-width': 4 }, pen);
     svgEl('polygon', { points: '0,0 -5,-16 5,-16', fill: INK }, pen);
-    pen.style.transformOrigin = '0 0';
-    trace.setAttribute('opacity', 0);
-    tl.fromTo(wl, { strokeDashoffset: 300 }, { strokeDashoffset: 0, duration: 1.0, ease: 'none' }, 0.5);
-    tl.fromTo(pen, { x: 1092, y: 915, rotation: 28, opacity: 0 }, { x: 1092, y: 1215, rotation: 28, opacity: 1, duration: 1.0, ease: 'none', immediateRender: false }, 0.5);
-    tl.to(pen, { opacity: 0, duration: 0.25 }, 1.6);
-    C.g('walls').setAttribute('opacity', 0.55);
-    const rw = drawWalls(C.g('walls'), D.ref.schematic.walls, BLUE, { opacity: 1 });
-    tl.fromTo(rw, { opacity: 0 }, { opacity: 1, duration: 0.15, stagger: { amount: 1.0, from: 'start' } }, 1.7);
+    gsap.set(pen, { svgOrigin: '0 0' });                // rotate around the pencil tip so the tip stays on the line
+    tl.fromTo(wl, { strokeDashoffset: 300 }, { strokeDashoffset: 0, duration: 0.7, ease: 'none', immediateRender: false }, 5.0);
+    tl.fromTo(pen, { x: 1092, y: 915, rotation: 28, opacity: 0 }, { x: 1092, y: 1215, rotation: 28, opacity: 1, duration: 0.7, ease: 'none', immediateRender: false }, 5.0);
+    tl.to(pen, { opacity: 0, duration: 0.15 }, 5.75);
+    C.g('walls').setAttribute('opacity', 1);
+    drawIn(tl, drawRooms(C.g('rooms'), D.ref.schematic.rooms, BLUE, { fill: 0.14, width: 6 }), 5.45, { dur: 0.35, stagger: 0.03 });
 
-    // ---- 02 Calibrate: tap "1:100", the scale bar lights up
-    beat(2, 'Calibrate.', T[1][0] + 0.2, T[1][1]);
-    const A = planView(root, { x: 210, y: 300, w: 1500, h: 600, view: [1560, 1400, 2440, 1752] });
-    tl.set(A.box, { opacity: 0 }, 0);
-    show(A.box, T[1][0], T[1][1] + 0.1);
+    // ---- Calibrate: tap “1:100”, read the scale
     const gA = A.g('tap');
-    const ring = svgEl('ellipse', { cx: 1928, cy: 1546, rx: 80, ry: 30, fill: 'none', stroke: ORANGE, 'stroke-width': 7 }, gA);
-    const bar = svgEl('rect', { x: 612, y: 1606, width: 300, height: 26, fill: ORANGE, 'fill-opacity': 0.25, stroke: ORANGE, 'stroke-width': 5, rx: 6 }, A.g('tap'));
-    tl.fromTo(ring, { opacity: 0, scale: 2.2, transformOrigin: '1928px 1546px' }, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)', immediateRender: false }, T[1][0] + 0.7);
-    [0, 0.35].forEach(d => {
-      const rp = svgEl('circle', { cx: 1928, cy: 1546, r: 10, fill: 'none', stroke: ORANGE, 'stroke-width': 6, opacity: 0 }, gA);
-      tl.fromTo(rp, { attr: { r: 10 }, opacity: 0.9 }, { attr: { r: 120 }, opacity: 0, duration: 0.8, ease: 'power2.out', immediateRender: false }, T[1][0] + 1.2 + d);
+    const ring = svgEl('ellipse', { cx: 1928, cy: 1546, rx: 85, ry: 32, fill: 'none', stroke: ORANGE, 'stroke-width': 8 }, gA);
+    tl.fromTo(ring, { opacity: 0, scale: 2.4, svgOrigin: '1928 1546' }, { opacity: 1, scale: 1, svgOrigin: '1928 1546', duration: 0.35, ease: 'back.out(2)', immediateRender: false }, 6.15);
+    [0, 0.25].forEach(d => {
+      const rp = svgEl('circle', { cx: 1928, cy: 1546, r: 10, fill: 'none', stroke: ORANGE, 'stroke-width': 7, opacity: 0 }, gA);
+      tl.fromTo(rp, { attr: { r: 10 }, opacity: 0.9 }, { attr: { r: 130 }, opacity: 0, duration: 0.5, ease: 'power2.out', immediateRender: false }, 6.5 + d);
     });
-    const sc = div(root, 'abs mono', `left:210px;top:920px;font-size:44px;font-weight:600;color:${INK};opacity:0;`, `1 : 100 <span class="o">→</span> ${truth.toFixed(4)} m / px`);
-    fadeIn(tl, sc, T[1][0] + 1.9, 0.4); tl.to(sc, { opacity: 0, duration: 0.25 }, T[1][1] - 0.25);
+    const sc = div(root, 'abs mono', `left:${BX}px;top:${BY + BH + 20}px;width:${BW}px;text-align:center;font-size:44px;font-weight:600;color:${INK};opacity:0;`, `1 : 100 <span class="o">→</span> ${truth.toFixed(4)} m / px`);
+    tl.set(sc, { opacity: 1 }, 6.55); tl.set(sc, { opacity: 0 }, 7.0);
 
-    // ---- 03 Measure: a ruler lies across a room
-    beat(3, 'Measure.', T[2][0] + 0.2, T[2][1] + 1);
-    const B = planView(root, { x: 360, y: 135, w: 1200, h: 810, view: [1030, 985, 1430, 1255] });
-    tl.set(B.box, { opacity: 0 }, 0);
-    tl.fromTo(B.box, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', immediateRender: false }, T[2][0]);
+    // ---- Measure: a ruler across a room, the length counts up
     const gB = B.g('ruler');
     const ruler = svgEl('g', {}, gB);
     svgEl('rect', { x: 1072, y: 1050, width: 310, height: 34, fill: '#F2D26B', stroke: INK, 'stroke-width': 2.5, rx: 3 }, ruler);
     for (let k = 0; k <= 30; k++) svgEl('line', { x1: 1072 + k * 10 + 5, y1: 1050, x2: 1072 + k * 10 + 5, y2: 1050 + (k % 5 === 0 ? 20 : 11), stroke: INK, 'stroke-width': 2 }, ruler);
-    tl.fromTo(ruler, { x: -520, opacity: 0 }, { x: 0, opacity: 1, duration: 0.9, ease: 'expo.out', immediateRender: false }, T[2][0] + 0.5);
+    tl.fromTo(ruler, { x: -520, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: 'expo.out', immediateRender: false }, 7.05);
     const dim = svgEl('line', { x1: 1092, y1: 1105, x2: 1092, y2: 1105, stroke: ORANGE, 'stroke-width': 6, 'stroke-linecap': 'round' }, gB);
     const capL = svgEl('line', { x1: 1092, y1: 1090, x2: 1092, y2: 1120, stroke: ORANGE, 'stroke-width': 6, 'stroke-linecap': 'round' }, gB);
-    const capR = svgEl('line', { x1: 1362, y1: 1090, x2: 1362, y2: 1120, stroke: ORANGE, 'stroke-width': 6, 'stroke-linecap': 'round', opacity: 0 }, gB);
-    tl.fromTo(dim, { attr: { x2: 1092 } }, { attr: { x2: 1362 }, duration: 0.9, ease: 'power2.inOut', immediateRender: false }, T[2][0] + 1.6);
-    tl.fromTo(capL, { opacity: 0 }, { opacity: 1, duration: 0.1, immediateRender: false }, T[2][0] + 1.6);
-    tl.fromTo(capR, { opacity: 0 }, { opacity: 1, duration: 0.1, immediateRender: false }, T[2][0] + 2.5);
-    const m = div(root, 'abs score o', 'left:1600px;top:420px;font-size:96px;opacity:0;', '');
-    countUp(tl, m, 270 * truth, T[2][0] + 1.6, { dur: 0.9, decimals: 2, suffix: ' m' });
-    fadeIn(tl, m, T[2][0] + 1.6, 0.2);
+    const capR = svgEl('line', { x1: 1362, y1: 1090, x2: 1362, y2: 1120, stroke: ORANGE, 'stroke-width': 6, 'stroke-linecap': 'round' }, gB);
+    tl.fromTo(dim, { attr: { x2: 1092 } }, { attr: { x2: 1362 }, duration: 0.8, ease: 'power2.inOut', immediateRender: false }, 7.6);
+    tl.fromTo([capL, capR], { opacity: 0 }, { opacity: 1, duration: 0.1, immediateRender: false }, 7.6);
+    const m = div(root, 'abs score o', 'left:1640px;top:480px;font-size:72px;opacity:0;', '');
+    countUp(tl, m, 270 * truth, 7.6, { dur: 0.8, decimals: 2, suffix: ' m' });
+    tl.set(m, { opacity: 1 }, 7.6);
   },
 },
 
 // ───────────────────────────── 3 · the environment: tools orbit the drawing, then three things are taken away
 {
-  id: 'machine', title: 'The setup', dur: 12.5, theme: 'light',
-  vo: 'Here’s the environment. The agent gets one drawing and eight tools: zoom, OCR, segmentation, measurement. No shell. No code. Just its eyes and its judgement.',
+  id: 'machine', title: 'The setup', dur: 9.0, theme: 'light',
+  vo: 'So we built DrawingSense. One drawing, eight tools. No shell. No code. Just spatial reasoning.',
   build(root, tl) {
     const CX = 960, CY = 560;
     const ring = div(root, 'abs', 'inset:0;');
     const pv = planView(ring, { x: CX - 260, y: CY - 220, w: 520, h: 440, view: BLD });
     tl.fromTo(pv.box, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.9, ease: 'expo.out' }, 0);
-    const title = div(root, 'abs label', 'left:80px;top:70px;font-size:26px;', '');
-    typeText(tl, title, 'The environment · one drawing · eight tools', 0.3, { cps: 38 });
 
+    // “So we built DrawingSense.”
+    const ttl = div(root, 'abs disp', `left:${CX}px;top:${CY}px;font-size:96px;color:${INK};background:#fff;padding:20px 48px;border-radius:24px;box-shadow:0 24px 80px rgba(17,17,19,.18);white-space:nowrap;`, 'Drawing<span class="o">Sense</span>');
+    gsap.set(ttl, { xPercent: -50, yPercent: -50 });
+    tl.fromTo(ttl, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, 0.7);
+    tl.to(ttl, { opacity: 0, scale: 1.1, duration: 0.35 }, 2.1);
     const svg = svgEl('svg', { width: 1920, height: 1080, style: 'position:absolute;left:0;top:0;' }, ring);
     const tools = ['view_region', 'estimate_scale', 'read_room_labels', 'segment_rooms', 'measure_area', 'preview_schematic', 'get_task', 'submit_schematic'];
     tools.forEach((name, i) => {
@@ -277,7 +269,7 @@ const SCENES = [
       const ln = svgEl('line', { x1: ex, y1: ey, x2: x, y2: y, stroke: '#C9C4B8', 'stroke-width': 3, 'stroke-dasharray': '10 8' }, svg);
       const len = Math.hypot(x - ex, y - ey);
       const dot = svgEl('circle', { cx: ex, cy: ey, r: 9, fill: ORANGE, opacity: 0 }, svg);
-      const t0 = 0.9 + i * 0.42;
+      const t0 = 2.2 + i * 0.2;
       tl.fromTo(ln, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t0);
       // a pulse of "information" travels out to the tool and the tool lights up
       tl.fromTo(dot, { attr: { cx: ex, cy: ey }, opacity: 1 }, { attr: { cx: x, cy: y }, duration: 0.55, ease: 'power2.in' }, t0 + 0.1);
@@ -289,31 +281,61 @@ const SCENES = [
     });
 
     // …then the ring dims and three things are crossed out
-    tl.to(ring, { opacity: 0.12, duration: 0.6 }, 6.6);
-    const items = [['$ bash', 7.0], ['import numpy', 7.9], ['answer_key.json', 8.8]];
+    tl.to(ring, { opacity: 0.12, duration: 0.4 }, 4.4);
+    const items = [['$ bash', 4.6], ['import numpy', 5.5], ['answer_key.json', 6.1]];
     items.forEach(([txt, t], i) => {
       const y = 330 + i * 150;
       const chip = div(root, 'abs mono', `left:${CX}px;top:${y}px;font-size:68px;font-weight:600;color:${INK};padding:18px 40px;border-radius:20px;background:#fff;box-shadow:0 14px 40px rgba(17,17,19,.12);white-space:nowrap;opacity:0;`, txt);
-      const strike = div(root, 'abs', `left:${CX - 330}px;top:${y + 52}px;width:660px;height:10px;border-radius:5px;background:#E5302A;transform-origin:left center;`);
-      gsap.set(strike, { scaleX: 0, rotation: -3 });
+      const strike = div(root, 'abs', `left:${CX - 330}px;top:${y + 68}px;width:660px;height:10px;border-radius:5px;background:#E5302A;transform-origin:left center;`);
+      gsap.set(strike, { scaleX: 0 });
       gsap.set(chip, { xPercent: -50 });
       tl.fromTo(chip, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: 'expo.out', immediateRender: false }, t);
-      tl.to(strike, { scaleX: 1, duration: 0.35, ease: 'power3.out' }, t + 0.45);
+      tl.to(strike, { scaleX: 1, duration: 0.3, ease: 'power3.out' }, t + 0.35);
     });
     const fin = div(root, 'abs serif o', 'left:0;right:0;top:800px;text-align:center;font-size:100px;opacity:0;', 'Just spatial reasoning.');
-    tl.fromTo(fin, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out', immediateRender: false }, 9.9);
+    tl.fromTo(fin, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'expo.out', immediateRender: false }, 6.8);
+  },
+},
+
+// ───────────────────────────── 3b · how it is scored: the reward rubric as one 100 % bar
+{
+  id: 'rubric', title: 'Scoring', dur: 8.4, theme: 'dark',
+  vo: 'Walls and rooms count twenty-five percent each, doors and windows fifteen, fixtures and areas ten, with a speed multiplier.',
+  build(root, tl) {
+    const h = div(root, 'abs disp', 'left:120px;top:130px;font-size:96px;width:1700px;', 'Scored on <span class="serif o">geometry.</span>');
+    wipe(tl, h, 0.2, 0.8);
+    const parts = [
+      ['Walls', 25, BLUE, 'Mask F1 at 15 / 30 / 60 cm'],
+      ['Rooms', 25, '#7A4DFF', 'Polygon IoU 0.5–0.9, half credit if the label is wrong'],
+      ['Doors', 15, GREEN, 'Midpoint distance: full ≤ 20 cm, 0 at 1 m'],
+      ['Windows', 15, '#12A3A3', 'Same as doors'],
+      ['Fixtures', 10, ORANGE, 'Same type, full ≤ 25 cm, 0 at 1.5 m'],
+      ['Areas', 10, '#C2415C', 'Within 5 % full, 0 at 30 % error'],
+    ];
+    const X0 = 120, W = 1680, Y = 400, H = 170;
+    let x = X0;
+    div(root, 'abs', `left:${X0}px;top:${Y}px;width:${W}px;height:${H}px;border-radius:20px;background:#161618;`);
+    parts.forEach(([name, w, color, how], i) => {
+      const pw = W * w / 100;
+      const seg = div(root, 'abs', `left:${x}px;top:${Y}px;width:${pw - 6}px;height:${H}px;border-radius:16px;background:${color};overflow:hidden;transform-origin:left center;`,
+        `<div style="padding:18px 22px;"><div style="font-size:30px;font-weight:700;letter-spacing:-0.02em;">${name}</div><div class="score" style="font-size:78px;margin-top:4px;">${w}%</div></div>`);
+      const at = [0.1, 0.5, 2.1, 2.5, 4.1, 4.5][i];
+      tl.fromTo(seg, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.55, ease: 'expo.out' }, at);
+      x += pw;
+    });
+    const sp = div(root, 'abs pill', 'left:120px;top:850px;font-size:30px;padding:16px 30px;', 'Speed <span class="o">×0.90–1.00</span>');
+    tl.fromTo(sp, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.6)', immediateRender: false }, 5.2);
   },
 },
 
 // ───────────────────────────── 4 · side-by-side replay (the money shot)
 {
-  id: 'demo', title: 'Replay', dur: 25, theme: 'light',
-  vo: 'Watch Gemini 3.1 Pro work. Zoom. Zoom. Zoom. It works out the right scale, then second-guesses itself. Then it draws every room by hand: loose boxes, no interior walls. Our plain computer-vision solver traces the walls and snaps rooms to the lines, with no model in the loop. Point five one against point zero four.',
+  id: 'demo', title: 'Replay', dur: 11.8, warp: 2.066, theme: 'light',
+  vo: 'Watch Gemini work. It zooms, second-guesses its scale, then draws every room by hand. Our plain computer-vision solver traces the walls. Point five one against point zero four.',
   build(root, tl) {
-    div(root, 'abs label', 'left:80px;top:64px;', `Replay · plan ${D.task.split('_')[0]} · same drawing, same tools`);
-    const W = 860, H = 640, Y = 196;
-    const tagL = div(root, 'abs tag', `left:80px;top:140px;color:${INK};`, `<i style="background:${ORANGE}"></i>Gemini 3.1 Pro`);
-    const tagR = div(root, 'abs tag', `left:980px;top:140px;color:${INK};`, `<i style="background:${BLUE}"></i>Our reference · plain CV, no ground truth`);
+    const W = 860, H = 640, Y = 100;
+    const tagL = div(root, 'abs tag', `left:80px;top:52px;color:${INK};`, `<i style="background:${ORANGE}"></i>Gemini 3.1 Pro`);
+    const tagR = div(root, 'abs tag', `left:980px;top:52px;color:${INK};`, `<i style="background:${BLUE}"></i>Our reference`);
     const L = planView(root, { x: 80, y: Y, w: W, h: H, view: FULL });
     const Rv = planView(root, { x: 980, y: Y, w: W, h: H, view: FULL });
     fadeIn(tl, [tagL, tagR, L.box, Rv.box], 0, 0.5);
@@ -321,11 +343,9 @@ const SCENES = [
     // ---- right: the reference
     tl.to(Rv.svg, { attr: { viewBox: vb(BLD) }, duration: 1.4, ease: 'power3.inOut' }, 1.2);
     const rs = D.ref.schematic;
-    Rv.g('walls').setAttribute('opacity', 0.55); // flat colour where wall boxes overlap
-    const rw = drawWalls(Rv.g('walls'), rs.walls, BLUE, { opacity: 1 });
-    tl.fromTo(rw, { opacity: 0 }, { opacity: 1, duration: 0.2, stagger: { amount: 1.6, from: 'start' } }, 2.6);
-    const rr = drawRooms(Rv.g('rooms'), rs.rooms, BLUE, { fill: 0.16, width: 4 });
-    drawIn(tl, rr, 4.2, { dur: 0.7, stagger: 0.1 });
+    Rv.g('walls').setAttribute('opacity', 1); // flat colour where wall boxes overlap
+    const rr = drawRooms(Rv.g('rooms'), rs.rooms, BLUE, { fill: 0.14, width: 5 });
+    drawIn(tl, rr, 3.0, { dur: 0.7, stagger: 0.1 });
     const rd = drawSegs(Rv.g('doors'), rs.doors, GREEN, 10);
     popIn(tl, rd, 6.4, { stagger: 0.04, y: 0, scale: 0.4 });
     const done = div(root, 'abs pill', 'left:1000px;top:770px;font-size:22px;', 'done · no model calls');
@@ -362,15 +382,15 @@ const SCENES = [
     tl.set(th, { opacity: 1, y: 0 }, scaleAt);
     tl.fromTo(th, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, immediateRender: false }, scaleAt);
     const line1 = div(th, '', '', ''); line1.insertAdjacentHTML('beforebegin', who);
-    typeText(tl, line1, '“…1:100 means 0.016935 m/px.”', scaleAt + 0.2, { cps: 40 });
+    typeText(tl, line1, '“1:100 → 0.0169 m/px”', scaleAt + 0.2, { cps: 40 });
     const line2 = div(th, '', `color:${ORANGE};margin-top:6px;`, '');
-    typeText(tl, line2, '“Wait, let’s look at the scale bar again.”', scaleAt + 1.3, { cps: 40 });
+    typeText(tl, line2, '“Wait, check the scale bar.”', scaleAt + 1.3, { cps: 40 });
     tl.to(th, { opacity: 0, duration: 0.3 }, scaleAt + 3.6);
 
     const th2 = div(root, 'abs thought', `left:120px;top:${Y + 330}px;opacity:0;`, who);
     const l3 = div(th2, '', '', '');
     tl.fromTo(th2, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3 }, tEnd - 1.2);
-    typeText(tl, l3, '“Now I’ll build the polygons for each room manually using the images.”', tEnd - 1.0, { cps: 50 });
+    typeText(tl, l3, '“I’ll draw the rooms by hand.”', tEnd - 1.0, { cps: 50 });
     tl.to(th2, { opacity: 0, duration: 0.3 }, tEnd + 1.6);
 
     // its submission: rooms only, drawn by hand
@@ -397,242 +417,298 @@ const SCENES = [
 
 // ───────────────────────────── 5 · the gap
 {
-  id: 'gap', title: 'The gap', dur: 16, theme: 'dark',
-  vo: 'Across fifteen unseen plans, three runs each, Gemini scores point three four. Our solver: point five nine. Stop our solver halfway, and it still beats the frontier agent. Three runs, within two hundredths.',
+  id: 'gap', title: 'The gap', dur: 6.9, theme: 'dark',
+  vo: 'Across fifteen unseen plans, Gemini scores point three four. Our solver: point five nine.',
   build(root, tl) {
-    div(root, 'abs label', 'left:120px;top:110px;', '15 unseen plans · 3 runs each · reward 0 → 1');
-    const h = div(root, 'abs disp', 'left:120px;top:170px;font-size:104px;width:1700px;', 'Half our solver beats<br>the <span class="serif o">frontier.</span>');
+    const h = div(root, 'abs disp', 'left:120px;top:170px;font-size:104px;width:1700px;', 'Our solver beats<br>the <span class="serif o">frontier.</span>');
     wipe(tl, h, 0.3, 0.9);
     const rows = [
-      ['Our reference', R('reference').reward, BLUE, 'deterministic'],
-      ['Our reference, stopped at 50 %', R('stop early (50').reward, '#5A5A62', ''],
-      ['Gemini 3.1 Pro', R('agent: gemini-3.1-pro-preview').reward, ORANGE, R('agent: gemini-3.1-pro-preview').runs.map(v => v.toFixed(3)).join(' · ')],
-      ['Do nothing', 0, '#5A5A62', ''],
+      ['Our reference', R('reference').reward, BLUE, ''],
+      ['Gemini 3.1 Pro', R('agent: gemini-3.1-pro-preview').reward, ORANGE, ''],
     ];
     const MAXW = 1120;
     rows.forEach((r, i) => {
-      const y = 520 + i * 118;
+      const y = 520 + i * 160;
       div(root, 'abs', `left:120px;top:${y + 4}px;width:520px;font-size:34px;font-weight:600;color:#F4F2EE;`, r[0]);
       if (r[3]) div(root, 'abs mono', `left:120px;top:${y + 50}px;font-size:20px;color:#8C8C93;`, r[3]);
       div(root, 'abs', `left:660px;top:${y}px;width:${MAXW}px;height:76px;border-radius:12px;background:#161618;`);
       const bar = div(root, 'abs', `left:660px;top:${y}px;width:${Math.max(8, r[1] * MAXW)}px;height:76px;border-radius:12px;background:${r[2]};transform-origin:left center;`);
       const val = div(root, 'abs score', `left:${680 + Math.max(8, r[1] * MAXW)}px;top:${y + 8}px;font-size:60px;color:#F4F2EE;`, '');
-      tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: 'expo.out' }, 2.2 + i * 0.5);
-      countUp(tl, val, r[1], 2.2 + i * 0.5, { dur: 1.1, decimals: 3 });
+      tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 1.1, ease: 'expo.out' }, 1.8 + i * 0.7);
+      countUp(tl, val, r[1], 1.8 + i * 0.7, { dur: 1.1, decimals: 3 });
       r.el = bar;
     });
-    // kicker: highlight the 50 % row against Gemini
-    const ring = div(root, 'abs', `left:100px;top:${520 + 118 - 18}px;width:1720px;height:${118 * 2 + 0}px;border:3px solid ${ORANGE};border-radius:20px;`);
-    tl.fromTo(ring, { opacity: 0, scale: 1.03 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' }, 7.8);
-    const k = div(root, 'abs pill', `left:1460px;top:${520 + 118 * 3 - 4}px;background:${ORANGE};color:#111;border-color:${ORANGE};`, '0.438 > 0.342');
-    popIn(tl, k, 8.3);
   },
 },
 
-// ───────────────────────────── 6 · why it fails: two scale numbers on a number line, then the room grows
+// ───────────────────────────── 6 · why Gemini fails: all eight failure modes on one board, each with a tiny animation of how it goes wrong
 {
-  id: 'scale', title: 'Why it fails', dur: 13, theme: 'light',
-  vo: 'So what goes wrong? It computed the right scale. Then it eyeballed the scale bar, used a different number, and every area came out six percent off. It can see. It can’t measure.',
+  id: 'errors', title: 'Why it fails', dur: 10.6, theme: 'dark',
+  vo: 'Eight ways it fails. Two matter most: it quits early, and it skips the walls. Then wrong scale, missed doors, timeouts, and more.',
   build(root, tl) {
-    const truth = D.gt.m_per_px, used = D.agent.schematic.m_per_px;
-    const V0 = 0.0165, V1 = 0.0178, AX0 = 210, AXW = 1500, AY = 430;
-    const pos = v => AX0 + (v - V0) / (V1 - V0) * AXW;
-    div(root, 'abs label', 'left:80px;top:60px;', `Gemini 3.1 Pro · scale in metres per pixel`);
+    const RED = '#E5302A', DIM = '#8C8C93';
+    // card(x, y, w, h, title, stat, important) -> the card element
+    const card = (x, y, w, h, title, stat, hot, at) => {
+      const c = div(root, 'abs', `left:${x}px;top:${y}px;width:${w}px;height:${h}px;border-radius:26px;background:#161618;box-shadow:inset 0 0 0 ${hot ? 4 : 1.5}px ${hot ? ORANGE : '#2A2A2E'};overflow:hidden;`);
+      div(c, 'abs disp', `left:${hot ? 34 : 20}px;top:${hot ? 26 : 18}px;font-size:${hot ? 52 : 29}px;width:${w - 60}px;line-height:1.0;color:${hot ? '#fff' : '#F4F2EE'};`, title);
+      div(c, 'abs mono', `left:${hot ? 34 : 20}px;bottom:${hot ? 24 : 16}px;width:${w - (hot ? 68 : 40)}px;font-size:${hot ? 30 : 22}px;line-height:1.3;color:${hot ? '#F4F2EE' : DIM};`, stat);
+      if (hot) div(c, 'abs mono', `right:26px;top:30px;font-size:20px;font-weight:600;padding:6px 14px;border-radius:999px;background:${ORANGE};color:#111;`, 'MOST IMPORTANT');
+      tl.fromTo(c, { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'expo.out' }, at);
+      return c;
+    };
+    const dot = (p, x, y, r, color, extra = '') => div(p, 'abs', `left:${x - r}px;top:${y - r}px;width:${2 * r}px;height:${2 * r}px;border-radius:50%;background:${color};${extra}`);
+    const T = { quit: 2.2, walls: 3.4, small: 5.0 };
 
-    // axis with ticks
-    const axis = div(root, 'abs', `left:${AX0}px;top:${AY}px;width:${AXW}px;height:5px;background:${INK};transform-origin:left center;`);
-    tl.fromTo(axis, { scaleX: 0 }, { scaleX: 1, duration: 1.0, ease: 'power3.out' }, 0.2);
-    for (let v = V0, i = 0; v <= V1 + 1e-9; v += 0.0001, i++) {
-      const x = pos(v);
-      const t = div(root, 'abs', `left:${x - 1.5}px;top:${AY}px;width:3px;height:${i % 5 === 0 ? 30 : 16}px;background:${INK};opacity:0;`);
-      tl.fromTo(t, { opacity: 0 }, { opacity: 1, duration: 0.2 }, 0.5 + i * 0.05);
-      if (i % 5 === 0) { const l = div(root, 'abs mono', `left:${x - 60}px;top:${AY + 40}px;width:120px;text-align:center;font-size:20px;color:#6B6B72;opacity:0;`, v.toFixed(4)); tl.fromTo(l, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.9 + i * 0.05); }
+    // ---------- 1 · quits early
+    const c1 = card(50, 50, 900, 440, 'Quits early', 'Gives up after a few calls.<br>4 of 8 scored 0.', true, T.quit);
+    const calls = [];
+    for (let i = 0; i < 4; i++) calls.push(div(c1, 'abs mono', `left:${34 + i * 96}px;top:128px;width:84px;height:56px;border-radius:14px;border:2px solid #3A3A40;font-size:20px;display:flex;align-items:center;justify-content:center;color:${DIM};`, i < 3 ? `call ${i + 1}` : 'submit'));
+    calls.forEach((e, i) => tl.to(e, { backgroundColor: i < 3 ? '#3A2A22' : RED, borderColor: i < 3 ? ORANGE : RED, color: '#fff', duration: 0.2 }, T.quit + 0.6 + i * 0.3));
+    const empty = div(c1, 'abs mono', `left:34px;top:210px;width:380px;height:130px;border-radius:14px;border:3px dashed ${RED};display:flex;align-items:center;justify-content:center;font-size:24px;color:${RED};opacity:0;`, 'empty schematic');
+    tl.fromTo(empty, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' }, T.quit + 1.6);
+    for (let i = 0; i < 8; i++) {
+      const bad = i < 4, x = 470 + (i % 4) * 100, y = 130 + Math.floor(i / 4) * 120;
+      const sq = div(c1, 'abs mono', `left:${x}px;top:${y}px;width:88px;height:100px;border-radius:14px;background:#26262b;font-size:18px;display:flex;align-items:center;justify-content:center;color:#F4F2EE;`, '…');
+      tl.fromTo(sq, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'back.out(2)' }, T.quit + 0.5 + i * 0.07);
+      tl.call(() => { sq.textContent = bad ? '0.000' : 'ok'; sq.style.background = bad ? RED : '#1FA463'; }, null, T.quit + 1.7 + i * 0.08);
+      tl.call(() => { sq.textContent = '…'; sq.style.background = '#26262b'; }, null, 0);
     }
 
-    // flag for a value: stem up from the axis, label card on top
-    const flag = (x, color, head, val, note, at, from) => {
-      const stem = div(root, 'abs', `left:${x - 3}px;top:${AY - 170}px;width:6px;height:170px;background:${color};transform-origin:bottom;`);
-      const card = div(root, 'abs card', `left:${x - 230}px;top:${AY - 300}px;width:460px;padding:16px 24px;box-shadow:0 0 0 3px ${color},0 14px 40px rgba(17,17,19,.1);display:flex;flex-direction:column;gap:2px;`,
-        `<span class="label" style="font-size:18px;">${head}</span><span class="score" style="font-size:60px;color:${color};">${val}</span><span class="mono" style="font-size:20px;color:${color};">${note}</span>`);
-      const g = [stem, card];
-      tl.fromTo(g, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration: 0.5, ease: 'bounce.out', immediateRender: false }, at);
-      return g;
-    };
-    flag(pos(truth), GREEN, 'from “1:100 on A3”', '0.016935', `✓ survey: ${truth.toFixed(6)}`, 2.2);
-    const f2 = flag(pos(used), ORANGE, 'from the scale bar, by eye', used.toFixed(6), '✗ the one it submitted', 4.0);
-    tl.fromTo(f2, { x: 360 }, { x: 0, duration: 0.7, ease: 'back.out(1.4)', immediateRender: false }, 4.0);
-
-    // the gap between them
-    const bx = pos(truth), bw = pos(used) - pos(truth);
-    const br = div(root, 'abs', `left:${bx}px;top:${AY + 90}px;width:${bw}px;height:26px;border:5px solid ${ORANGE};border-top:none;border-radius:0 0 14px 14px;transform-origin:left;`);
-    tl.fromTo(br, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'power3.out' }, 5.2);
-    const pct = div(root, 'abs score o', `left:${bx}px;width:${bw}px;top:${AY + 128}px;text-align:center;font-size:64px;`, '');
-    countUp(tl, pct, (used / truth - 1) * 100, 5.5, { dur: 0.6, decimals: 1, prefix: '+', suffix: ' %' });
-    tl.fromTo(pct, { opacity: 0 }, { opacity: 1, duration: 0.2 }, 5.5);
-
-    // one real room, drawn with each scale: it swells and falls out of tolerance
-    const rm = D.gt.rooms.map(r => ({ r, a: Math.abs(r.polygon.reduce((s, p, i, A) => { const q = A[(i + 1) % A.length]; return s + p[0] * q[1] - q[0] * p[1]; }, 0)) / 2 }))
-      .filter(o => o.a * truth * truth > 14 && o.a * truth * truth < 45).sort((a, b) => b.a - a.a)[0] || { r: D.gt.rooms[0], a: 1 };
-    const xs = rm.r.polygon.map(p => p[0]), ys = rm.r.polygon.map(p => p[1]);
-    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
-    const RW = 480, RH = 330, k = Math.min(RW / (x1 - x0), RH / (y1 - y0)) * 0.86;
-    const rsvg = svgEl('svg', { width: RW, height: RH, style: `position:absolute;left:250px;top:690px;overflow:visible;` }, root);
-    const pts = rm.r.polygon.map(p => [(p[0] - (x0 + x1) / 2) * k + RW / 2, (p[1] - (y0 + y1) / 2) * k + RH / 2]);
-    const pG = svgEl('path', { d: polyPath(pts), fill: GREEN, 'fill-opacity': 0.18, stroke: GREEN, 'stroke-width': 6, 'stroke-linejoin': 'round' }, rsvg);
-    const pO = svgEl('path', { d: polyPath(pts), fill: ORANGE, 'fill-opacity': 0.12, stroke: ORANGE, 'stroke-width': 6, 'stroke-linejoin': 'round', 'stroke-dasharray': '14 10' }, rsvg);
-    pO.style.transformOrigin = `${RW / 2}px ${RH / 2}px`;
-    tl.fromTo([pG, pO], { opacity: 0 }, { opacity: 1, duration: 0.5 }, 7.0);
-    tl.fromTo(pO, { scale: 1 }, { scale: used / truth, duration: 1.2, ease: 'elastic.out(1,0.6)', immediateRender: false }, 7.6);
-    const aT = rm.a * truth * truth, aU = rm.a * used * used;
-    const t1 = div(root, 'abs', 'left:880px;top:700px;font-size:34px;font-weight:600;', `<span class="mono" style="color:${GREEN}">${aT.toFixed(1)} m²</span> true`);
-    const t2 = div(root, 'abs', 'left:880px;top:760px;font-size:34px;font-weight:600;', `<span class="mono" style="color:${ORANGE}">${aU.toFixed(1)} m²</span> submitted`);
-    const t3 = div(root, 'abs score o', 'left:880px;top:810px;font-size:90px;', `+${((used / truth) ** 2 * 100 - 100).toFixed(1)} %`);
-    const t4 = div(root, 'abs mono', 'left:880px;top:925px;font-size:26px;color:#6B6B72;', `tolerance 5 % → right in <b style="color:${ORANGE}">1 of ${D.gt.rooms.length}</b> rooms`);
-    fadeIn(tl, t1, 8.2); fadeIn(tl, t2, 8.8); popIn(tl, t3, 9.4); fadeIn(tl, t4, 10.4);
-  },
-},
-
-// ───────────────────────────── 7a · try to cheat: a fat marker scribbles over the whole plan (animated)
-{
-  id: 'marker', title: 'Cheat (paper)', dur: 5.5, theme: 'light',
-  vo: 'So can you cheat?',
-  build(root, tl) {
-    div(root, 'abs label', 'left:80px;top:56px;', 'Cheat attempt');
-    const pv = planView(root, { x: 160, y: 100, w: 1600, h: 900, view: FULL });
-    tl.fromTo(pv.box, { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' }, 0);
-    const g = pv.g('marker');
-    const [x0, y0, x1, y1] = D.bbox;
-    const m = 50;
-    const A = [x0 - m, y0 - m], B = [x1 + m + 14, y0 - m + 12], C = [x1 + m - 8, y1 + m], Dd = [x0 - m + 10, y1 + m + 16];
-    const outline = svgEl('path', { d: `M${A}L${B}L${C}L${Dd}L${A[0] + 4},${A[1] + 6}`, fill: 'none', stroke: ORANGE, 'stroke-width': 34, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', opacity: 0.88 }, g);
-    const zig = [];
-    for (let i = 0, y = y0; y < y1 + m; i++, y += 120) zig.push((i % 2 ? [x0 - m + 20, y] : [x1 + m - 20, y]));
-    const hatch = svgEl('path', { d: 'M' + zig.map(p => p.join(',')).join('L'), fill: 'none', stroke: ORANGE, 'stroke-width': 26, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', opacity: 0.5 }, g);
-    const lens = [outline, hatch].map(p => p.getTotalLength());
-    [outline, hatch].forEach((p, i) => { p.style.strokeDasharray = lens[i]; p.style.strokeDashoffset = lens[i]; });
-    // marker pen that follows the stroke
-    const pen = svgEl('g', {}, g);
-    svgEl('polygon', { points: '0,0 -30,-60 30,-60', fill: ORANGE, stroke: INK, 'stroke-width': 6 }, pen);
-    svgEl('polygon', { points: '-30,-60 30,-60 30,-330 -30,-330', fill: '#2B2B30', stroke: INK, 'stroke-width': 6 }, pen);
-    svgEl('rect', { x: -30, y: -210, width: 60, height: 70, fill: ORANGE }, pen);
-    pen.style.transformOrigin = '0 0';
-    gsap.set(pen, { rotation: 24, opacity: 0 });
-    const run = (path, len, at, dur) => {
-      const o = { p: 0 };
-      tl.fromTo(o, { p: 0 }, { p: 1, duration: dur, ease: 'none', immediateRender: false, onUpdate: () => {
-        path.style.strokeDashoffset = len * (1 - o.p);
-        const pt = path.getPointAtLength(len * o.p);
-        gsap.set(pen, { x: pt.x, y: pt.y, opacity: 1 });
-      } }, at);
-    };
-    run(outline, lens[0], 0.6, 1.5);
-    run(hatch, lens[1], 2.1, 1.3);
-    tl.to(pen, { opacity: 0, duration: 0.2 }, 3.45);
-    // stabbed dots
-    const dots = [];
-    for (let i = 0; i < 28; i++) {
-      const dx = x0 + ((i * 37) % 100) / 100 * (x1 - x0), dy = y0 + ((i * 61 + 13) % 100) / 100 * (y1 - y0);
-      dots.push(svgEl('circle', { cx: dx, cy: dy, r: 20, fill: INK, opacity: 0 }, g));
-    }
-    tl.fromTo(dots, { opacity: 0, scale: 3, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: 0.15, stagger: { amount: 1.2, from: 'random' }, immediateRender: false }, 3.5);
-  },
-},
-
-// ───────────────────────────── 7b · exploits score nothing
-{
-  id: 'cheat', title: 'Cheat (score)', dur: 10, theme: 'dark',
-  vo: 'One giant room: zero. A thousand doors: point zero one. A wall around it all: point zero seven.',
-  build(root, tl) {
-    const pv = planView(root, { x: 120, y: 120, w: 900, h: 760, view: BLD });
-    fadeIn(tl, pv.box, 0, 0.3);
-    const [x0, y0, x1, y1] = D.bbox;
-    const g = pv.g('cheat');
-    const big = svgEl('rect', { x: x0, y: y0, width: x1 - x0, height: y1 - y0, fill: ORANGE, 'fill-opacity': 0.3, stroke: ORANGE, 'stroke-width': 12 }, g);
-    const dots = [];
-    for (let i = 0; i < 31; i++) for (let j = 0; j < 31; j++)
-      dots.push(svgEl('circle', { cx: x0 + (x1 - x0) * i / 30, cy: y0 + (y1 - y0) * j / 30, r: 9, fill: ORANGE }, g));
-    const ring = svgEl('rect', { x: x0, y: y0, width: x1 - x0, height: y1 - y0, fill: 'none', stroke: ORANGE, 'stroke-width': 60, 'stroke-opacity': 0.8 }, g);
-    const ex = D.exploits;
-    const steps = [
-      [big, 'One giant room', ex['one giant room']],
-      [dots, '961 doors, windows, fixtures', ex['door/window/fixture spam (961 each)']],
-      [ring, 'Thick wall around the building', ex['thick ring wall around the building']],
-    ];
-    const name = div(root, 'abs', 'left:1100px;top:250px;width:700px;font-size:44px;font-weight:600;letter-spacing:-0.02em;', '');
-    const sc = div(root, 'abs score o', 'left:1100px;top:330px;font-size:220px;', '');
-    div(root, 'abs label', 'left:1104px;top:200px;', 'exploit');
-    steps.forEach(([els, label, v], i) => {
-      const at = 0.4 + i * 2.2;
-      const arr = Array.isArray(els) ? els : [els];
-      tl.fromTo(arr, { opacity: 0 }, { opacity: 1, duration: 0.25, stagger: arr.length > 1 ? { amount: 0.5, from: 'random' } : 0 }, at);
-      tl.call(() => { name.textContent = label; }, null, at);
-      countUp(tl, sc, v, at + 0.3, { dur: 0.8, decimals: 3, from: 1 });
-      if (i < steps.length - 1) tl.to(arr, { opacity: 0, duration: 0.25 }, at + 2.0);
+    // ---------- 2 · skips walls
+    const c2 = card(970, 50, 900, 440, 'Skips walls', 'Rooms, but no walls.<br>24 of 40 episodes.', true, T.walls);
+    const pv = planView(c2, { x: 34, y: 92, w: 400, h: 190, view: BLD, bg: '#fff' });
+    pv.box.style.borderRadius = '14px';
+    const rr = drawRooms(pv.g('rooms'), D.agent.schematic.rooms, ORANGE, { fill: 0.16, width: 6 });
+    drawIn(tl, rr, T.walls + 0.5, { dur: 0.5, stagger: 0.06 });
+    const miss = D.gt.walls.map(w => svgEl('path', { d: polyPath(w), fill: 'none', stroke: RED, 'stroke-width': 10, 'stroke-dasharray': '22 14', opacity: 0 }, pv.g('miss')));
+    tl.fromTo(miss, { opacity: 0 }, { opacity: 0.95, duration: 0.3, yoyo: true, repeat: 3 }, T.walls + 1.6);
+    const mt = div(c2, 'abs mono', `left:34px;top:288px;font-size:20px;color:${RED};opacity:0;`, '✗ walls missing');
+    tl.set(mt, { opacity: 1 }, T.walls + 1.7);
+    [['with walls', 0.56, GREEN], ['no walls', 0.29, ORANGE]].forEach(([lab, v, col], i) => {
+      const bx = 520 + i * 170;
+      const bar = div(c2, 'abs', `left:${bx}px;top:${290 - v / 0.6 * 190}px;width:130px;height:${v / 0.6 * 190}px;border-radius:12px 12px 0 0;background:${col};transform-origin:bottom;`);
+      div(c2, 'abs mono', `left:${bx - 10}px;top:294px;width:150px;text-align:center;font-size:18px;color:${DIM};`, lab);
+      const val = div(c2, 'abs score', `left:${bx}px;top:${244 - v / 0.6 * 190}px;width:130px;text-align:center;font-size:46px;`, '');
+      tl.fromTo(bar, { scaleY: 0 }, { scaleY: 1, duration: 0.7, ease: 'expo.out' }, T.walls + 1.0 + i * 0.4);
+      countUp(tl, val, v, T.walls + 1.0 + i * 0.4, { dur: 0.7, decimals: 2 });
+      tl.fromTo(val, { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: false }, T.walls + 1.0 + i * 0.4);
     });
-    tl.call(() => { name.textContent = ''; }, null, 0);
-    const foot = div(root, 'abs', 'left:1100px;top:640px;width:720px;display:flex;flex-direction:column;gap:14px;font-size:30px;',
-      `<div style="display:flex;justify-content:space-between;"><span class="m">Best cheat</span><b class="mono">${Math.max(...Object.values(ex).filter(v => v < 0.5)).toFixed(3)}</b></div>
-       <div style="display:flex;justify-content:space-between;"><span class="m">A quarter of honest work</span><b class="mono">${R('stop early (25').reward.toFixed(3)}</b></div>
-       <div style="display:flex;justify-content:space-between;"><span class="m">Do nothing</span><b class="mono">0.000</b></div>`);
-    fadeIn(tl, foot, 6.6, 0.5);
+
+    // ---------- the six smaller ones
+    const SW = 291, SY = 490, SH = 450;
+    const sx = i => 50 + i * (SW + 14);
+    const smalls = [
+      ['Misses doors and windows', 'Finds ¼ of them.'],
+      ['Wrong scale', '15 of 40 off by >10%.'],
+      ['Large plans collapse', 'More rooms, less score.'],
+      ['Timeouts', '5 of 45 never submit.'],
+      ['Corrupted output', '149 turns without a tool call.'],
+      ['High variance', 'Same plan, three runs.'],
+    ];
+    const S = smalls.map((s, i) => card(sx(i), SY, SW, SH, s[0], s[1], false, T.small + i * 0.45));
+    const base = i => T.small + i * 0.45 + 0.3;
+
+    // 3 doors and windows: real (green) vs. found by eye (orange), most of them off target
+    {
+      const c = S[0], real = [[60, 150], [140, 120], [215, 160], [90, 230], [180, 250], [235, 225], [50, 300], [150, 310]];
+      real.forEach(([x, y], i) => { const d = dot(c, x, y + 5, 11, 'transparent', `border:4px solid ${GREEN};`); tl.fromTo(d, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'back.out(2)' }, base(0) + i * 0.08); });
+      const eye = [[60, 150], [215, 165], [120, 190], [30, 250], [200, 205], [260, 290], [110, 270], [170, 330], [75, 345], [245, 160]];
+      eye.forEach(([x, y], i) => { const d = dot(c, x + (i > 1 ? 14 : 0), y + 5, 9, ORANGE); tl.fromTo(d, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.2, ease: 'back.out(2)' }, base(0) + 0.9 + i * 0.1); });
+    }
+    // 4 wrong scale: the same room, drawn 15 % too big
+    {
+      const c = S[1];
+      const g = div(c, 'abs', `left:70px;top:170px;width:150px;height:110px;border:5px solid ${GREEN};border-radius:6px;`);
+      const o = div(c, 'abs', `left:70px;top:170px;width:150px;height:110px;border:5px dashed ${ORANGE};border-radius:6px;background:rgba(255,91,31,.12);`);
+      tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.3 }, base(1));
+      tl.fromTo(o, { opacity: 0, scale: 1 }, { opacity: 1, scale: 1.45, duration: 0.8, ease: 'elastic.out(1,0.5)' }, base(1) + 0.5);
+      const rt = div(c, 'abs score o', 'left:20px;top:330px;font-size:44px;', '×1.41');
+      tl.fromTo(rt, { opacity: 0 }, { opacity: 1, duration: 0.3 }, base(1) + 1.2);
+    }
+    // 5 large plans: the score falls as the plan grows
+    {
+      const c = S[2];
+      [['≤20', 0.44, GREEN], ['>20', 0.22, ORANGE], ['116', 0.01, RED]].forEach(([lab, v, col], i) => {
+        const h = Math.max(6, v / 0.5 * 190), bx = 28 + i * 86;
+        const b = div(c, 'abs', `left:${bx}px;top:${330 - h}px;width:70px;height:${h}px;border-radius:10px 10px 0 0;background:${col};transform-origin:bottom;`);
+        div(c, 'abs mono', `left:${bx - 6}px;top:340px;width:82px;text-align:center;font-size:16px;color:${DIM};`, lab);
+        const val = div(c, 'abs mono', `left:${bx - 6}px;top:${330 - h - 28}px;width:82px;text-align:center;font-size:20px;color:#F4F2EE;`, v.toFixed(2));
+        tl.fromTo(b, { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: 'expo.out' }, base(2) + i * 0.35);
+        tl.fromTo(val, { opacity: 0 }, { opacity: 1, duration: 0.2 }, base(2) + i * 0.35 + 0.4);
+      });
+    }
+    // 6 timeouts: the clock runs out, nothing is submitted
+    {
+      const c = S[3];
+      const face = div(c, 'abs', `left:70px;top:150px;width:150px;height:150px;border-radius:50%;border:6px solid #F4F2EE;`);
+      const hand = div(face, 'abs', `left:66px;top:18px;width:6px;height:58px;border-radius:3px;background:${ORANGE};transform-origin:50% 100%;`);
+      tl.fromTo(hand, { rotation: 0 }, { rotation: 720, duration: 1.4, ease: 'power1.in' }, base(3));
+      const x = div(c, 'abs disp', `left:0;right:0;top:320px;text-align:center;font-size:56px;color:${RED};opacity:0;`, '✗ no submit');
+      tl.fromTo(x, { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: 0.25, ease: 'power4.in' }, base(3) + 1.4);
+    }
+    // 7 corrupted output: a tool call dissolves into noise
+    {
+      const c = S[4], lines = div(c, 'abs mono', `left:20px;top:150px;width:${SW - 40}px;font-size:18px;line-height:1.5;color:#F4F2EE;word-break:break-all;`, '');
+      const good = 'call segment_rooms(seeds=[…])', bad = 'MALFORMED_FUNCTION_CALL', junk = '▓▒░#@%&§¤¶≈∆Ωµ';
+      const o = { p: 0 };
+      tl.fromTo(o, { p: 0 }, { p: 1, duration: 1.6, ease: 'none', immediateRender: false, onUpdate: () => {
+        const n = Math.round(o.p * 40), seed = Math.floor(o.p * 60);
+        let s = o.p < 0.35 ? good : '';
+        if (o.p >= 0.35) for (let i = 0; i < 90; i++) s += junk[(i * 7 + seed * 3 + i * i) % junk.length];
+        if (o.p > 0.8) s = bad;
+        lines.style.color = o.p > 0.8 ? RED : '#F4F2EE';
+        lines.textContent = s;
+      } }, base(4));
+    }
+    // 8 high variance: three runs, same plan
+    {
+      const c = S[5];
+      [[0.0, 'run 1'], [0.41, 'run 2'], [0.55, 'run 3']].forEach(([v, lab], i) => {
+        const h = Math.max(6, v / 0.6 * 190), bx = 28 + i * 86;
+        const b = div(c, 'abs', `left:${bx}px;top:${330 - h}px;width:70px;height:${h}px;border-radius:10px 10px 0 0;background:${ORANGE};transform-origin:bottom;`);
+        div(c, 'abs mono', `left:${bx - 6}px;top:340px;width:82px;text-align:center;font-size:16px;color:${DIM};`, lab);
+        const val = div(c, 'abs mono', `left:${bx - 6}px;top:${330 - h - 28}px;width:82px;text-align:center;font-size:20px;color:#F4F2EE;`, v.toFixed(2));
+        tl.fromTo(b, { scaleY: 0 }, { scaleY: 1, duration: 0.5, ease: 'back.out(1.6)' }, base(5) + i * 0.3);
+        tl.fromTo(val, { opacity: 0 }, { opacity: 1, duration: 0.2 }, base(5) + i * 0.3 + 0.3);
+      });
+    }
+  },
+},
+
+// ───────────────────────────── 7 · exploits: six cheats at once, all score ~nothing
+{
+  id: 'cheat', title: 'Cheat (score)', dur: 4.8, theme: 'dark',
+  vo: 'We tested many possible exploits. None scored above point one.',
+  build(root, tl) {
+    const ex = D.exploits, [x0, y0, x1, y1] = D.bbox, W = x1 - x0, H = y1 - y0;
+    const panels = [
+      ['One giant room', ex['one giant room'], g => svgEl('rect', { x: x0, y: y0, width: W, height: H, fill: ORANGE, 'fill-opacity': 0.35, stroke: ORANGE, 'stroke-width': 12 }, g)],
+      ['Wall around the building', ex['wall = whole building box'], g => svgEl('rect', { x: x0, y: y0, width: W, height: H, fill: 'none', stroke: ORANGE, 'stroke-width': 26 }, g)],
+      ['961 doors and windows', ex['door/window/fixture spam (961 each)'], g => { const a = []; for (let i = 0; i < 25; i++) for (let j = 0; j < 25; j++) a.push(svgEl('circle', { cx: x0 + W * i / 24, cy: y0 + H * j / 24, r: 11, fill: ORANGE }, g)); return a; }],
+      ['A grid of rooms', ex['grid of rooms over the building (as many cells as rooms)'], g => { const a = []; for (let i = 0; i <= 5; i++) a.push(svgEl('line', { x1: x0 + W * i / 5, y1: y0, x2: x0 + W * i / 5, y2: y1, stroke: ORANGE, 'stroke-width': 8 }, g)); for (let j = 0; j <= 4; j++) a.push(svgEl('line', { x1: x0, y1: y0 + H * j / 4, x2: x1, y2: y0 + H * j / 4, stroke: ORANGE, 'stroke-width': 8 }, g)); return a; }],
+      ['A thick ring wall', ex['thick ring wall around the building'], g => svgEl('rect', { x: x0 + 40, y: y0 + 40, width: W - 80, height: H - 80, fill: 'none', stroke: ORANGE, 'stroke-width': 90, 'stroke-opacity': 0.8 }, g)],
+      ['Every fixture, stacked', ex['every fixture type stacked on every true fixture'], g => { const a = []; (D.gt.fixtures.length ? D.gt.fixtures : [{ x: x0 + W / 2, y: y0 + H / 2 }]).forEach(f => { for (let r = 1; r <= 6; r++) a.push(svgEl('circle', { cx: f.x, cy: f.y, r: 16 * r, fill: 'none', stroke: ORANGE, 'stroke-width': 8 }, g)); }); return a; }],
+    ];
+    const PW = 580, PH = 340;
+    panels.forEach(([name, score, draw], i) => {
+      const x = 60 + (i % 3) * 620, y = 50 + Math.floor(i / 3) * 430;
+      const pv = planView(root, { x, y, w: PW, h: PH, view: BLD });
+      const els = [].concat(draw(pv.g('cheat')));
+      const cap = div(root, 'abs', `left:${x}px;top:${y + PH + 10}px;width:${PW}px;font-size:28px;font-weight:600;color:#F4F2EE;`, name);
+      const sc = div(root, 'abs score o', `left:${x + PW - 250}px;top:${y + 14}px;width:230px;text-align:right;font-size:64px;text-shadow:0 2px 12px rgba(255,255,255,.9);opacity:0;`, '');
+      const t = 0.3 + i * 0.35;
+      tl.fromTo([pv.box, cap], { opacity: 0, y: 30, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'expo.out' }, t);
+      tl.fromTo(els, { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: els.length > 1 ? { amount: 0.4, from: 'random' } : 0, immediateRender: false }, t + 0.35);
+      countUp(tl, sc, score, t + 0.5, { dur: 0.5, decimals: 3, from: 1 });
+      tl.set(sc, { opacity: 1 }, t + 0.5);
+    });
+    const best = Math.max(...panels.map(p => p[1]));
+    const foot = div(root, 'abs disp', 'left:0;right:0;top:870px;text-align:center;font-size:56px;opacity:0;', `Best exploit: <span class="o">${best.toFixed(3)}</span>`);
+    tl.fromTo(foot, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out', immediateRender: false }, 3.6);
   },
 },
 
 // ───────────────────────────── 8 · reproducible: a real terminal session
 {
-  id: 'repro', title: 'Reproducible', dur: 13, theme: 'dark',
-  vo: 'And it’s reproducible. Everything runs in Harbor, with OpenCode, over MCP. A real playthrough is logged with its verifier score, and one command reproduces every number.',
+  id: 'repro', title: 'Reproducible', dur: 5.7, warp: 2.131, theme: 'dark',
+  vo: 'And it’s reproducible. Harbor, OpenCode, MCP, and one command for every number.',
   build(root, tl) {
     const win = div(root, 'abs', 'left:180px;top:130px;width:1560px;height:800px;border-radius:22px;background:#0A0A0B;box-shadow:0 0 0 1.5px #2A2A2E,0 40px 120px rgba(0,0,0,.6);overflow:hidden;');
     tl.fromTo(win, { opacity: 0, y: 60, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'expo.out' }, 0);
     const bar = div(win, 'abs', 'left:0;right:0;top:0;height:56px;background:#18181B;display:flex;align-items:center;gap:10px;padding:0 22px;');
     ['#FF5F57', '#FEBC2E', '#28C840'].forEach(c => div(bar, '', `width:16px;height:16px;border-radius:50%;background:${c};`));
-    div(bar, 'mono', 'margin-left:20px;font-size:18px;color:#8C8C93;', 'blueprint-lab — harbor');
+    div(bar, 'mono', 'margin-left:20px;font-size:18px;color:#8C8C93;', 'drawingsense — harbor');
     const body = div(win, 'abs mono', 'left:40px;top:84px;right:40px;font-size:29px;line-height:1.7;color:#D4D4D8;white-space:pre;');
     const L = (cls, color) => div(body, '', `color:${color || '#D4D4D8'};min-height:1.7em;${cls || ''}`);
     const rows = [
-      ['$ harbor run -p ./harbor_task -a opencode -m google/gemini-3.1-pro-preview', 0.9, 2.7, '#F4F2EE'],
-      ['  task    afterquery/blueprint-schematic-site279', 3.6, 1.2, '#8C8C93'],
-      ['  agent   opencode · gemini-3.1-pro-preview · 8 MCP tools', 4.4, 1.4, '#8C8C93'],
-      ['  submit  88 walls · 20 rooms · 23 doors · 12 fixtures', 5.6, 1.4, '#8C8C93'],
-      ['  verifier ✓ wrote reward.txt', 6.9, 1.0, '#1FA463'],
+      ['$ harbor run -a opencode', 0.9, 1.6, '#F4F2EE'],
+      ['  verifier ✓', 3.2, 0.6, '#1FA463'],
     ];
     rows.forEach(([txt, at, dur, col]) => {
       const el = L('', col);
       typeText(tl, el, txt, at, { cps: txt.length / dur });
     });
-    const rew = div(body, 'disp', `font-size:120px;margin-top:10px;color:${ORANGE};`, '');
-    rew.style.whiteSpace = 'nowrap';
-    countUp(tl, rew, 0.616, 8.0, { dur: 1.2, decimals: 3, prefix: 'reward  ' });
-    tl.fromTo(rew, { opacity: 0, scale: 0.9, transformOrigin: 'left center' }, { opacity: 1, scale: 1, duration: 0.3, immediateRender: false }, 8.0);
+    const rew = L('', ORANGE);                       // the score is just another terminal line, same size as the rest
+    typeText(tl, rew, 'reward  0.616', 4.2, { cps: 13 });
     const cmd = L('', '#F4F2EE'); cmd.style.marginTop = '14px';
-    typeText(tl, cmd, '$ python -m blueprint_env.evaluate   # one command, every number', 10.0, { cps: 34 });
+    typeText(tl, cmd, '$ python -m blueprint_env.evaluate', 6.0, { cps: 28 });
+  },
+},
+
+// ───────────────────────────── 9 · we also trained a small model: its loss went down (logs/modal_poc2.log)
+{
+  id: 'train', title: 'Training', dur: 5.9, theme: 'dark',
+  vo: 'We trained two models. First, a proof of concept on a large LLM, and its loss went down.',
+  build(root, tl) {
+    const loss = [0.6886, 0.636, 0.5907, 0.5786, 0.5482, 0.5570, 0.5370, 0.5450, 0.5257, 0.515, 0.4578, 0.5178, 0.4793, 0.4682, 0.5095, 0.4496, 0.4403, 0.4248, 0.4799, 0.4207, 0.4358];
+    const CX = 200, CY = 150, CW = 1100, CH = 700;
+    const svg = svgEl('svg', { width: CW + 40, height: CH + 40, style: `position:absolute;left:${CX - 20}px;top:${CY - 20}px;overflow:visible;` }, root);
+    [0, 0.5, 1].forEach(f => svgEl('line', { x1: 20, y1: 20 + f * CH, x2: 20 + CW, y2: 20 + f * CH, stroke: '#2A2A2E', 'stroke-width': 2 }, svg));
+    const X = i => 20 + i / (loss.length - 1) * CW, Y = v => 20 + (1 - (v - 0.35) / (0.75 - 0.35)) * CH;
+    const path = svgEl('path', { d: 'M' + loss.map((v, i) => `${X(i)} ${Y(v)}`).join('L'), fill: 'none', stroke: GREEN, 'stroke-width': 10, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, svg);
+    const len = path.getTotalLength(); path.style.strokeDasharray = len; path.style.strokeDashoffset = len;
+    const dot = svgEl('circle', { r: 16, fill: GREEN, cx: X(0), cy: Y(loss[0]) }, svg);
+    const o = { p: 0 };
+    tl.fromTo(o, { p: 0 }, { p: 1, duration: 3.1, ease: 'power1.inOut', immediateRender: false, onUpdate: () => {
+      path.style.strokeDashoffset = len * (1 - o.p);
+      const pt = path.getPointAtLength(len * o.p); dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
+    } }, 1.3);
+    const m1 = div(root, 'abs pill', 'left:200px;top:60px;font-size:28px;padding:14px 28px;', 'Model 1 · proof of concept · large LLM');
+    tl.fromTo(m1, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out' }, 1.3);
+    const lv = div(root, 'abs score', `left:1400px;top:340px;font-size:190px;color:${GREEN};`, '');
+    countUp(tl, lv, loss[loss.length - 1], 1.3, { dur: 3.1, decimals: 2, from: loss[0] });
+    tl.fromTo(lv, { opacity: 0 }, { opacity: 1, duration: 0.3 }, 1.3);
+    const cap = div(root, 'abs serif o', 'left:1400px;top:560px;font-size:80px;opacity:0;', 'loss went down');
+    tl.fromTo(cap, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'expo.out', immediateRender: false }, 4.4);
+  },
+},
+
+// ───────────────────────────── 9b · the bigger picture: the same skill, Stoa's construction-drawing challenge
+{
+  id: 'stoa', title: 'Stoa', dur: 7.0, theme: 'light',
+  vo: 'Second, a very small model, for Stoa’s challenge: verifiable answers about construction drawings.',
+  build(root, tl) {
+    const BX = 940, BY = 90, BW = 900, BH = 900;
+    const pv = planView(root, { x: BX, y: BY, w: BW, h: BH, view: BLD });
+    tl.fromTo(pv.box, { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.7, ease: 'expo.out' }, 0);
+    // chat on the left
+    const pill = div(root, 'abs pill', 'left:110px;top:150px;font-size:26px;', 'Model 2 · very small · Stoa');
+    tl.fromTo(pill, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out' }, 0.7);
+    const q = div(root, 'abs', `left:110px;top:300px;width:720px;padding:26px 34px;border-radius:30px 30px 8px 30px;background:${BLUE};color:#fff;font-size:44px;font-weight:600;letter-spacing:-0.02em;opacity:0;`, '');
+    tl.fromTo(q, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.3, immediateRender: false }, 2.0);
+    typeText(tl, q, 'Where is the stairwell?', 2.1, { cps: 22 });
+    const a = div(root, 'abs', `left:110px;top:470px;width:720px;padding:26px 34px;border-radius:30px 30px 30px 8px;background:#fff;box-shadow:0 14px 44px rgba(17,17,19,.12);font-size:40px;font-weight:600;letter-spacing:-0.02em;opacity:0;`,
+      `Vano scala 4.11 <span style="color:${GREEN};">✓</span>`);
+    tl.fromTo(a, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.6)', immediateRender: false }, 3.7);
+    // highlight the answer on the plan
+    const room = D.gt.rooms[11];
+    const hl = drawRooms(pv.g('answer'), [room], ORANGE, { fill: 0.28, width: 12 });
+    drawIn(tl, hl, 3.8, { dur: 0.7, stagger: 0 });
+    tl.fromTo(hl, { opacity: 0.4 }, { opacity: 1, duration: 0.4, yoyo: true, repeat: 3, ease: 'sine.inOut' }, 4.6);
   },
 },
 
 // ───────────────────────────── 9 · close: the reference solver draws the schematic while the line is wiped in
 {
-  id: 'end', title: 'End card', dur: 9, theme: 'dark',
-  vo: 'Blueprint to Schematic. Agents can see the drawing. Now let’s teach them to measure it.',
+  id: 'end', title: 'End card', dur: 3.8, warp: 2.25, theme: 'dark',
+  vo: 'Agents can see the drawing. Now let’s teach them to measure it.',
   build(root, tl) {
     const pv = planView(root, { x: 960, y: 0, w: 960, h: 1080, view: BLD });
     pv.box.style.borderRadius = '0';
     tl.fromTo(pv.box, { opacity: 0 }, { opacity: 1, duration: 0.6 }, 0);
     const rs = D.ref.schematic;
-    pv.g('walls').setAttribute('opacity', 0.55);
-    const w = drawWalls(pv.g('walls'), rs.walls, BLUE, { opacity: 1 });
-    tl.fromTo(w, { opacity: 0 }, { opacity: 1, duration: 0.2, stagger: { amount: 1.8, from: 'random' } }, 0.8);
-    const rr = drawRooms(pv.g('rooms'), rs.rooms, BLUE, { fill: 0.16, width: 4 });
+    pv.g('walls').setAttribute('opacity', 1);
+    const rr = drawRooms(pv.g('rooms'), rs.rooms, BLUE, { fill: 0.14, width: 5 });
     drawIn(tl, rr, 2.4, { dur: 0.7, stagger: 0.08 });
     popIn(tl, drawSegs(pv.g('doors'), rs.doors, GREEN, 10), 3.6, { stagger: 0.03, y: 0, scale: 0.4 });
 
     const a = div(root, 'abs disp', 'left:90px;top:300px;font-size:92px;width:820px;', 'Agents can see<br>the drawing.');
     const b = div(root, 'abs disp', 'left:90px;top:520px;font-size:92px;width:820px;', 'Now let’s teach<br>them to <span class="serif o">measure</span> it.');
     wipe(tl, a, 0.6); wipe(tl, b, 2.2);
-    const logo = div(root, 'abs disp', 'left:90px;top:230px;font-size:76px;width:820px;opacity:0;', 'Blueprint <span class="o">→</span> Schematic');
+    const logo = div(root, 'abs disp', 'left:90px;top:230px;font-size:76px;width:820px;opacity:0;', 'Drawing<span class="o">Sense</span>');
     tl.to([a, b], { opacity: 0, x: -60, duration: 0.5, ease: 'power2.in' }, 5.2);
     tl.fromTo(logo, { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.7, ease: 'expo.out', immediateRender: false }, 5.8);
-    const team = div(root, 'abs label', 'left:94px;top:420px;font-size:26px;width:800px;', 'Blueprint Lab · Junction 2026 · Break the Agent');
+    const team = div(root, 'abs label', 'left:94px;top:420px;font-size:26px;width:800px;', 'DrawingSense · Junction 2026 · Break the Agent');
     fadeIn(tl, team, 6.6);
     const cmd = div(root, 'abs mono', 'left:94px;top:520px;font-size:30px;color:#F4F2EE;', '');
     typeText(tl, cmd, '$ python -m blueprint_env.evaluate', 7.0, { cps: 30 });

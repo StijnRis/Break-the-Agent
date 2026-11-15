@@ -39,7 +39,7 @@ function drawRooms(g, rooms, color, { fill = 0.22, width = 5 } = {}) {
 }
 function drawWalls(g, walls, color, { opacity = 0.85 } = {}) {
   return walls.map(w => Array.isArray(w)
-    ? svgEl('path', { d: polyPath(w), fill: color, 'fill-opacity': opacity }, g)
+    ? svgEl('path', { d: polyPath(w), fill: color, 'fill-opacity': 0.9, 'shape-rendering': 'crispEdges', 'stroke-linejoin': 'round' }, g)
     : svgEl('line', { x1: w.p1[0], y1: w.p1[1], x2: w.p2[0], y2: w.p2[1], stroke: color, 'stroke-width': w.t || 10, 'stroke-opacity': opacity }, g));
 }
 function drawSegs(g, segs, color, width = 9) {

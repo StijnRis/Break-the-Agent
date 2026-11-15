@@ -15,3 +15,12 @@ video/recorded_build/
 results/final_pitch_video*.mp4
 results/final_pitch_video*.srt
 video/out/
+
+# Local tooling, caches and agent scratch state
+.claude/worktrees/
+.uv-cache/
+.uv-tools/
+_poc_runs/
+jobs/**/xdg-data/opencode/opencode.db
+jobs/**/xdg-data/opencode/snapshot/
+*.pyc

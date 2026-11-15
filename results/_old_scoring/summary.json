@@ -1,0 +1,199 @@
+{
+ "split": "test",
+ "tasks": [
+  "site1015_bldg2113_floor9557",
+  "site1047_bldg2154_floor9740",
+  "site11704_bldg18258_floor48967",
+  "site279_bldg514_floor2041",
+  "site285_bldg527_floor51568",
+  "site303_bldg598_floor2434",
+  "site3259_bldg4943_floor22529",
+  "site3377_bldg5220_floor23409",
+  "site383_bldg846_floor3730",
+  "site4038_bldg6362_floor26166",
+  "site4267_bldg7556_floor30516",
+  "site52_bldg298_floor1183",
+  "site644_bldg1390_floor6077",
+  "site936_bldg1976_floor8706",
+  "site980_bldg2055_floor9178"
+ ],
+ "rows": {
+  "reference (CV solver, no ground truth)": {
+   "n_episodes": 15,
+   "n_tasks": 15,
+   "reward_mean": 0.586,
+   "reward_sd_over_runs": 0.0,
+   "per_run_means": [
+    0.586
+   ],
+   "components": {
+    "walls": 0.886,
+    "rooms": 0.644,
+    "doors": 0.555,
+    "windows": 0.488,
+    "fixtures": 0.093,
+    "areas": 0.373,
+    "speed": 1.0
+   }
+  },
+  "ceiling (ground-truth replay)": {
+   "n_episodes": 15,
+   "n_tasks": 15,
+   "reward_mean": 1.0,
+   "reward_sd_over_runs": 0.0,
+   "per_run_means": [
+    1.0
+   ],
+   "components": {
+    "walls": 1.0,
+    "rooms": 1.0,
+    "doors": 1.0,
+    "windows": 1.0,
+    "fixtures": 1.0,
+    "areas": 1.0,
+    "speed": 1.0
+   }
+  },
+  "do nothing": {
+   "n_episodes": 15,
+   "n_tasks": 15,
+   "reward_mean": 0.0,
+   "reward_sd_over_runs": 0.0,
+   "per_run_means": [
+    0.0
+   ],
+   "components": {
+    "walls": 0.0,
+    "rooms": 0.0,
+    "doors": 0.0,
+    "windows": 0.0,
+    "fixtures": 0.0,
+    "areas": 0.0,
+    "speed": 1.0
+   }
+  },
+  "stop early (25 %)": {
+   "n_episodes": 15,
+   "n_tasks": 15,
+   "reward_mean": 0.283,
+   "reward_sd_over_runs": 0.0,
+   "per_run_means": [
+    0.283
+   ],
+   "components": {
+    "walls": 0.601,
+    "rooms": 0.236,
+    "doors": 0.244,
+    "windows": 0.18,
+    "fixtures": 0.011,
+    "areas": 0.092,
+    "speed": 1.0
+   }
+  },
+  "stop early (50 %)": {
+   "n_episodes": 15,
+   "n_tasks": 15,
+   "reward_mean": 0.438,
+   "reward_sd_over_runs": 0.0,
+   "per_run_means": [
+    0.438
+   ],
+   "components": {
+    "walls": 0.806,
+    "rooms": 0.399,
+    "doors": 0.45,
+    "windows": 0.312,
+    "fixtures": 0.054,
+    "areas": 0.171,
+    "speed": 1.0
+   }
+  },
+  "agent: gemini-3.1-pro-parallel-20261114-batch2": {
+   "n_episodes": 4,
+   "n_tasks": 4,
+   "reward_mean": 0.15,
+   "reward_sd_over_runs": 0.0,
+   "per_run_means": [
+    0.15
+   ],
+   "components": {
+    "walls": 0.223,
+    "rooms": 0.258,
+    "doors": 0.021,
+    "windows": 0.031,
+    "fixtures": 0.094,
+    "areas": 0.128,
+    "speed": 1.0
+   }
+  },
+  "agent: gemini-3.1-pro-parallel-20261114": {
+   "n_episodes": 4,
+   "n_tasks": 4,
+   "reward_mean": 0.032,
+   "reward_sd_over_runs": 0.0,
+   "per_run_means": [
+    0.032
+   ],
+   "components": {
+    "walls": 0.0,
+    "rooms": 0.128,
+    "doors": 0.0,
+    "windows": 0.0,
+    "fixtures": 0.0,
+    "areas": 0.0,
+    "speed": 1.0
+   }
+  },
+  "agent: gemini-3.1-pro-preview": {
+   "n_episodes": 45,
+   "n_tasks": 15,
+   "reward_mean": 0.342,
+   "reward_sd_over_runs": 0.01,
+   "per_run_means": [
+    0.35,
+    0.327,
+    0.348
+   ],
+   "components": {
+    "walls": 0.243,
+    "rooms": 0.538,
+    "doors": 0.335,
+    "windows": 0.343,
+    "fixtures": 0.417,
+    "areas": 0.133,
+    "speed": 0.654
+   }
+  },
+  "agent: stop-early-gemini-3-flash-4calls": {
+   "n_episodes": 15,
+   "n_tasks": 15,
+   "reward_mean": 0.141,
+   "reward_sd_over_runs": 0.0,
+   "per_run_means": [
+    0.141
+   ],
+   "components": {
+    "walls": 0.231,
+    "rooms": 0.182,
+    "doors": 0.059,
+    "windows": 0.104,
+    "fixtures": 0.094,
+    "areas": 0.036,
+    "speed": 1.0
+   }
+  }
+ },
+ "exploits": {
+  "scale only": 0.0,
+  "wall = whole building box": 0.094,
+  "one giant room": 0.0,
+  "door/window/fixture spam (961 each)": 0.011,
+  "grid of rooms over the building (as many cells as rooms)": 0.002,
+  "thick ring wall around the building": 0.073,
+  "every fixture type stacked on every true fixture": 0.033,
+  "true room outlines, every name set to the most common label": 0.914,
+  "rooms duplicated x3": 0.875,
+  "right geometry, scale x1.3": 0.9,
+  "malformed junk": 0.0
+ }
+}

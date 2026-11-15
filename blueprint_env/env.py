@@ -43,10 +43,12 @@ Schematic JSON format:
                wc | washbasin | bathtub | shower | kitchen (one per kitchen counter with the 4-circle hob symbol)
 }}
 
-How you are scored: each class is matched one-to-one against a surveyed ground truth (walls within
-~15 cm, rooms by polygon overlap + correct label, doors/windows by midpoint within 40 cm, fixtures by
-type and position within 50 cm, room areas computed with YOUR m_per_px within 5 %). Missing elements
-and spurious elements both lower the score. Only the schematic passed to submit_schematic counts;
+How you are scored: each class is matched one-to-one against a surveyed ground truth, with graded
+credit that falls off smoothly with distance (walls: partial credit out to ~60 cm, full near 15 cm;
+rooms by polygon overlap + correct label; doors/windows by midpoint distance, full credit within
+20 cm fading to zero at 1 m; fixtures by type and position, full within 25 cm fading to zero at
+1.5 m; room areas computed with YOUR m_per_px, full credit within 5 % fading to zero at 30 %).
+Missing elements and spurious elements both lower the score. Only the schematic passed to submit_schematic counts;
 if you never submit, the score is 0. Speed can reduce earned credit by up to 10%: submit within
 5 minutes for full credit; the multiplier declines linearly to 0.90 at the 8-minute deadline.
 

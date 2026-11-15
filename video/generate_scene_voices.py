@@ -19,12 +19,14 @@ def scenes() -> list[dict]:
 
 
 def main() -> None:
+    import sys
+    only = set(sys.argv[1:])
     OUT.mkdir(parents=True, exist_ok=True)
     g.BUILD = HERE / "clean_tts_scenes"
     g.BUILD.mkdir(exist_ok=True)
     voice = create_voice()
     for i, s in enumerate(scenes()):
-        if s.get("noTTS"):
+        if s.get("noTTS") or (only and s["id"] not in only):
             continue
         wav = generate(voice, i, s["vo"])
         mp3 = OUT / f"{s['id']}.mp3"

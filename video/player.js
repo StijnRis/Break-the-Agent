@@ -34,7 +34,7 @@
     s.root = div(s.layer, '', 'position:absolute;inset:0;');
     s.tl = gsap.timeline({ paused: true });
     if (s.build) s.build(s.root, s.tl, s);
-    s.tl.set({}, {}, s.dur);
+    s.tl.set({}, {}, s.dur * (s.warp || 1)); // warp > 1 squeezes an animation built for a longer scene
     // per-scene voiceover recording: video/media/vo/<id>.mp3
     const a = new Audio();
     const vm = { el: a, start: s.start, end: s.end, offset: 0, ok: false, scene: s, kind: 'vo' };
@@ -51,6 +51,36 @@
   full.addEventListener('loadeddata', () => { fm.ok = true; renderList(); });
   full.src = 'media/voiceover.mp3';
   media.push(fm);
+
+
+  // ---------- sound effects (synthesized by make_sfx.py, timed by media/sfx/events.json) ----------
+  const sfx = { events: null, gains: {}, bank: {} };
+  fetch('media/sfx/events.json').then(r => r.json()).then(j => { sfx.events = j.events; sfx.gains = j.gains; }).catch(() => {});
+  const playSfx = name => {
+    let a = sfx.bank[name];
+    if (!a) a = sfx.bank[name] = new Audio(`media/sfx/${name}.wav`);
+    const c = a.cloneNode(); c.volume = Math.min(1, (sfx.gains[name] || 0.3) * 1.6); c.play().catch(() => {});
+  };
+  let sfxLast = 0;
+  function fireSfx(from, to) {
+    if (!sfx.events || !playing) return;
+    SCENES.forEach(s => {
+      (sfx.events[s.id] || []).forEach(([dt, name]) => {
+        const at = s.start + dt;
+        if (at > from && at <= to && dt < s.dur) playSfx(name);
+      });
+    });
+  }
+
+
+  // ---------- subtitles: media/subs.json ({start, end, text}), written by make_subs.py ----------
+  let cues = [];
+  fetch('media/subs.json').then(r => r.json()).then(j => { cues = j; }).catch(() => {});
+  const showSub = () => {
+    const c = cues.find(c => t >= c.start && t < c.end);
+    const text = c ? c.text : '';
+    if (subs.textContent !== text) subs.textContent = text;
+  };
 
   // ---------- scrubber + list ----------
   SCENES.forEach(s => {
@@ -93,14 +123,14 @@
       cur = i;
       const s = SCENES[i], n = SCENES[i + 1];
       prompter.innerHTML = (s.vo || '<i>no voiceover</i>') + (n ? `<span class="next">next · ${n.title}: ${(n.vo || '').slice(0, 90)}…</span>` : '');
-      subs.textContent = s.vo || '';
       renderList();
       SCENES.forEach(x => x.seg.classList.toggle('cur', x === s));
     }
     const s = SCENES[i];
-    s.tl.time(Math.min(s.dur, Math.max(0, t - s.start)));
+    s.tl.time(Math.min(s.dur * (s.warp || 1), Math.max(0, (t - s.start) * (s.warp || 1))));
     head.style.left = (t / total * 100) + '%';
     timeEl.textContent = `${fmt(t)} / ${fmt(total).replace(/\.\d$/, '')}`;
+    showSub();
     syncMedia();
   }
 
@@ -124,7 +154,9 @@
 
   function tick(now) {
     if (playing) {
+      const prev = t;
       t += (now - last) / 1000;
+      fireSfx(prev, t);
       if (t >= total) { t = total - 0.001; setPlaying(false); }
     }
     last = now;

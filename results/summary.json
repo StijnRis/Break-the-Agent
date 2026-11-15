@@ -21,18 +21,36 @@
   "reference (CV solver, no ground truth)": {
    "n_episodes": 15,
    "n_tasks": 15,
-   "reward_mean": 0.586,
+   "reward_mean": 0.628,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.586
+    0.628
    ],
    "components": {
-    "walls": 0.886,
+    "walls": 0.918,
     "rooms": 0.644,
-    "doors": 0.555,
-    "windows": 0.488,
-    "fixtures": 0.093,
-    "areas": 0.373,
+    "doors": 0.592,
+    "windows": 0.512,
+    "fixtures": 0.165,
+    "areas": 0.555,
+    "speed": 1.0
+   }
+  },
+  "reference + YOLO detector (external weights, train/test overlap unverified)": {
+   "n_episodes": 8,
+   "n_tasks": 8,
+   "reward_mean": 0.8,
+   "reward_sd_over_runs": 0.0,
+   "per_run_means": [
+    0.8
+   ],
+   "components": {
+    "walls": 0.894,
+    "rooms": 0.628,
+    "doors": 0.856,
+    "windows": 0.975,
+    "fixtures": 0.941,
+    "areas": 0.514,
     "speed": 1.0
    }
   },
@@ -75,64 +93,64 @@
   "stop early (25 %)": {
    "n_episodes": 15,
    "n_tasks": 15,
-   "reward_mean": 0.283,
+   "reward_mean": 0.302,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.283
+    0.302
    ],
    "components": {
-    "walls": 0.601,
+    "walls": 0.642,
     "rooms": 0.236,
-    "doors": 0.244,
-    "windows": 0.18,
-    "fixtures": 0.011,
-    "areas": 0.092,
+    "doors": 0.258,
+    "windows": 0.184,
+    "fixtures": 0.025,
+    "areas": 0.135,
     "speed": 1.0
    }
   },
   "stop early (50 %)": {
    "n_episodes": 15,
    "n_tasks": 15,
-   "reward_mean": 0.438,
+   "reward_mean": 0.468,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.438
+    0.468
    ],
    "components": {
-    "walls": 0.806,
+    "walls": 0.851,
     "rooms": 0.399,
-    "doors": 0.45,
-    "windows": 0.312,
-    "fixtures": 0.054,
-    "areas": 0.171,
+    "doors": 0.466,
+    "windows": 0.32,
+    "fixtures": 0.098,
+    "areas": 0.274,
     "speed": 1.0
    }
   },
   "agent: gemini-3.1-pro-parallel-20261114-batch2": {
    "n_episodes": 4,
    "n_tasks": 4,
-   "reward_mean": 0.15,
+   "reward_mean": 0.182,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.15
+    0.182
    ],
    "components": {
-    "walls": 0.223,
+    "walls": 0.289,
     "rooms": 0.258,
-    "doors": 0.021,
-    "windows": 0.031,
-    "fixtures": 0.094,
-    "areas": 0.128,
+    "doors": 0.061,
+    "windows": 0.044,
+    "fixtures": 0.112,
+    "areas": 0.185,
     "speed": 1.0
    }
   },
   "agent: gemini-3.1-pro-parallel-20261114": {
    "n_episodes": 4,
    "n_tasks": 4,
-   "reward_mean": 0.032,
+   "reward_mean": 0.035,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.032
+    0.035
    ],
    "components": {
     "walls": 0.0,
@@ -140,56 +158,56 @@
     "doors": 0.0,
     "windows": 0.0,
     "fixtures": 0.0,
-    "areas": 0.0,
+    "areas": 0.025,
     "speed": 1.0
    }
   },
   "agent: gemini-3.1-pro-preview": {
    "n_episodes": 45,
    "n_tasks": 15,
-   "reward_mean": 0.342,
-   "reward_sd_over_runs": 0.01,
+   "reward_mean": 0.393,
+   "reward_sd_over_runs": 0.009,
    "per_run_means": [
-    0.35,
-    0.327,
-    0.348
+    0.401,
+    0.38,
+    0.398
    ],
    "components": {
-    "walls": 0.243,
+    "walls": 0.279,
     "rooms": 0.538,
-    "doors": 0.335,
-    "windows": 0.343,
-    "fixtures": 0.417,
-    "areas": 0.133,
+    "doors": 0.39,
+    "windows": 0.395,
+    "fixtures": 0.508,
+    "areas": 0.314,
     "speed": 0.654
    }
   },
   "agent: stop-early-gemini-3-flash-4calls": {
    "n_episodes": 15,
    "n_tasks": 15,
-   "reward_mean": 0.141,
+   "reward_mean": 0.181,
    "reward_sd_over_runs": 0.0,
    "per_run_means": [
-    0.141
+    0.181
    ],
    "components": {
-    "walls": 0.231,
+    "walls": 0.293,
     "rooms": 0.182,
-    "doors": 0.059,
-    "windows": 0.104,
-    "fixtures": 0.094,
-    "areas": 0.036,
+    "doors": 0.108,
+    "windows": 0.133,
+    "fixtures": 0.175,
+    "areas": 0.082,
     "speed": 1.0
    }
   }
  },
  "exploits": {
   "scale only": 0.0,
-  "wall = whole building box": 0.094,
+  "wall = whole building box": 0.139,
   "one giant room": 0.0,
-  "door/window/fixture spam (961 each)": 0.011,
-  "grid of rooms over the building (as many cells as rooms)": 0.002,
-  "thick ring wall around the building": 0.073,
+  "door/window/fixture spam (961 each)": 0.012,
+  "grid of rooms over the building (as many cells as rooms)": 0.003,
+  "thick ring wall around the building": 0.097,
   "every fixture type stacked on every true fixture": 0.033,
   "true room outlines, every name set to the most common label": 0.914,
   "rooms duplicated x3": 0.875,

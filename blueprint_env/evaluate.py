@@ -72,6 +72,10 @@ def main():
             os.makedirs(os.path.dirname(ref_path), exist_ok=True)
             json.dump({"result": score(gt, sch, img.size), "schematic": sch}, open(ref_path, "w"), indent=1)
         add("reference (CV solver, no ground truth)", t, score(gt, sch, img.size))
+        yp = os.path.join(a.runs_dir, "reference-cv-yolo", t, "episode.json")
+        if os.path.exists(yp):   # CV solver + a YOLO detector for doors/windows/fixtures (reference.py --yolo)
+            add("reference + YOLO detector (external weights, train/test overlap unverified)", t,
+                score(gt, json.load(open(yp, encoding="utf8"))["schematic"], img.size))
         add("ceiling (ground-truth replay)", t, score(gt, baselines.gt_as_pred(gt), img.size))
         add("do nothing", t, score(gt, None, img.size))
         for f in (0.25, 0.5):
@@ -91,7 +95,7 @@ def main():
     # every agent run found on disk (Gemini runner or MCP harness results)
     for f in sorted(glob.glob(os.path.join(a.runs_dir, "*", "*", "run*", "episode.json"))):
         model, t = f.split(os.sep)[-4], f.split(os.sep)[-3]
-        if t in tasks and model != "reference-cv":
+        if t in tasks and model not in ("reference-cv", "reference-cv-yolo"):
             episode = json.load(open(f, encoding="utf8"))
             # Re-score stored schematics so a benchmark always reflects the current reward,
             # including the recorded wall-clock time.
