@@ -170,7 +170,7 @@ It scores 0.573 on the test split and 0.575 over all 64 valid plans, in about 8 
 
 ## Training a smaller model (stretch goal): `modal_app.py`
 
-The pipeline trains Qwen3-VL-2B on a Modal L4 (24 GB), starting with ground-truth fine-tuning and then training on experience scored by the environment. See [TRAINING.md](TRAINING.md) for the complete run order, including a Harbor-on-Modal verifier run:
+The pipeline trains Qwen3-VL-2B on a Modal H100 (about 1–1.5 h end to end; `GPU=L4` also works, slower), starting with ground-truth fine-tuning and then training on experience scored by the environment. See [TRAINING.md](TRAINING.md) for the complete run order, including a Harbor-on-Modal verifier run:
 
 ```bash
 modal run --detach modal_app.py                  # full pipeline; finished stages are skipped

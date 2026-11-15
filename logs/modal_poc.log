@@ -1,0 +1,207 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/risseeuw-stijn/main/ap-wHgRtl3oqi21mq7fulxmh9
+✓ Created objects.
+├── ✓ Uploaded C:\Users\Stijn\Programming\Challenge\Break the 
+│   Agent\.claude\worktrees\train-llm-modal-0ecd0e\modal_app.py
+├── ✓ Uploaded C:\Users\Stijn\Programming\Challenge\Break the 
+│   Agent\.claude\worktrees\train-llm-modal-0ecd0e\split.json
+├── ✓ Uploaded C:\Users\Stijn\Programming\Challenge\Break the 
+│   Agent\.claude\worktrees\train-llm-modal-0ecd0e\blueprint_env
+├── ✓ Created Function fetch.
+├── ✓ Created Function build.
+├── ✓ Created Function plans.
+├── ✓ Created Function smoke.
+├── ✓ Created Function evaluate.
+├── ✓ Created Function sft.
+├── ✓ Created Function exp_shard.
+├── ✓ Created Function exp_sample.
+├── ✓ Created Function exp_train.
+├── ✓ Created Function status.
+└── ✓ Created Function pipeline.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+== plans: running
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+WARNING: The NVIDIA Driver was not detected.  GPU functionality will not be available.
+   Use the NVIDIA Container Toolkit to start this container with GPU support; see
+   https://docs.nvidia.com/datacenter/cloud-native/ .
+
+== plans: done in 1 min
+{"test": 15, "sft": 37, "exp": 12}
+== base_eval: started in the background
+== sft: running
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+$ python -m blueprint_env.make_sft --root /vol/tasks --plans /vol/plans.json --key sft --max-chars 8000 --out /vol/sft.jsonl
+27 rows -> /vol/sft.jsonl | skipped 10 | target chars avg 4,973 max 7,874
+$ python -m blueprint_env.train_sft --data /vol/sft.jsonl --model Qwen/Qwen3-VL-2B-Instruct --out /vol/ckpt/sft --epochs 1
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+27 training rows
+
+Loading weights:   0%|          | 0/625 [00:00<?, ?it/s]
+Loading weights: 100%|██████████| 625/625 [00:00<00:00, 6599.58it/s]
+trainable params: 34,865,152 || all params: 2,162,397,184 || trainable%: 1.6123
+[RANK 0] Detected kernel version 4.19.0, which is below the recommended minimum of 5.5.0; this can cause the process to hang. It is recommended to upgrade the kernel to the minimum version or higher.
+
+  0%|          | 0/4 [00:00<?, ?it/s][transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+
+ 25%|██▌       | 1/4 [00:10<00:32, 10.86s/it]
+ 50%|█████     | 2/4 [00:16<00:15,  7.77s/it]
+ 75%|███████▌  | 3/4 [00:21<00:06,  6.61s/it]
+100%|██████████| 4/4 [00:23<00:00,  4.71s/it]
+                                             
+{'train_runtime': '24.56', 'train_samples_per_second': '1.1', 'train_steps_per_second': '0.163', 'train_loss': '0.6819', 'epoch': '1'}
+
+100%|██████████| 4/4 [00:24<00:00,  4.71s/it]
+100%|██████████| 4/4 [00:24<00:00,  6.14s/it]
+adapter saved, merging...
+
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+Writing model shards: 100%|██████████| 1/1 [00:06<00:00,  6.28s/it]
+Writing model shards: 100%|██████████| 1/1 [00:06<00:00,  6.28s/it]
+
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]
+Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1132.07it/s]
+merged model saved: /vol/ckpt/sft-merged
+== sft: done in 2 min
+': '24.56', 'train_samples_per_second': '1.1', 'train_steps_per_second': '0.163', 'train_loss': '0.6819', 'epoch': '1'}
+
+100%|██████████| 4/4 [00:24<00:00,  4.71s/it]
+100%|██████████| 4/4 [00:24<00:00,  6.14s/it]
+adapter saved, merging...
+
+Writing model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+Writing model shards: 100%|██████████| 1/1 [00:06<00:00,  6.28s/it]
+Writing model shards: 100%|██████████| 1/1 [00:06<00:00,  6.28s/it]
+
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]
+Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1132.07it/s]
+merged model saved: /vol/ckpt/sft-merged
+
+== sft_eval: running
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+vLLM up after 220s
+$ python -m blueprint_env.rollout --root /vol/tasks --plans /vol/plans.json --key test --tag qwen3vl-2b-base --runs-dir /vol/runs --workers 64 --greedy
+15 jobs, 0 done, 15 to run
+[1/15] site644_bldg1390_floor6077         run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[2/15] site11704_bldg18258_floor48967     run0 reward=0.027 length {'walls': 0.1068, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[3/15] site980_bldg2055_floor9178         run0 reward=0.024 length {'walls': 0.0946, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[4/15] site3259_bldg4943_floor22529       run0 reward=0.012 length {'walls': 0.0467, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[5/15] site4267_bldg7556_floor30516       run0 reward=0.007 length {'walls': 0.0277, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[6/15] site52_bldg298_floor1183           run0 reward=0.032 length {'walls': 0.1262, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[7/15] site4038_bldg6362_floor26166       run0 reward=0.044 length {'walls': 0.1753, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[8/15] site285_bldg527_floor51568         run0 reward=0.037 length {'walls': 0.1468, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[9/15] site279_bldg514_floor2041          run0 reward=0.027 length {'walls': 0.1082, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[10/15] site1015_bldg2113_floor9557        run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[11/15] site3377_bldg5220_floor23409       run0 reward=0.029 length {'walls': 0.1171, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[12/15] site1047_bldg2154_floor9740        run0 reward=0.035 length {'walls': 0.141, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[13/15] site936_bldg1976_floor8706         run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[14/15] site383_bldg846_floor3730          run0 reward=0.036 length {'walls': 0.1452, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[15/15] site303_bldg598_floor2434          run0 reward=0.031 length {'walls': 0.1235, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+=== qwen3vl-2b-base: 15 plans, 15 episodes, mean reward 0.023
+    greedy mean 0.023 over 15 plans
+vLLM up after 230s
+$ python -m blueprint_env.rollout --root /vol/tasks --plans /vol/plans.json --key test --tag qwen3vl-2b-sft --runs-dir /vol/runs --workers 64 --greedy
+15 jobs, 0 done, 15 to run
+[1/15] site4038_bldg6362_floor26166       run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[2/15] site279_bldg514_floor2041          run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[3/15] site1015_bldg2113_floor9557        run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[4/15] site285_bldg527_floor51568         run0 reward=0.042 length {'walls': 0.1683, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[5/15] site3377_bldg5220_floor23409       run0 reward=0.029 length {'walls': 0.1171, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[6/15] site11704_bldg18258_floor48967     run0 reward=0.027 length {'walls': 0.1068, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[7/15] site383_bldg846_floor3730          run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[8/15] site303_bldg598_floor2434          run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[9/15] site3259_bldg4943_floor22529       run0 reward=0.012 length {'walls': 0.0467, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[10/15] site644_bldg1390_floor6077         run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[11/15] site52_bldg298_floor1183           run0 reward=0.032 length {'walls': 0.1262, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[12/15] site980_bldg2055_floor9178         run0 reward=0.024 length {'walls': 0.0946, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[13/15] site1047_bldg2154_floor9740        run0 reward=0.035 length {'walls': 0.141, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[14/15] site4267_bldg7556_floor30516       run0 reward=0.007 length {'walls': 0.0277, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+[15/15] site936_bldg1976_floor8706         run0 reward=0.000 length {'walls': 0.0, 'rooms': 0.0, 'areas': 0.0, 'doors': 0.0, 'windows': 0.0, 'fixtures': 0.0, 'speed': 1.0}
+=== qwen3vl-2b-sft: 15 plans, 15 episodes, mean reward 0.014
+    greedy mean 0.014 over 15 plans
+== sft_eval: done in 6 min
+=== qwen3vl-2b-sft: 15 plans, 15 episodes, mean reward 0.014
+    greedy mean 0.014 over 15 plans
+
+== base_eval: done in 8 min
+=== qwen3vl-2b-base: 15 plans, 15 episodes, mean reward 0.023
+ALL DONE
+    greedy mean 0.023 over 15 plans
+
+✓ App completed. View run at 
+https://modal.com/apps/risseeuw-stijn/main/ap-wHgRtl3oqi21mq7fulxmh9

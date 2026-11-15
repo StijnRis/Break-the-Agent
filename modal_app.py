@@ -11,13 +11,16 @@ Stages (each writes /vol/done/<stage> when finished):
   build       ground truth for every plan (blueprint_env.build_tasks), alignment-checked
   plans       fixed split of the valid plans: test = split.json test; the rest 70 % 'sft' / 30 % 'exp'
   smoke       3 training steps -> merge -> serve -> score 2 plans (catches crashes before the long run)
-  base_eval   untrained model on the test plans (greedy + 2 samples)
-  sft         LoRA fine-tuning on ground-truth schematics of the 'sft' plans (format + symbols)
+  base_eval   untrained model on the test plans (greedy); runs in parallel with sft in its own container
+  sft         LoRA fine-tuning (1 epoch) on ground-truth schematics of the 'sft' plans (format + symbols)
   sft_eval    same test plans
-  exp_sample  SFT model writes 8 schematics for each 'exp' plan; the environment scores them; per plan the
-              best one is kept if it beats that plan's average -> experience rows (no ground truth in the targets)
+  exp_sample  SFT model writes 4 schematics for each 'exp' plan (split over EXP_SHARDS GPU containers); the
+              environment scores them; per plan the best one is kept if it beats that plan's average
+              -> experience rows (no ground truth in the targets)
   exp_train   fine-tune the SFT model on its own best experience
   exp_eval    same test plans
+
+Speed knobs (environment variables): GPU (default H100), EXP_SHARDS (default 4).
 """
 import hashlib
 import json
@@ -50,10 +53,13 @@ image = (
 )
 vol = modal.Volume.from_name("blueprint-vol", create_if_missing=True)
 app = modal.App(APP, image=image)
-# Qwen3-VL-2B plus LoRA fits comfortably on a 24 GB L4.  This keeps the
-# learning demonstration affordable; override this only for a larger model.
-GPU = dict(gpu="L4", volumes={"/vol": vol}, cpu=8, memory=65536, timeout=10 * 3600)
+# Qwen3-VL-2B plus LoRA would fit on a 24 GB L4, but an H100 runs training and vLLM generation several
+# times faster for a similar total cost.  Set GPU=L4 for the cheapest (slowest) run.
+GPU = dict(gpu=os.environ.get("GPU", "H100"), volumes={"/vol": vol}, cpu=8, memory=65536, timeout=10 * 3600)
 CPU = dict(volumes={"/vol": vol}, cpu=16, memory=32768, timeout=4 * 3600)
+EXP_SHARDS = int(os.environ.get("EXP_SHARDS", "4"))
+RP = "--rep-penalty 1.1 --max-tokens 6000"
+WORKERS = "--workers 64"   # concurrent requests per vLLM server
 
 
 def sh(cmd):
@@ -96,8 +102,9 @@ class vllm:
             except Exception: pass
 
 
-def rollout(tag, key, extra=""):
-    return sh(f"python -m blueprint_env.rollout --root {TASKS} --plans {PLANS} --key {key} --tag {tag} --runs-dir {RUNS} {extra}")
+def rollout(tag, key, extra="", plans=PLANS):
+    return sh(f"python -m blueprint_env.rollout --root {TASKS} --plans {plans} --key {key} --tag {tag} --runs-dir {RUNS} "
+              f"{WORKERS} {extra}")
 
 
 # ---------------------------------------------------------------- stages
@@ -122,9 +129,9 @@ def fetch():
     return f"extracted {n} files"
 
 
-@app.function(**CPU)
+@app.function(**{**CPU, "cpu": 32})
 def build():
-    out = sh(f"python -m blueprint_env.build_tasks {SRC} {TASKS} --procs 16 | tail -5")
+    out = sh(f"python -m blueprint_env.build_tasks {SRC} {TASKS} --procs 32 | tail -5")
     vol.commit()
     idx = json.load(open(f"{TASKS}/index.json"))
     ok = [r for r in idx if r.get("valid") and "error" not in r]
@@ -161,27 +168,48 @@ def smoke():
 
 
 @app.function(**GPU)
-def evaluate(model: str, tag: str):
+def evaluate(model: str, tag: str, extra: str = ""):
     with vllm(model):
-        txt = rollout(tag, "test", "--greedy --samples 2 --temperature 0.7")
+        txt = rollout(tag, "test", "--greedy " + extra)   # greedy only: the reported number, 3x less generation
     vol.commit()
     return txt[txt.rfind("==="):]
 
 
 @app.function(**GPU)
 def sft():
-    sh(f"python -m blueprint_env.make_sft --root {TASKS} --plans {PLANS} --key sft --out /vol/sft.jsonl")
-    out = sh(f"python -m blueprint_env.train_sft --data /vol/sft.jsonl --model {BASE} --out {CKPT}/sft --epochs 2")
+    # --max-chars 16000 skips only the very largest floors. Needs enough optimizer steps (rows x epochs / accum)
+    # to learn the format and to stop: 1 epoch with accum 8 (about 3 steps) left the model looping to the token limit.
+    sh(f"python -m blueprint_env.make_sft --root {TASKS} --plans {PLANS} --key sft --max-chars 16000 --out /vol/sft.jsonl")
+    out = sh(f"python -m blueprint_env.train_sft --data /vol/sft.jsonl --model {BASE} --out {CKPT}/sft --epochs 6 --accum 2")
     vol.commit()
     return out[-600:]
 
 
 @app.function(**GPU)
-def exp_sample():
+def exp_shard(i: int, n: int):
+    """One slice of the 'exp' plans, on its own GPU + vLLM server."""
+    vol.reload()
+    mine = json.load(open(PLANS))["exp"][i::n]
+    part = f"/vol/plans_exp_{i}of{n}.json"
+    json.dump({"exp": mine}, open(part, "w"))
     with vllm(f"{CKPT}/sft-merged"):
-        txt = rollout(f"{TAG}-exp-samples", "exp", "--samples 8 --temperature 0.9 --save-best /vol/exp_rows.jsonl")
+        txt = rollout(f"{TAG}-exp-samples", "exp", f"--samples 4 --temperature 0.9 --save-best /vol/exp_rows_{i}of{n}.jsonl",
+                      plans=part)
     vol.commit()
-    return txt[-600:]
+    return txt[-300:]
+
+
+@app.function(**CPU)
+def exp_sample():
+    outs = list(exp_shard.starmap([(i, EXP_SHARDS) for i in range(EXP_SHARDS)]))
+    vol.reload()
+    n = 0
+    with open("/vol/exp_rows.jsonl", "w", encoding="utf8") as f:
+        for i in range(EXP_SHARDS):
+            for line in open(f"/vol/exp_rows_{i}of{EXP_SHARDS}.jsonl", encoding="utf8"):
+                f.write(line); n += 1
+    vol.commit()
+    return f"{n} experience rows from {EXP_SHARDS} shards\n" + "\n".join(outs)
 
 
 @app.function(**GPU)
@@ -200,33 +228,48 @@ def status():
     return "\n\n".join(f"[{s}]\n{open('/vol/done/' + s).read()[-800:]}" for s in sorted(os.listdir("/vol/done")))
 
 
-STAGES = {
-    "fetch": lambda: fetch.remote(),
-    "build": lambda: build.remote(),
-    "plans": lambda: plans.remote(),
-    "smoke": lambda: smoke.remote(),
-    "base_eval": lambda: evaluate.remote(BASE, f"{TAG}-base"),
-    "sft": lambda: sft.remote(),
-    "sft_eval": lambda: evaluate.remote(f"{CKPT}/sft-merged", f"{TAG}-sft"),
-    "exp_sample": lambda: exp_sample.remote(),
-    "exp_train": lambda: exp_train.remote(),
-    "exp_eval": lambda: evaluate.remote(f"{CKPT}/exp-merged", f"{TAG}-sft-exp"),
+STAGES = {   # name -> (function, args)
+    "fetch": (fetch, ()),
+    "build": (build, ()),
+    "plans": (plans, ()),
+    "smoke": (smoke, ()),
+    "base_eval": (evaluate, (BASE, f"{TAG}-base")),
+    "sft": (sft, ()),
+    "sft_eval": (evaluate, (f"{CKPT}/sft-merged", f"{TAG}-sft")),
+    "exp_sample": (exp_sample, ()),
+    "exp_train": (exp_train, ()),
+    "exp_eval": (evaluate, (f"{CKPT}/exp-merged", f"{TAG}-sft-exp")),
+    # same models, decoded with a repetition penalty and a lower token cap to curb endless loops
+    "base_eval_rp": (evaluate, (BASE, f"{TAG}-base-rp", RP)),
+    "sft_eval_rp": (evaluate, (f"{CKPT}/sft-merged", f"{TAG}-sft-rp", RP)),
 }
+# Stages nothing later depends on: started in the background (own container) and collected at the end.
+BACKGROUND = {"base_eval", "base_eval_rp"}
 
 
 @app.function(volumes={"/vol": vol}, timeout=24 * 3600)
 def pipeline(stages: str = "all", force: bool = False):
     names = list(STAGES) if stages == "all" else stages.split(",")
+
+    def finish(s, out, t0):
+        vol.reload()
+        done(s, f"{out}\n({(time.time() - t0) / 60:.0f} min)")
+        print(f"== {s}: done in {(time.time() - t0) / 60:.0f} min\n{out}", flush=True)
+
+    background = {}
     for s in names:
         vol.reload()
         if done(s) and not force:
             print(f"== {s}: already done", flush=True); continue
+        fn, args = STAGES[s]
+        if s in BACKGROUND:
+            print(f"== {s}: started in the background", flush=True)
+            background[s] = (fn.spawn(*args), time.time()); continue
         print(f"== {s}: running", flush=True)
         t0 = time.time()
-        out = STAGES[s]()
-        vol.reload()
-        done(s, f"{out}\n({(time.time() - t0) / 60:.0f} min)")
-        print(f"== {s}: done in {(time.time() - t0) / 60:.0f} min\n{out}", flush=True)
+        finish(s, fn.remote(*args), t0)
+    for s, (call, t0) in background.items():
+        finish(s, call.get(), t0)
     return "ALL DONE"
 
 
