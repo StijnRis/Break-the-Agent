@@ -1,7 +1,7 @@
-"""Render a Harbor trial (ATIF trajectory + verifier output) as one self-contained HTML page.
+"""Render a Harbor trial (ATIF trajectory + verifier output) as the public site (docs/index.html).
 
     python -m blueprint_env.make_trace jobs/blueprint-harbor-modal/harbor_task__5z7nxmC
-    python -m blueprint_env.make_trace <trial_dir> -o results/harness_trace.html
+    python -m blueprint_env.make_trace <trial_dir> -o docs/index.html
 
 Everything (data, drawing, verifier images) is inlined, so the page opens offline.
 """
@@ -151,7 +151,7 @@ def build(trial: Path, drawing: Path, gt_path: Path) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("trial", type=Path, help="Harbor trial directory (contains agent/trajectory.json)")
-    ap.add_argument("-o", "--out", type=Path, default=ROOT / "results" / "harness_trace.html")
+    ap.add_argument("-o", "--out", type=Path, default=ROOT / "docs" / "index.html")
     ap.add_argument("--drawing", type=Path, default=ROOT / "harbor_task" / "environment" / "task" / "drawing.png")
     ap.add_argument("--ground-truth", type=Path, default=ROOT / "harbor_task" / "tests" / "ground_truth.json",
                     help="used only to break the reward into components")
