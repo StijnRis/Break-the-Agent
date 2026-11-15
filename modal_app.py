@@ -52,7 +52,7 @@ vol = modal.Volume.from_name("blueprint-vol", create_if_missing=True)
 app = modal.App(APP, image=image)
 # Qwen3-VL-2B plus LoRA fits comfortably on a 24 GB L4.  This keeps the
 # learning demonstration affordable; override this only for a larger model.
-GPU = dict(gpu="L4", volumes={"/vol": vol}, cpu=8, memory=65536, timeout=10 * 3600)
+GPU = dict(gpu=os.environ.get("GPU_TYPE", "L4"), volumes={"/vol": vol}, cpu=8, memory=65536, timeout=10 * 3600)
 CPU = dict(volumes={"/vol": vol}, cpu=16, memory=32768, timeout=4 * 3600)
 
 

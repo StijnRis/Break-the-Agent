@@ -6,3 +6,11 @@ __pycache__/
 ckpt/
 *.jsonl
 runs/mcp_test/
+
+# Local voice recordings, cloned-voice output, and rendered pitch cuts.
+# These are personal media assets and must never be committed.
+video/build/
+video/clean_tts/
+video/recorded_build/
+results/final_pitch_video*.mp4
+results/final_pitch_video*.srt

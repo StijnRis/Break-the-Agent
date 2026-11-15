@@ -1,0 +1,94 @@
+{
+ "result": {
+  "model": "gemini-3.1-pro-preview",
+  "seconds": 4,
+  "tokens": {
+   "in": 2355,
+   "out": 54
+  },
+  "task": "site936_bldg1976_floor8706",
+  "submitted": true,
+  "tool_calls": 1,
+  "reward": 0.0,
+  "components": {
+   "walls": 0.0,
+   "rooms": 0.0,
+   "areas": 0.0,
+   "doors": 0.0,
+   "windows": 0.0,
+   "fixtures": 0.0,
+   "speed": 1.0
+  },
+  "details": {
+   "walls": {
+    "precision": 0.0,
+    "recall": 0.0
+   },
+   "rooms": {
+    "matched": 0,
+    "n_pred": 0,
+    "n_gt": 14,
+    "matches": []
+   },
+   "doors": {
+    "tp": 0,
+    "n_pred": 0,
+    "n_gt": 14
+   },
+   "windows": {
+    "tp": 0,
+    "n_pred": 0,
+    "n_gt": 6
+   },
+   "fixtures": {
+    "tp": 0,
+    "n_pred": 0,
+    "n_gt": 10,
+    "per_type": {
+     "bathtub": {
+      "tp": 0,
+      "n_pred": 0,
+      "n_gt": 2
+     },
+     "kitchen": {
+      "tp": 0,
+      "n_pred": 0,
+      "n_gt": 4
+     },
+     "washbasin": {
+      "tp": 0,
+      "n_pred": 0,
+      "n_gt": 2
+     },
+     "wc": {
+      "tp": 0,
+      "n_pred": 0,
+      "n_gt": 2
+     }
+    }
+   },
+   "scale_ratio": 0.8858,
+   "elapsed_seconds": 4.035
+  }
+ },
+ "schematic": {
+  "m_per_px": 0.015,
+  "walls": [],
+  "rooms": [],
+  "doors": [],
+  "windows": [],
+  "fixtures": []
+ },
+ "last_preview": null,
+ "trace": [
+  {
+   "turn": 0,
+   "text": "",
+   "tool": "submit_schematic",
+   "args": {
+    "schematic_json": "<89 chars>"
+   },
+   "result": "submitted: {'walls': 0, 'rooms': 0, 'doors': 0, 'windows': 0, 'fixtures': 0}. The episode is over."
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+== site3259_bldg4943_floor22529 run 0 (gemini-3.1-pro-preview)
+   [1] view_region {'y1': 1650, 'y0': 1400, 'x0': 400, 'x1': 900} -> crop (400,1400)-(900,1650)
+   [2] view_region {'x1': 1100, 'y0': 1500, 'x0': 800, 'y1': 1700} -> crop (800,1500)-(1100,1700)
+   [3] view_region {'x1': 1400, 'x0': 1050, 'y0': 250, 'y1': 1250} -> crop (1050,250)-(1400,1250)
+   [4] segment_rooms {'seeds': [[1195, 491], [1132, 605], [1218, 653], [1263, 782], [1262, 883], [1163, 892], [1212, 1065], [1133, 702]], 'm_per_px': 0.01087} -> [{"seed": 0, "polygon": [[1137.0, 275.0], [1138.0, 305.0], [1125.0, 308.0], [1104.0, 308.0], [1104.0, 341.0], [1120.0, 5
+   [5] submit_schematic {'schematic_json': '<1232 chars>'} -> submitted: {'walls': 0, 'rooms': 8, 'doors': 0, 'windows': 0, 'fixtures': 0}. The episode is over.
+{"task": "site3259_bldg4943_floor22529", "reward": 0.0727, "components": {"walls": 0.0, "rooms": 0.2906, "areas": 0.0, "doors": 0.0, "windows": 0.0, "fixtures": 0.0, "speed": 1.0}, "tool_calls": 5, "seconds": 36, "tokens": {"in": 27284, "out": 1919}}

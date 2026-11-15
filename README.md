@@ -54,6 +54,8 @@ python -m blueprint_env.evaluate --agent gemini-3.1-pro-preview --runs 3
 
 `results/summary.md` holds the current table, including the stop-early rows and the agent stop-early run (`runs/stop-early-gemini-3-flash-4calls`).
 
+A fresh two-batch, eight-plan concurrent Gemini smoke test, its per-plan outcomes, and the interpretation alongside the full repeated result are in [`results/gemini_parallel_benchmark_2026-11-14.md`](results/gemini_parallel_benchmark_2026-11-14.md).
+
 Notes on these numbers:
 - The Gemini runs above were made before `segment_rooms` and `measure_area` were added to the toolset. They cover 6 of the 15 test plans. Rerun them with `--agent` for the full split.
 - The reference is deterministic, so its sd over runs is 0. The agent's sd is computed over its 3 runs.

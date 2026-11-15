@@ -6,6 +6,8 @@ import io
 import json
 import os
 import secrets
+import subprocess
+import sys
 import tempfile
 import threading
 import time
@@ -23,6 +25,7 @@ MODEL = os.environ.get("DEMO_MODEL", "gemini-3.1-pro-preview")
 JOBS: dict[str, dict] = {}
 LOCK = threading.Lock()
 LATEST_JOB_ID: str | None = None
+VIDEO_JOB: dict[str, str] = {"stage": "ready" if (ROOT / "results" / "final_pitch_video_v3.mp4").exists() else "idle"}
 
 
 def _data_url(img: Image.Image) -> str:
@@ -117,6 +120,24 @@ def _run(job_id, task_dir: Path, task_id: str, has_gt: bool, prompt: str):
         _update(job_id, stage="error", error=str(exc), message="The run could not be completed.")
 
 
+def _render_pitch_video():
+    """Rebuild the local pitch MP4 from generated narration and presentation assets."""
+    try:
+        with LOCK:
+            VIDEO_JOB.update(stage="rendering", message="Rendering motion graphics, sound bed, and captions…")
+        completed = subprocess.run(
+            [sys.executable, str(ROOT / "video" / "render_recorded_pitch.py")], cwd=ROOT,
+            stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True, timeout=600,
+        )
+        if completed.returncode:
+            raise RuntimeError(completed.stderr[-900:] or "Video renderer stopped unexpectedly.")
+        with LOCK:
+            VIDEO_JOB.update(stage="ready", message="Pitch video is ready to download.")
+    except Exception as exc:
+        with LOCK:
+            VIDEO_JOB.update(stage="error", message=str(exc))
+
+
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *_args):
         pass
@@ -168,12 +189,30 @@ class Handler(BaseHTTPRequestHandler):
                 latest = JOBS.get(LATEST_JOB_ID) if LATEST_JOB_ID else None
                 payload = {"id": latest.get("id"), "task": latest.get("task")} if latest else {"id": None}
             self._send(200, json.dumps(payload))
+        elif path == "/api/render-video":
+            with LOCK:
+                self._send(200, json.dumps(VIDEO_JOB))
+        elif path == "/artifacts/final_pitch_video.mp4":
+            artifact = ROOT / "results" / "final_pitch_video_v3.mp4"
+            if not artifact.exists():
+                self._send(404, "Video has not been rendered yet.", "text/plain; charset=utf-8")
+            else:
+                self._send(200, artifact.read_bytes(), "video/mp4")
         else:
             self._send(404, "Not found", "text/plain; charset=utf-8")
 
     def do_POST(self):
         global LATEST_JOB_ID
-        if urlparse(self.path).path != "/api/run":
+        endpoint = urlparse(self.path).path
+        if endpoint == "/api/render-video":
+            with LOCK:
+                if VIDEO_JOB.get("stage") != "rendering":
+                    VIDEO_JOB.update(stage="queued", message="Pitch render queued…")
+                    threading.Thread(target=_render_pitch_video, daemon=True).start()
+                payload = dict(VIDEO_JOB)
+            self._send(202, json.dumps(payload))
+            return
+        if endpoint != "/api/run":
             self._send(404, json.dumps({"error": "Not found"}))
             return
         try:
