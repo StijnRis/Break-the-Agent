@@ -41,7 +41,7 @@ def prompt_for(W, H):
     return PROMPT.format(W=W, H=H)
 
 
-MODEL_MAX_SIDE = 2048   # ~3.5k image tokens for Qwen3-VL; coordinates are relative, so resizing is harmless
+MODEL_MAX_SIDE = 1536   # ~2k image tokens for Qwen3-VL (2048 = ~3.5k: slower); coordinates are relative, so resizing is harmless
 
 
 def model_image(img, max_side=MODEL_MAX_SIDE):

@@ -27,14 +27,15 @@ from .policy import from_text, model_image, prompt_for, to_text
 from .score import score
 
 
-def one(client, model, root, task, temperature, max_tokens):
+def one(client, model, root, task, temperature, max_tokens, rep_penalty=1.0):
     td = os.path.join(root, task)
     img = Image.open(os.path.join(td, "drawing.png")).convert("RGB")
     W, H = img.size
     buf = io.BytesIO(); model_image(img).save(buf, "PNG")
     url = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
     t0 = time.time()
-    r = client.chat.completions.create(model=model, temperature=temperature, max_tokens=max_tokens, messages=[
+    r = client.chat.completions.create(model=model, temperature=temperature, max_tokens=max_tokens,
+        extra_body={"repetition_penalty": rep_penalty} if rep_penalty != 1.0 else None, messages=[
         {"role": "user", "content": [{"type": "image_url", "image_url": {"url": url}},
                                      {"type": "text", "text": prompt_for(W, H)}]}])
     text = r.choices[0].message.content or ""
@@ -61,6 +62,7 @@ def main():
     ap.add_argument("--samples", type=int, default=0)
     ap.add_argument("--temperature", type=float, default=0.8)
     ap.add_argument("--max-tokens", type=int, default=12000)
+    ap.add_argument("--rep-penalty", type=float, default=1.0, help="vLLM repetition_penalty; >1 curbs endless loops")
     ap.add_argument("--workers", type=int, default=16)
     ap.add_argument("--tag", required=True)
     ap.add_argument("--runs-dir", default="runs")
@@ -86,7 +88,7 @@ def main():
             todo.append((p, k, T))
     print(f"{len(jobs)} jobs, {len(jobs) - len(todo)} done, {len(todo)} to run", flush=True)
     with ThreadPoolExecutor(a.workers) as ex:
-        futs = {ex.submit(one, client, a.model, a.root, p, T, a.max_tokens): (p, k) for p, k, T in todo}
+        futs = {ex.submit(one, client, a.model, a.root, p, T, a.max_tokens, a.rep_penalty): (p, k) for p, k, T in todo}
         for i, f in enumerate(as_completed(futs)):
             p, k = futs[f]
             try:
